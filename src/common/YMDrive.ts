@@ -44,8 +44,7 @@ export default class YMDrive {
         this.lastUpdated = lastUpdated
     }
 
-    // tslint:disable-next-line:member-ordering
-    static fromObject = function(obj: any) {
+    public static fromObject = function(obj: any) {
         // tslint:disable-next-line:max-line-length
         return new YMDrive(obj.driveId, obj.autoClassifiedRuleId, obj.reportIds, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,
@@ -53,8 +52,7 @@ export default class YMDrive {
                     new Date().getTime())
     }
 
-    // tslint:disable-next-line:member-ordering
-    static joinDrives = function(drives: Array<YMDrive>, dbKey: string) {
+    public static joinDrives = function(drives: Array<YMDrive>, dbKey: string) {
         // TODO support more than 2 drives join
 
         let firstDrive = drives[0]
