@@ -18,7 +18,7 @@ import YMWorkingHour from './lib/common/YMWorkingHour'
 import {filterDrives, selectedDrivesFromIds, selectedDrivesOnDay,
         sortDrivesByDate, filterDeletedDrives, roundNumber, getMapImage,
             getArrayOfsavedLocations, getPersonalNameIfExist, undefinedOrEmpty,
-                milesToMetric, milesToMetricStr, dayOfWeekAsString} from '.lib/components/common'
+                milesToMetric, milesToMetricStr, dayOfWeekAsString} from './lib/components/common'
 
 module.exports = {
     YMAddress : YMAddress,
@@ -32,6 +32,7 @@ module.exports = {
     YMOdometerRead : YMOdometerRead,
     YMRate : YMRate,
     YMSubscription :YMSubscription,
+    YMVehicle : YMVehicle,
     YMDateRange : YMDateRange,
     YMLocation : YMLocation,
     YMPersonalSettings : YMPersonalSettings,
