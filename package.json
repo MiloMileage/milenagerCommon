@@ -1,0 +1,22 @@
+{
+  "name": "milenagercommon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/tslint -p tslint.json && ./node_modules/.bin/tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://lyair1@bitbucket.org/lyair1/milenagercommon.git"
+  },
+  "author": "Yairle",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/lyair1/milenagercommon#readme",
+  "devDependencies": {
+    "tslint": "^5.8.0",
+    "typescript": "^2.5.3"
+  }
+}
