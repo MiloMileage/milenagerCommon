@@ -50,25 +50,25 @@ export const roundNumber = function(num: number, pow: number) {
 }
 
 export const getMapImage = function(lat: number, lon: number, color: string) {
-const formatUrl = (la: number, lo: number, colorStr: string) =>
-    'https://maps.googleapis.com/maps/api/staticmap?center=' + la + ',' + lo +
-    '&zoom=14&size=150x100&scale=2&maptype=roadmap&markers=size:mid%7Ccolor:' + colorStr + '%7Clabel:%7C'
-    + la + ',' + lo
+    const formatUrl = (la: number, lo: number, colorStr: string) =>
+        'https://maps.googleapis.com/maps/api/staticmap?center=' + la + ',' + lo +
+        '&zoom=14&size=150x100&scale=2&maptype=roadmap&markers=size:mid%7Ccolor:' + colorStr + '%7Clabel:%7C'
+        + la + ',' + lo
 
-return formatUrl(roundNumber(lat, 3), roundNumber(lon, 3), color) // 0.001 ~ 111 m accuracy
+    return formatUrl(roundNumber(lat, 3), roundNumber(lon, 3), color) // 0.001 ~ 111 m accuracy
 }
 
 export const getArrayOfsavedLocations = (map: Map<string, YMSavedLocation>) => {
-  const arr = new Array<YMSavedLocation>()
+    const arr = new Array<YMSavedLocation>()
 
-  for (const key in map) {
-    const val = map[key]
-    if (val.name.length > 0) {
-      arr.push(val)
+    for (const key in map) {
+        const val = map[key]
+        if (val.name.length > 0) {
+        arr.push(val)
+        }
     }
-  }
 
-  return arr
+    return arr
 }
 
 export const getPersonalNameIfExist = (personalNames, key, defaultName) => {
@@ -91,5 +91,5 @@ export const milesToMetricStr = (num: string, convert) => {
 }
 
 export const dayOfWeekAsString = (dayIndex: number) => {
-  return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][dayIndex]
+    return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][dayIndex]
 }

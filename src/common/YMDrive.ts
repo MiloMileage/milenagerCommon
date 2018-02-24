@@ -20,12 +20,16 @@ export default class YMDrive {
     isDeleted: boolean
     joinedFromIds: Array<string>
     lastUpdated: number
+    startTimestampLocal: number
+    endTimestampLocal: number
+    timeOffsetInSeconds: number
 
     constructor (driveId: string, autoClassifiedRuleId: string = '', reportIds: Array<string> = [],
         vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation,
         startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
-        joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number) {
+        joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number,
+        startTimestampLocal: number, endTimestampLocal: number, timeOffsetInSeconds: number) {
         this.driveId = driveId
         this.autoClassifiedRuleId = autoClassifiedRuleId
         this.reportIds = reportIds
@@ -42,6 +46,9 @@ export default class YMDrive {
         this.joinedFromIds = joinedFromIds
         this.obj_db_id = obj_db_id
         this.lastUpdated = lastUpdated
+        this.startTimestampLocal = startTimestampLocal
+        this.endTimestampLocal = endTimestampLocal
+        this.timeOffsetInSeconds = timeOffsetInSeconds
     }
 
     public static fromObject = function(obj: any) {
@@ -49,7 +56,7 @@ export default class YMDrive {
         return new YMDrive(obj.driveId, obj.autoClassifiedRuleId, obj.reportIds, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
-                    new Date().getTime())
+                    new Date().getTime(), obj.startTimestampLocal, obj.endTimestampLocal, obj.timeOffsetInSeconds)
     }
 
     public static joinDrives = function(drives: Array<YMDrive>, dbKey: string) {
@@ -84,7 +91,10 @@ export default class YMDrive {
             false,
             [firstDrive.driveId, secondDrive.driveId],
             dbKey,
-            new Date().getTime()
+            new Date().getTime(),
+            firstDrive.startTimestampLocal,
+            secondDrive.endTimestampLocal,
+            firstDrive.timeOffsetInSeconds
         )
     }
 }

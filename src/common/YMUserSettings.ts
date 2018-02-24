@@ -5,6 +5,7 @@ import YMPersonalSettings from './YMPersonalSettings'
 import YMAutoLocationRule from './YMAutoLocationRule'
 import YMRate from './YMRate'
 import YMWorkingHour from './YMWorkingHour'
+import YMCustomClassification from './YMCustomClassification'
 
 export default class YMUserSettings {
     vehicles: Array<YMVehicle>
@@ -16,11 +17,13 @@ export default class YMUserSettings {
     workingHours: Array<YMWorkingHour>
     isWorkingHoursEnabled: boolean
     isAutoRulesEnabled: boolean
+    isCustomClassificationEnabled: boolean
+    customClassifications: Array<YMCustomClassification>
 
     constructor (vehicles: Array<YMVehicle> = [], personalRates: Array<YMRate> = [], purposes: Array<YMPurpose> = [],
         notificationSettings: Array<YMNotificationSetting> = [], personalSettings: YMPersonalSettings = new YMPersonalSettings(true, '0'),
         autoRules: Array<YMAutoLocationRule> = [], workingHours: Array<YMWorkingHour> = [],
-        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = false) {
+        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = false, isCustomClassificationEnabled = false, customClassifications = []) {
         this.vehicles = vehicles.map(x => YMVehicle.fromObject(x))
         this.personalRates = personalRates.map(x => YMRate.fromObject(x))
         this.purposes = purposes.map(x => YMPurpose.fromObject(purposes))
@@ -30,12 +33,14 @@ export default class YMUserSettings {
         this.workingHours = workingHours.map(x => YMWorkingHour.fromObject(x))
         this.isWorkingHoursEnabled = isWorkingHoursEnabled
         this.isAutoRulesEnabled = isAutoRulesEnabled
+        this.isCustomClassificationEnabled = isCustomClassificationEnabled
+        this.customClassifications = customClassifications
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
         return new YMUserSettings(obj.vehicles, obj.personalRates, obj.purposes, obj.notificationSettings,
                                     obj.personalSettings, obj.autoRules, obj.workingHours, obj.isWorkingHoursEnabled,
-                                        obj.isAutoRulesEnabled)
+                                        obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications)
     }
 }
