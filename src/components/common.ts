@@ -77,19 +77,3 @@ export const getPersonalNameIfExist = (personalNames, key, defaultName) => {
 
     return name
 }
-
-export const undefinedOrEmpty = (str: string) => {
-    return (str === undefined || str.length === 0)
-}
-
-export const milesToMetric = (num: number, convert) => {
-    return convert ? num * 1.60934 : num
-}
-
-export const milesToMetricStr = (num: string, convert) => {
-    return '' + (milesToMetric(Number(num), convert))
-}
-
-export const dayOfWeekAsString = (dayIndex: number) => {
-    return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][dayIndex]
-}
