@@ -46,4 +46,14 @@ export default class YMUserSettings {
                                     obj.personalSettings, obj.autoRules, obj.workingHours, obj.isWorkingHoursEnabled,
                                         obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications)
     }
+
+    getPurposeCategory(purposeId: string) {
+        let purpose: YMPurpose = this.purposes.filter(x => x.purposeId === purposeId)[0]
+
+        if (purpose == null) {
+            return ''
+        }
+
+        return purpose.category
+    }
 }
