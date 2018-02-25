@@ -29,6 +29,7 @@ export default class YMAddress {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
+        if(obj == null) return new YMAddress('', '', '', '', '', '', '', '', '', '', [])
         // tslint:disable-next-line:max-line-length
         return new YMAddress(obj.name, obj.street, obj.streetNumber, obj.city, obj.zip, obj.country, obj.countryCode,
                                 obj.county, obj.state, obj.neighborhood, obj.areasOfInterest)

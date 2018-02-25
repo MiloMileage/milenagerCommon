@@ -13,7 +13,8 @@ export default class YMRateIRS {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMRateIRS(0, 0, 0, 0)
+
         return new YMRateIRS(obj.business, obj.charity, obj.moving, obj.medical)
     }
 

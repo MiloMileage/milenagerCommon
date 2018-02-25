@@ -9,7 +9,8 @@ export default class YMOdometerRead {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMOdometerRead(0, 0)
+
         return new YMOdometerRead(obj.year, obj.read)
     }
 }

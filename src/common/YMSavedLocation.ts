@@ -14,6 +14,7 @@ export default class YMSavedLocation {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
+        if(obj == null) return new YMSavedLocation('', YMLocation.fromObject(undefined), '')
         // tslint:disable-next-line:max-line-length
         return new YMSavedLocation(obj.name, obj.location, obj.purposeId)
     }

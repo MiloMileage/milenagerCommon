@@ -13,6 +13,7 @@ export default class YMAutoLocationRule {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
+        if(obj == null) return new YMAutoLocationRule('', '', '', '')
         // tslint:disable-next-line:max-line-length
         return new YMAutoLocationRule(obj.ruleId, obj.originSavedLocationId, obj.destSavedLocationId, obj.purposeId)
     }

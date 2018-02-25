@@ -20,7 +20,8 @@ export default class YMNotificationSetting {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMNotificationSetting('', '', '', '', false, false, false)
+
         return new YMNotificationSetting(obj.notificationId, obj.notificationType, obj.title, obj.description, obj.enabled,
                         obj.isEnabledByDefault, obj.isActive)
     }

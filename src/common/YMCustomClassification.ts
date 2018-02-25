@@ -11,6 +11,7 @@ export default class YMCustomClassification {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
+        if(obj == null) return new YMCustomClassification('', 0, 0)
         return new YMCustomClassification(obj.purposeId, obj.startTimestampUtc, obj.endTimestampUtc)
     }
 }

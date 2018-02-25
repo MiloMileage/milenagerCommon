@@ -24,7 +24,7 @@ export default class YMDrive {
     endTimestampLocal: number
     timeOffsetInSeconds: number
 
-    constructor (driveId: string, autoClassifiedRuleId: string = '', reportIds: Array<string> = [],
+    constructor (driveId: string, autoClassifiedRuleId: string, reportIds: Array<string>,
         vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation,
         startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
@@ -52,6 +52,9 @@ export default class YMDrive {
     }
 
     public static fromObject = function(obj: any) {
+        if(obj == null) return new YMDrive('', '', [], '', '', 0,
+            YMLocation.fromObject(undefined), YMLocation.fromObject(undefined), new Date, new Date,
+            YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0)
         // tslint:disable-next-line:max-line-length
         return new YMDrive(obj.driveId, obj.autoClassifiedRuleId, obj.reportIds, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,

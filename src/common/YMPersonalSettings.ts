@@ -9,7 +9,8 @@ export default class YMPersonalSettings {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMPersonalSettings(false, '')
+
         return new YMPersonalSettings(obj.isMetricSystem, obj.monitoringLevel)
     }
 

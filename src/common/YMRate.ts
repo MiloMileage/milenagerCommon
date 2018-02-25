@@ -13,7 +13,8 @@ export default class YMRate {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMRate('', 0, '', false)
+
         return new YMRate(obj.name, obj.deductable, obj.rateId, obj.visible)
     }
 }

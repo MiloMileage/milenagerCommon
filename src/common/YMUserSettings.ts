@@ -39,6 +39,9 @@ export default class YMUserSettings {
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
+        if(obj == null) return new YMUserSettings([], [], [], [], YMPersonalSettings.fromObject(undefined),
+        [], [], false, false, false, [])
+
         return new YMUserSettings(obj.vehicles, obj.personalRates, obj.purposes, obj.notificationSettings,
                                     obj.personalSettings, obj.autoRules, obj.workingHours, obj.isWorkingHoursEnabled,
                                         obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications)

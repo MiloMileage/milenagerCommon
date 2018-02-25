@@ -24,6 +24,8 @@ export default class YMVehicle {
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
+        if(obj == null) return new YMVehicle('', '', '', 0, '', '', [], false)
+
         return new YMVehicle(obj.vehicleId, obj.make, obj.model, obj.primaryTime, obj.year, obj.nickName,
                                 obj.odometerReads, obj.visible)
     }

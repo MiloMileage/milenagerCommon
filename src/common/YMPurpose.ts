@@ -15,7 +15,8 @@ export default class YMPurpose {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMPurpose('', '', '', '', false)
+
         return new YMPurpose(obj.purposeId, obj.rateId, obj.name, obj.category, obj.visible)
     }
 }

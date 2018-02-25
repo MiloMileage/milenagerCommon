@@ -36,6 +36,9 @@ export default class YMUserData {
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
+        if(obj == null) return new YMUserData([], new Map<string, YMSavedLocation>(), new Map<string, YMRateIRS>(),
+        YMUserSettings.fromObject(undefined), YMUserSettings.fromObject(undefined))
+
         return new YMUserData(obj.drives, obj.savedLocations, obj.rates, obj.userSettings, obj.globalSettings)
     }
 }

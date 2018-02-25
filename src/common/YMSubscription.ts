@@ -13,7 +13,8 @@ export default class YMSubscription {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMSubscription('', '', new Date, new Date)
+
         return new YMSubscription(obj.subscriptionId, obj.subscriptionType, obj.startDate, obj.endDate)
     }
 }

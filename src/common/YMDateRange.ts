@@ -9,7 +9,8 @@ export default class YMDateRange {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMDateRange(new Date, new Date)
+
         return new YMDateRange(obj.startDate, obj.endDate)
     }
 }

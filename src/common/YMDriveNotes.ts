@@ -11,7 +11,8 @@ export default class YMDriveNotes {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMDriveNotes('', 0, 0)
+
         return new YMDriveNotes(obj.note, obj.parkingMoney, obj.tollMoney)
     }
 }

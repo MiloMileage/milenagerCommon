@@ -20,7 +20,8 @@ export default class YMLocation {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        // tslint:disable-next-line:max-line-length
+        if(obj == null) return new YMLocation(YMAddress.fromObject(undefined), 0, 0)
+
         return new YMLocation(obj.address, obj.lat, obj.lon)
     }
 }
