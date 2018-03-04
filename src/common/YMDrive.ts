@@ -15,21 +15,21 @@ export default class YMDrive {
     dest: YMLocation
     startTime: Date
     endTime: Date
+    endTimeTimestampUtc: number
     driveNotes: YMDriveNotes
     isVisible: boolean
     isDeleted: boolean
     joinedFromIds: Array<string>
     lastUpdated: number
-    startTimestampLocal: number
-    endTimestampLocal: number
-    timeOffsetInSeconds: number
+    startTimeTimestampUtc: number
+    timestampOffsetInSeconds: number
 
     constructor (driveId: string, autoClassifiedRuleId: string, reportIds: Array<string>,
         vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation,
         startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
         joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number,
-        startTimestampLocal: number, endTimestampLocal: number, timeOffsetInSeconds: number) {
+        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number) {
         this.driveId = driveId
         this.autoClassifiedRuleId = autoClassifiedRuleId
         this.reportIds = reportIds
@@ -46,9 +46,9 @@ export default class YMDrive {
         this.joinedFromIds = joinedFromIds
         this.obj_db_id = obj_db_id
         this.lastUpdated = lastUpdated
-        this.startTimestampLocal = startTimestampLocal
-        this.endTimestampLocal = endTimestampLocal
-        this.timeOffsetInSeconds = timeOffsetInSeconds
+        this.startTimeTimestampUtc = startTimeTimestampUtc
+        this.endTimeTimestampUtc = endTimeTimestampUtc
+        this.timestampOffsetInSeconds = timestampOffsetInSeconds
     }
 
     public static fromObject = function(obj: any) {
@@ -59,7 +59,7 @@ export default class YMDrive {
         return new YMDrive(obj.driveId, obj.autoClassifiedRuleId, obj.reportIds, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
-                    new Date().getTime(), obj.startTimestampLocal, obj.endTimestampLocal, obj.timeOffsetInSeconds)
+                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds)
     }
 
     public static joinDrives = function(drives: Array<YMDrive>, dbKey: string) {
@@ -95,9 +95,9 @@ export default class YMDrive {
             [firstDrive.driveId, secondDrive.driveId],
             dbKey,
             new Date().getTime(),
-            firstDrive.startTimestampLocal,
-            secondDrive.endTimestampLocal,
-            firstDrive.timeOffsetInSeconds
+            firstDrive.startTimeTimestampUtc,
+            secondDrive.endTimeTimestampUtc,
+            firstDrive.timestampOffsetInSeconds
         )
     }
 }
