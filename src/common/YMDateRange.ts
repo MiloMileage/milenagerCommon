@@ -11,6 +11,6 @@ export default class YMDateRange {
     static fromObject = function(obj: any) {
         if(obj == null) return new YMDateRange(new Date, new Date)
 
-        return new YMDateRange(obj.startDate, obj.endDate)
+        return new YMDateRange(new Date(obj.startDate), new Date(obj.endDate))
     }
 }

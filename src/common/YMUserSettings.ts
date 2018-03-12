@@ -19,12 +19,11 @@ export default class YMUserSettings {
     isAutoRulesEnabled: boolean
     isCustomClassificationEnabled: boolean
     customClassifications: Array<YMCustomClassification>
-    fcmToken: string
 
     constructor (vehicles: Array<YMVehicle> = [], personalRates: Array<YMRate> = [], purposes: Array<YMPurpose> = [],
-        notificationSettings: Array<YMNotificationSetting> = [], personalSettings: YMPersonalSettings = new YMPersonalSettings(true, '0'),
+        notificationSettings: Array<YMNotificationSetting> = [], personalSettings: YMPersonalSettings = new YMPersonalSettings(false, '1'),
         autoRules: Array<YMAutoLocationRule> = [], workingHours: Array<YMWorkingHour> = [],
-        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = false, isCustomClassificationEnabled = false, customClassifications = [], fcmToken: string = '') {
+        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = false, isCustomClassificationEnabled = false, customClassifications = []) {
         this.vehicles = vehicles.map(x => YMVehicle.fromObject(x))
         this.personalRates = personalRates.map(x => YMRate.fromObject(x))
         this.purposes = purposes.map(x => YMPurpose.fromObject(purposes))
@@ -36,7 +35,6 @@ export default class YMUserSettings {
         this.isAutoRulesEnabled = isAutoRulesEnabled
         this.isCustomClassificationEnabled = isCustomClassificationEnabled
         this.customClassifications = customClassifications
-        this.fcmToken = fcmToken
     }
 
     // tslint:disable-next-line:member-ordering
@@ -46,7 +44,7 @@ export default class YMUserSettings {
 
         return new YMUserSettings(obj.vehicles, obj.personalRates, obj.purposes, obj.notificationSettings,
                                     obj.personalSettings, obj.autoRules, obj.workingHours, obj.isWorkingHoursEnabled,
-                                        obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications, obj.fcmToken)
+                                        obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications)
     }
 
     getPurposeCategory(purposeId: string) {
