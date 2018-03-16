@@ -49,13 +49,13 @@ export const roundNumber = function(num: number, pow: number) {
     return Math.round(num * factor) / factor
 }
 
-export const getMapImage = function(lat: number, lon: number, color: string) {
-    const formatUrl = (la: number, lo: number, colorStr: string) =>
-        'https://maps.googleapis.com/maps/api/staticmap?center=' + la + ',' + lo +
-        '&zoom=14&size=150x100&scale=2&maptype=roadmap&markers=size:mid%7Ccolor:' + colorStr + '%7Clabel:%7C'
-        + la + ',' + lo
+export const getMapImage = function(pathColor: string, pathWeight: string, colorStart: string, colorEnd: string, locationArray: Array<{lat: number, lon: number}>, mapSize: {width: number, height: number}) {
+    const formatUrl = (latLonStr: string, startPoint: {lat: number, lon: number}, endPoint: {lat: number, lon: number}) =>
+        'https://maps.googleapis.com/maps/api/staticmap?path=color:' + pathColor + '|weight:' + pathWeight + '|' + latLonStr +
+        '&size=' + mapSize.width + 'x' + mapSize.height + '&scale=2&maptype=roadmap&markers=size:mid%7Ccolor:' + colorStart + '%7Clabel:%7C' + roundNumber(startPoint.lat, 3) + ',' + roundNumber(startPoint.lon, 3) + '&markers=size:mid%7Ccolor:' + colorEnd + '%7Clabel:%7C'
+        + roundNumber(endPoint.lat, 3) + ',' + roundNumber(endPoint.lon, 3)
 
-    return formatUrl(roundNumber(lat, 3), roundNumber(lon, 3), color) // 0.001 ~ 111 m accuracy
+    return formatUrl(locationArray.map(x => roundNumber(x.lat, 3) + ',' + roundNumber(x.lon,3)).join('|'), locationArray[0], locationArray.slice(-1)[0]) // 0.001 ~ 111 m accuracy
 }
 
 export const getArrayOfsavedLocations = (map: Map<string, YMSavedLocation>) => {
