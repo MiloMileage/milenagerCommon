@@ -52,7 +52,7 @@ export const roundNumber = function(num: number, pow: number) {
 export const getMapImage = function(pathColor: string, pathWeight: string, colorStart: string, colorEnd: string, locationArray: Array<{lat: number, lon: number}>, mapSize: {width: number, height: number}) {
     const formatUrl = (latLonStr: string, startPoint: {lat: number, lon: number}, endPoint: {lat: number, lon: number}) =>
         'https://maps.googleapis.com/maps/api/staticmap?path=color:' + pathColor + '|weight:' + pathWeight + '|' + latLonStr +
-        '&size=' + mapSize.width + 'x' + mapSize.height + '&scale=2&maptype=roadmap&markers=size:mid%7Ccolor:' + colorStart + '%7Clabel:%7C' + roundNumber(startPoint.lat, 3) + ',' + roundNumber(startPoint.lon, 3) + '&markers=size:mid%7Ccolor:' + colorEnd + '%7Clabel:%7C'
+        '&size=' + mapSize.width + 'x' + mapSize.height + '&scale=2&maptype=roadmap&markers=size:mid|color:' + colorStart + '|label:|' + roundNumber(startPoint.lat, 3) + ',' + roundNumber(startPoint.lon, 3) + '&markers=size:mid|color:' + colorEnd + '|label:|'
         + roundNumber(endPoint.lat, 3) + ',' + roundNumber(endPoint.lon, 3)
 
     return formatUrl(locationArray.map(x => roundNumber(x.lat, 3) + ',' + roundNumber(x.lon,3)).join('|'), locationArray[0], locationArray.slice(-1)[0]) // 0.001 ~ 111 m accuracy
