@@ -1,7 +1,7 @@
 export default class YMWorkingHour {
     dayOfWeek: number
-    startTimeInMinutes: Number
-    endTimeInMinutes: Number
+    startTimeInMinutes: number
+    endTimeInMinutes: number
 
     constructor (dayOfWeek: number, startTimeInMinutes: number, endTimeInMinutes: number) {
         this.dayOfWeek = dayOfWeek
