@@ -2,6 +2,17 @@ import YMDrive from './../common/YMDrive'
 import YMDateRange from './../common/YMDateRange'
 import YMSavedLocation from './../common/YMSavedLocation'
 
+export const addDays = (startDate: Date, numberOfDays: number) => {
+    const returnDate = new Date(
+                            startDate.getFullYear(),
+                            startDate.getMonth(),
+                            startDate.getDate() + numberOfDays,
+                            startDate.getHours(),
+                            startDate.getMinutes(),
+                            startDate.getSeconds())
+    return returnDate
+}
+
 export const filterDrives = function (drives: Array<YMDrive>, dateRange: YMDateRange, filterTerm: string) {
     return drives.filter(d =>  d.isVisible &&
         ((d.origin.address.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
@@ -16,17 +27,6 @@ export const selectedDrivesFromIds = function (drives: Array<YMDrive>, selectedD
 
 export const selectedDrivesOnDay = function (drives: Array<YMDrive>, day: Date) {
     return drives.filter(drive => new Date(drive.startTime).toDateString() === day.toDateString())
-}
-
-function addDays(startDate: Date, numberOfDays: number) {
-    const returnDate = new Date(
-                            startDate.getFullYear(),
-                            startDate.getMonth(),
-                            startDate.getDate() + numberOfDays,
-                            startDate.getHours(),
-                            startDate.getMinutes(),
-                            startDate.getSeconds())
-    return returnDate
 }
 
 export const sortDrivesByDate = function(drives: Array<YMDrive>) {
@@ -78,4 +78,17 @@ export const getPersonalNameIfExist = (personalNames, key, defaultName) => {
     if (key in personalNames && personalNames[key].name.length > 0) name = personalNames[key].name
 
     return name
+}
+
+export default {
+    filterDrives,
+    selectedDrivesFromIds,
+    selectedDrivesOnDay,
+    addDays,
+    sortDrivesByDate,
+    filterDeletedDrives,
+    roundNumber,
+    getMapImage,
+    getArrayOfsavedLocations,
+    getPersonalNameIfExist
 }
