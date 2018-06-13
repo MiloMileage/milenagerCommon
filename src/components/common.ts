@@ -1,6 +1,7 @@
 import YMDrive from './../common/YMDrive'
 import YMDateRange from './../common/YMDateRange'
 import YMSavedLocation from './../common/YMSavedLocation'
+import YMLocation from './../common/YMLocation'
 
 export const addDays = (startDate: Date, numberOfDays: number) => {
     const returnDate = new Date(
@@ -73,11 +74,58 @@ export const getArrayOfsavedLocations = (map: Map<string, YMSavedLocation>) => {
     return arr
 }
 
-export const getPersonalNameIfExist = (personalNames, key, defaultName) => {
-    let name = defaultName
-    if (key in personalNames && personalNames[key].name.length > 0) name = personalNames[key].name
+export const getSavedLocationIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation) => {
+    const clonedLocation = YMLocation.fromObject(JSON.parse(JSON.stringify(location)))
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
 
-    return name
+    clonedLocation.lat += 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lat -= 0.001
+
+    clonedLocation.lon += 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lon -= 0.001
+
+    clonedLocation.lat -= 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lat += 0.001
+
+    clonedLocation.lon -= 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lon += 0.001
+
+    clonedLocation.lat += 0.001
+    clonedLocation.lon += 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lat -= 0.001
+    clonedLocation.lon -= 0.001
+
+    clonedLocation.lat -= 0.001
+    clonedLocation.lon -= 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lat += 0.001
+    clonedLocation.lon += 0.001
+
+    clonedLocation.lat += 0.001
+    clonedLocation.lon -= 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lat -= 0.001
+    clonedLocation.lon += 0.001
+
+    clonedLocation.lat -= 0.001
+    clonedLocation.lon += 0.001
+    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    clonedLocation.lat += 0.001
+    clonedLocation.lon -= 0.001
+
+    return undefined
+}
+
+export const getPersonalNameIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation, defaultName: string) => {
+    const name = defaultName
+    const savedLocation = getSavedLocationIfExist(personalLocations, location)
+
+    return savedLocation ? savedLocation.name : name
 }
 
 export default {
@@ -90,5 +138,6 @@ export default {
     roundNumber,
     getMapImage,
     getArrayOfsavedLocations,
-    getPersonalNameIfExist
+    getPersonalNameIfExist,
+    getSavedLocationIfExist
 }

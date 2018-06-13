@@ -1,6 +1,7 @@
 import YMDrive from './../common/YMDrive';
 import YMDateRange from './../common/YMDateRange';
 import YMSavedLocation from './../common/YMSavedLocation';
+import YMLocation from './../common/YMLocation';
 export declare const addDays: (startDate: Date, numberOfDays: number) => Date;
 export declare const filterDrives: (drives: YMDrive[], dateRange: YMDateRange, filterTerm: string) => YMDrive[];
 export declare const selectedDrivesFromIds: (drives: YMDrive[], selectedDrivesIds: string[]) => YMDrive[];
@@ -16,7 +17,8 @@ export declare const getMapImage: (pathColor: string, pathWeight: string, colorS
     height: number;
 }) => string;
 export declare const getArrayOfsavedLocations: (map: Map<string, YMSavedLocation>) => YMSavedLocation[];
-export declare const getPersonalNameIfExist: (personalNames: any, key: any, defaultName: any) => any;
+export declare const getSavedLocationIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation) => any;
+export declare const getPersonalNameIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation, defaultName: string) => any;
 declare const _default: {
     filterDrives: (drives: YMDrive[], dateRange: YMDateRange, filterTerm: string) => YMDrive[];
     selectedDrivesFromIds: (drives: YMDrive[], selectedDrivesIds: string[]) => YMDrive[];
@@ -33,6 +35,7 @@ declare const _default: {
         height: number;
     }) => string;
     getArrayOfsavedLocations: (map: Map<string, YMSavedLocation>) => YMSavedLocation[];
-    getPersonalNameIfExist: (personalNames: any, key: any, defaultName: any) => any;
+    getPersonalNameIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation, defaultName: string) => any;
+    getSavedLocationIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation) => any;
 };
 export default _default;
