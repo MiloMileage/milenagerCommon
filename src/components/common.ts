@@ -74,73 +74,16 @@ export const getArrayOfsavedLocations = (map: Map<string, YMSavedLocation>) => {
     return arr
 }
 
-const returnPersonalLocationIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation) => {
-    let result = null
-    personalLocations.forEach(val => {
-        if (val.location.getLatLonKey() === location.getLatLonKey()) {
-            result = val
+export const getSavedLocationIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation) => {
+    let result = undefined
+    personalLocations.forEach(value => {
+        if (value.location.distanceFrom(location) < 0.2) {
+            result = value
             return
         }
     })
 
     return result
-}
-
-export const getSavedLocationIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation) => {
-    const clonedLocation = YMLocation.fromObject(JSON.parse(JSON.stringify(location)))
-
-    let personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation
-
-    clonedLocation.lat += 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation
-    clonedLocation.lat -= 0.001
-
-    clonedLocation.lon += 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation
-    clonedLocation.lon -= 0.001
-
-    clonedLocation.lat -= 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation    
-    clonedLocation.lat += 0.001
-
-    clonedLocation.lon -= 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation    
-    clonedLocation.lon += 0.001
-
-    clonedLocation.lat += 0.001
-    clonedLocation.lon += 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation    
-    clonedLocation.lat -= 0.001
-    clonedLocation.lon -= 0.001
-
-    clonedLocation.lat -= 0.001
-    clonedLocation.lon -= 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation    
-    clonedLocation.lat += 0.001
-    clonedLocation.lon += 0.001
-
-    clonedLocation.lat += 0.001
-    clonedLocation.lon -= 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation
-    clonedLocation.lat -= 0.001
-    clonedLocation.lon += 0.001
-
-    clonedLocation.lat -= 0.001
-    clonedLocation.lon += 0.001
-    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
-    if (personalLocation !== null) return personalLocation    
-    clonedLocation.lat += 0.001
-    clonedLocation.lon -= 0.001
-
-    return undefined
 }
 
 export const getPersonalNameIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation, defaultName: string) => {
