@@ -75,10 +75,11 @@ export const getArrayOfsavedLocations = (map: Map<string, YMSavedLocation>) => {
 }
 
 export const getSavedLocationIfExist = (personalLocations : { [ind: string]: YMSavedLocation }, location: YMLocation, distance: number = 0.2) => {
-    let result: YMSavedLocation = undefined
+   let result: YMSavedLocation = undefined
     Object.keys(personalLocations).forEach(key => {
-        const currPerLoc = YMSavedLocation.fromObject(personalLocations[key])
-        if (currPerLoc.location.distanceFrom(location) < distance) {
+        const currPerLoc = personalLocations[key]
+
+        if (YMLocation.fromObject(currPerLoc.location).distanceFrom(location) < 0.2) {
             result = currPerLoc
             return
         }
