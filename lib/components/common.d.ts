@@ -17,8 +17,12 @@ export declare const getMapImage: (pathColor: string, pathWeight: string, colorS
     height: number;
 }) => string;
 export declare const getArrayOfsavedLocations: (map: Map<string, YMSavedLocation>) => YMSavedLocation[];
-export declare const getSavedLocationIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation) => any;
-export declare const getPersonalNameIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation, defaultName: string) => any;
+export declare const getSavedLocationIfExist: (personalLocations: {
+    [ind: string]: YMSavedLocation;
+}, location: YMLocation, distance?: number) => YMSavedLocation;
+export declare const getPersonalNameIfExist: (personalLocations: {
+    [ind: string]: YMSavedLocation;
+}, location: YMLocation, defaultName: string, distance?: number) => string;
 declare const _default: {
     filterDrives: (drives: YMDrive[], dateRange: YMDateRange, filterTerm: string) => YMDrive[];
     selectedDrivesFromIds: (drives: YMDrive[], selectedDrivesIds: string[]) => YMDrive[];
@@ -35,7 +39,11 @@ declare const _default: {
         height: number;
     }) => string;
     getArrayOfsavedLocations: (map: Map<string, YMSavedLocation>) => YMSavedLocation[];
-    getPersonalNameIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation, defaultName: string) => any;
-    getSavedLocationIfExist: (personalLocations: Map<string, YMSavedLocation>, location: YMLocation) => any;
+    getPersonalNameIfExist: (personalLocations: {
+        [ind: string]: YMSavedLocation;
+    }, location: YMLocation, defaultName: string, distance?: number) => string;
+    getSavedLocationIfExist: (personalLocations: {
+        [ind: string]: YMSavedLocation;
+    }, location: YMLocation, distance?: number) => YMSavedLocation;
 };
 export default _default;
