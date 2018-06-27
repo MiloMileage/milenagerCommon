@@ -1,15 +1,18 @@
 import YMLocation from './YMLocation'
+import common from '../store/common'
 
 export default class YMSavedLocation {
     name: string
     location: YMLocation
     purposeId: string
+    key: string
 
     // tslint:disable-next-line:max-line-length
     constructor (name: string, location: YMLocation, purposeId: string) {
         this.name = name
         this.location = YMLocation.fromObject(location)
         this.purposeId = purposeId
+        this.key = common.getUniqueDriveId()
     }
 
     // tslint:disable-next-line:member-ordering
