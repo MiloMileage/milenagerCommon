@@ -74,47 +74,69 @@ export const getArrayOfsavedLocations = (map: Map<string, YMSavedLocation>) => {
     return arr
 }
 
+const returnPersonalLocationIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation) => {
+    let result = null
+    personalLocations.forEach(val => {
+        if (val.location.getLatLonKey() === location.getLatLonKey()) {
+            result = val
+            return
+        }
+    })
+
+    return result
+}
+
 export const getSavedLocationIfExist = (personalLocations : Map<string, YMSavedLocation>, location: YMLocation) => {
     const clonedLocation = YMLocation.fromObject(JSON.parse(JSON.stringify(location)))
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+
+    let personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation
 
     clonedLocation.lat += 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation
     clonedLocation.lat -= 0.001
 
     clonedLocation.lon += 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation
     clonedLocation.lon -= 0.001
 
     clonedLocation.lat -= 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation    
     clonedLocation.lat += 0.001
 
     clonedLocation.lon -= 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation    
     clonedLocation.lon += 0.001
 
     clonedLocation.lat += 0.001
     clonedLocation.lon += 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation    
     clonedLocation.lat -= 0.001
     clonedLocation.lon -= 0.001
 
     clonedLocation.lat -= 0.001
     clonedLocation.lon -= 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation    
     clonedLocation.lat += 0.001
     clonedLocation.lon += 0.001
 
     clonedLocation.lat += 0.001
     clonedLocation.lon -= 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation
     clonedLocation.lat -= 0.001
     clonedLocation.lon += 0.001
 
     clonedLocation.lat -= 0.001
     clonedLocation.lon += 0.001
-    if (personalLocations[clonedLocation.getLatLonKey()]) return personalLocations[clonedLocation.getLatLonKey()]
+    personalLocation = returnPersonalLocationIfExist(personalLocations, clonedLocation)
+    if (personalLocation !== null) return personalLocation    
     clonedLocation.lat += 0.001
     clonedLocation.lon -= 0.001
 
