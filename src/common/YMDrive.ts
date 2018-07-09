@@ -20,6 +20,7 @@ export default class YMDrive {
     driveNotes: YMDriveNotes
     isVisible: boolean
     isDeleted: boolean
+    isManual: boolean
     joinedFromIds: Array<string>
     lastUpdated: number
     startTimeTimestampUtc: number
@@ -30,7 +31,7 @@ export default class YMDrive {
         startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
         joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number,
-        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = []) {
+        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false) {
         this.driveId = driveId
         this.autoClassifiedRuleId = autoClassifiedRuleId
         this.reportIds = reportIds
@@ -51,55 +52,17 @@ export default class YMDrive {
         this.endTimeTimestampUtc = endTimeTimestampUtc
         this.timestampOffsetInSeconds = timestampOffsetInSeconds
         this.routeLocations = routeLocations
+        this.isManual = isManual
     }
 
     public static fromObject = function(obj: any) {
         if(obj == null) return new YMDrive('', '', [], '', '', 0,
             YMLocation.fromObject(undefined), YMLocation.fromObject(undefined), new Date, new Date,
-            YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0, [])
+            YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0, [], false)
         // tslint:disable-next-line:max-line-length
         return new YMDrive(obj.driveId, obj.autoClassifiedRuleId, obj.reportIds, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
-                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations)
-    }
-
-    public static joinDrives = function(drives: Array<YMDrive>, dbKey: string) {
-        // TODO support more than 2 drives join
-
-        let firstDrive = drives[0]
-        let secondDrive = drives[1]
-
-        if (new Date(firstDrive.startTime).getTime() > new Date(secondDrive.startTime).getTime()) {
-            const tempDrive = firstDrive
-            firstDrive = secondDrive
-            secondDrive = tempDrive
-        }
-
-        return new YMDrive(
-            getUniqueDriveId(),
-            '',
-            [],
-            firstDrive.vehicleId === secondDrive.vehicleId ? firstDrive.vehicleId : '', // TODO set default vehicle
-            firstDrive.drivePurposeId === secondDrive.drivePurposeId ? firstDrive.drivePurposeId : '',
-            firstDrive.miles + secondDrive.miles,
-            firstDrive.origin,
-            secondDrive.dest,
-            firstDrive.startTime,
-            secondDrive.endTime,
-            new YMDriveNotes(
-                '', // TODO - think how to combine joined drive notes
-                firstDrive.driveNotes.parkingMoney + secondDrive.driveNotes.parkingMoney,
-                firstDrive.driveNotes.tollMoney + secondDrive.driveNotes.tollMoney
-            ),
-            true,
-            false,
-            [firstDrive.driveId, secondDrive.driveId],
-            dbKey,
-            new Date().getTime(),
-            firstDrive.startTimeTimestampUtc,
-            secondDrive.endTimeTimestampUtc,
-            firstDrive.timestampOffsetInSeconds
-        )
+                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual)
     }
 }
