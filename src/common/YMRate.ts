@@ -23,7 +23,7 @@ export default class YMRate {
     }
 
       // tslint:disable-next-line:max-line-length
-    static getRateForPurposeId = (purposeId: string, globalSettings: YMUserSettings, userSettings: YMUserSettings, rates: Map<string, YMRate>, drive: YMDrive) => {
+    static getRateForPurposeId = (purposeId: string, globalSettings: YMUserSettings, userSettings: YMUserSettings, rates: Map<string, YMRate>, drive?: YMDrive) => {
         if (globalSettings === null || userSettings === null) {
             return 0
         }
@@ -39,7 +39,7 @@ export default class YMRate {
 
         // find rate
         if (purpose.rateId.startsWith('irs_')) {
-            return rates[new Date(drive.startTime).getFullYear()][purpose.rateId.substring(4)]
+            return rates[(drive === undefined ? new Date() : new Date(drive.startTime)).getFullYear()][purpose.rateId.substring(4)]
         }
 
         const rate = userSettings.personalRates.filter(x => x.rateId === purpose.rateId)[0]
