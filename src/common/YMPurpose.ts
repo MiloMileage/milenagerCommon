@@ -19,4 +19,13 @@ export default class YMPurpose {
 
         return new YMPurpose(obj.purposeId, obj.rateId, obj.name, obj.category, obj.visible)
     }
+
+    static defaultPuposesIds = {
+        undetermined: '-1',
+        business: '0',
+        charity: '1',
+        moving: '2',
+        medical: '3',
+        personal: '4'
+    }
 }

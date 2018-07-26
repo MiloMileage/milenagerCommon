@@ -26,7 +26,7 @@ export default class YMUserSettings {
         isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = false, isCustomClassificationEnabled = false, customClassifications = []) {
         this.vehicles = vehicles.map(x => YMVehicle.fromObject(x))
         this.personalRates = personalRates.map(x => YMRate.fromObject(x))
-        this.purposes = purposes.map(x => YMPurpose.fromObject(purposes))
+        this.purposes = purposes.map(x => YMPurpose.fromObject(x))
         this.notificationSettings = notificationSettings.map(x => YMNotificationSetting.fromObject(x))
         this.personalSettings = YMPersonalSettings.fromObject(personalSettings)
         this.autoRules = autoRules.map(x => YMAutoLocationRule.fromObject(x))
