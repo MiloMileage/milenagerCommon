@@ -4,20 +4,22 @@ export default class YMPurpose {
     name: string
     category: string
     visible: boolean
+    iconName: string
 
-    constructor (purposeId = 'id', rateId = 'rateId', name = 'name', category = 'category', visible: boolean = true) {
+    constructor (purposeId = 'id', rateId = 'rateId', name = 'name', category = 'category', iconName = 'iconName', visible: boolean = true) {
         this.purposeId = purposeId
         this.rateId = rateId
         this.name = name
         this.category = category
         this.visible = visible
+        this.iconName = iconName
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMPurpose('', '', '', '', false)
+        if(obj == null) return new YMPurpose('', '', '', '', '', false)
 
-        return new YMPurpose(obj.purposeId, obj.rateId, obj.name, obj.category, obj.visible)
+        return new YMPurpose(obj.purposeId, obj.rateId, obj.name, obj.category, obj.iconName, obj.visible)
     }
 
     static defaultPuposesIds = {
