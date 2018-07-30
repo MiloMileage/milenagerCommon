@@ -7,5 +7,5 @@ export default class YMRate {
     rateId: string;
     constructor(name: string, deductable: number, rateId?: string, visible?: boolean);
     static fromObject: (obj: any) => YMRate;
-    static getRateForPurposeId: (purposeId: string, globalSettings: YMUserSettings, userSettings: YMUserSettings, rates: Map<string, YMRate>, drive?: YMDrive) => any;
+    static getRateForPurposeId: (purposeId: string, globalSettings: YMUserSettings, userSettings: YMUserSettings, rates: Map<string, Map<string, number>>, drive?: YMDrive) => any;
 }
