@@ -23,8 +23,8 @@ export default class YMRate {
     }
 
       // tslint:disable-next-line:max-line-length
-    static getRateForPurposeId = (purposeId: string, globalSettings: YMUserSettings, userSettings: YMUserSettings, rates: Map<string, Map<string, number>>, drive?: YMDrive) => {
-        if (globalSettings === null || userSettings === null) {
+    static getRateForPurposeId = (purposeId: string, userSettings: YMUserSettings, rates: Map<string, Map<string, number>>, drive?: YMDrive) => {
+        if (userSettings === null) {
             return 0
         }
 
