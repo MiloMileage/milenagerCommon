@@ -1,4 +1,9 @@
 import YMDateRange from './../../common/YMDateRange'
+import YMDrive from './../../common/YMDrive'
+import YMPurpose from './../../common/YMPurpose'
+import YMRate from './../../common/YMRate'
+import YMUserSettings from './../../common/YMUserSettings'
+import YMGlobalUserSettings from './../../common/YMGlobalUserSettings'
 
 export default class YMDriveSummaryResponse {
     drivesCount: { [purposeId: string]: number }
@@ -27,6 +32,40 @@ export default class YMDriveSummaryResponse {
         this.dateRange = dateRange
         this.parkingMoney = parkingMoney
         this.tollMoney = tollsMoney
+    }
+
+    addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
+        if (drive.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined) {
+            this.earned += drive.miles * YMRate.getRateForPurposeId(drive.drivePurposeId, userSettings, globalSettings, drive)
+            this.loggedMiles += drive.miles
+        } else {
+            this.potential += drive.miles * YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)
+        }
+
+        this.totalMiles += drive.miles
+        this.parkingMoney += drive.driveNotes.parkingMoney
+        this.tollMoney += drive.driveNotes.tollMoney
+
+        if (this.drivesCount[drive.drivePurposeId] === undefined) {
+            this.drivesCount[drive.drivePurposeId] = 1
+        } else {
+            this.drivesCount[drive.drivePurposeId] += 1
+        }
+    }
+
+    reduceDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
+        if (drive.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined) {
+            this.earned -= drive.miles * YMRate.getRateForPurposeId(drive.drivePurposeId, userSettings, globalSettings, drive)
+            this.loggedMiles -= drive.miles
+        } else {
+            this.potential -= drive.miles * YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)
+        }
+
+        this.totalMiles -= drive.miles
+        this.parkingMoney -= drive.driveNotes.parkingMoney
+        this.tollMoney -= drive.driveNotes.tollMoney
+
+        this.drivesCount[drive.drivePurposeId] -= 1
     }
 
     // tslint:disable-next-line:member-ordering
