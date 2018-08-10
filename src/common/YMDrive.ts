@@ -1,5 +1,6 @@
 import YMLocation from './YMLocation'
 import YMDriveNotes from './YMDriveNotes'
+import YMPurpose from './YMPurpose'
 import { getUniqueDriveId } from './../store/common'
 
 export default class YMDrive {
@@ -20,6 +21,7 @@ export default class YMDrive {
     driveNotes: YMDriveNotes
     isVisible: boolean
     isDeleted: boolean
+    isClassified: boolean
     isManual: boolean
     joinedFromIds: Array<string>
     lastUpdated: number
@@ -53,6 +55,12 @@ export default class YMDrive {
         this.timestampOffsetInSeconds = timestampOffsetInSeconds
         this.routeLocations = routeLocations
         this.isManual = isManual
+        this.isClassified = drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined
+    }
+
+    public setPurposeId = (purposeId: string) => {
+        this.drivePurposeId = purposeId
+        this.isClassified = this.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined
     }
 
     public static fromObject = function(obj: any) {
