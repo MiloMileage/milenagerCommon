@@ -34,6 +34,18 @@ export default class YMDriveSummaryResponse {
         this.tollMoney = tollsMoney
     }
 
+    getClassifiedDrivesCount() {
+        return Object.keys(this.drivesCount).map(key =>
+            YMPurpose.defaultPuposesIds.undetermined === key ? 0 : this.drivesCount[key])
+            .reduce((total, num) => total + num, 0)
+    }
+
+    getTotalDrivesCount() {
+        return Object.keys(this.drivesCount).map(key =>
+            this.drivesCount[key])
+            .reduce((total, num) => total + num, 0)
+    }
+
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
         if (drive.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined) {
             this.earned += drive.miles * YMRate.getRateForPurposeId(drive.drivePurposeId, userSettings, globalSettings, drive)

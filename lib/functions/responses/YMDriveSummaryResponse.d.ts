@@ -16,6 +16,8 @@ export default class YMDriveSummaryResponse {
     constructor(drivesCount: {
         [purposeId: string]: number;
     }, earned: number, potential: number, loggedMiles: number, totalMiles: number, dateRange: YMDateRange, parkingMoney: number, tollsMoney: number);
+    getClassifiedDrivesCount(): number;
+    getTotalDrivesCount(): number;
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): void;
     reduceDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): void;
     static fromObject: (obj: any) => YMDriveSummaryResponse;
