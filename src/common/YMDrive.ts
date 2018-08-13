@@ -73,4 +73,17 @@ export default class YMDrive {
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
                     new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual)
     }
+
+    public static getUniqueDriveArray = (drives: Array<YMDrive>) => {
+        const set = new Set<string>()
+        const uniqueDrives = new Array<YMDrive>()
+        drives.forEach(d => {
+            if (!set.has(d.driveId)) {
+                uniqueDrives.push(d)
+                set.add(d.driveId)
+            }
+        })
+
+        return uniqueDrives
+    }
 }
