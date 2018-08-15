@@ -3,10 +3,10 @@ export default class YMDriveNotes {
     parkingMoney: number
     tollMoney: number
 
-    constructor (note = 'note', parkingMoney = 32.3, tollMoney = 23.2) {
+    constructor (note = '', parkingMoney = 0, tollMoney = 0) {
         this.note = note
-        this.parkingMoney = parkingMoney
-        this.tollMoney = tollMoney
+        this.parkingMoney = Number(parkingMoney)
+        this.tollMoney = Number(tollMoney)
     }
 
     // tslint:disable-next-line:member-ordering

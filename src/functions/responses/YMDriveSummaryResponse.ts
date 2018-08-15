@@ -1,5 +1,6 @@
 import YMDateRange from './../../common/YMDateRange'
 import YMDrive from './../../common/YMDrive'
+import YMDriveWeight from './YMDriveWeight'
 import YMPurpose from './../../common/YMPurpose'
 import YMRate from './../../common/YMRate'
 import YMUserSettings from './../../common/YMUserSettings'
@@ -14,6 +15,8 @@ export default class YMDriveSummaryResponse {
     dateRange: YMDateRange
     parkingMoney: number
     tollMoney: number
+    driveWeights: { [driveId: string]: YMDriveWeight }
+    lastUpdated: number
 
     constructor (
         drivesCount: { [purposeId: string]: number },
@@ -23,15 +26,19 @@ export default class YMDriveSummaryResponse {
         totalMiles: number,
         dateRange: YMDateRange,
         parkingMoney: number,
-        tollsMoney: number) {
+        tollsMoney: number,
+        driveWeights: { [driveId: string]: YMDriveWeight },
+        lastUpdated: number) {
         this.drivesCount = drivesCount
         this.earned = earned
         this.potential = potential
         this.loggedMiles = loggedMiles
         this.totalMiles = totalMiles
-        this.dateRange = dateRange
+        this.dateRange = YMDateRange.fromObject(dateRange)
         this.parkingMoney = parkingMoney
         this.tollMoney = tollsMoney
+        this.driveWeights = driveWeights
+        this.lastUpdated = lastUpdated
     }
 
     getClassifiedDrivesCount() {
@@ -46,23 +53,59 @@ export default class YMDriveSummaryResponse {
             .reduce((total, num) => total + num, 0)
     }
 
+    reduceDriveWeight(driveWeight: YMDriveWeight) {
+        this.earned -= driveWeight.earned
+        this.potential -= driveWeight.potential
+        if (this.drivesCount[driveWeight.drivesPurposeId] !== undefined) {
+            this.drivesCount[driveWeight.drivesPurposeId] -= 1
+        }
+        this.loggedMiles -= driveWeight.loggedMiles
+        this.parkingMoney -= driveWeight.parkingMoney
+        this.tollMoney -= driveWeight.tollMoney
+        this.totalMiles -= driveWeight.totalMiles
+        this.driveWeights[driveWeight.driveId] = undefined
+    }
+
+    reduceDriveWeightFromDriveId(driveId: string) {
+        const driveWeight = this.driveWeights[driveId]
+        if (driveWeight !== undefined) {
+            this.reduceDriveWeight(driveWeight)
+        }
+    }
+
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
+        const driveWeight = YMDriveWeight.fromObject(undefined)
+        
         if (drive.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined) {
-            this.earned += drive.miles * YMRate.getRateForPurposeId(drive.drivePurposeId, userSettings, globalSettings, drive)
+            driveWeight.earned = drive.miles * YMRate.getRateForPurposeId(drive.drivePurposeId, userSettings, globalSettings, drive)
+            this.earned += driveWeight.earned
+
+            driveWeight.loggedMiles = drive.miles
             this.loggedMiles += drive.miles
         } else {
-            this.potential += drive.miles * YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)
+            driveWeight.potential = drive.miles * YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)
+            this.potential += driveWeight.potential
         }
 
-        this.totalMiles += drive.miles
-        this.parkingMoney += drive.driveNotes.parkingMoney
-        this.tollMoney += drive.driveNotes.tollMoney
+        driveWeight.totalMiles = drive.miles
+        driveWeight.parkingMoney = drive.driveNotes.parkingMoney
+        driveWeight.tollMoney += drive.driveNotes.tollMoney
+
+        this.totalMiles += driveWeight.totalMiles
+        this.parkingMoney += driveWeight.parkingMoney
+        this.tollMoney += driveWeight.tollMoney
 
         if (this.drivesCount[drive.drivePurposeId] === undefined) {
             this.drivesCount[drive.drivePurposeId] = 1
         } else {
             this.drivesCount[drive.drivePurposeId] += 1
         }
+
+        driveWeight.drivesPurposeId = drive.drivePurposeId
+        driveWeight.driveId = drive.driveId
+
+        this.driveWeights[driveWeight.driveId] = driveWeight
+        this.lastUpdated = drive.lastUpdated
     }
 
     reduceDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
@@ -76,14 +119,30 @@ export default class YMDriveSummaryResponse {
         this.totalMiles -= drive.miles
         this.parkingMoney -= drive.driveNotes.parkingMoney
         this.tollMoney -= drive.driveNotes.tollMoney
-
         this.drivesCount[drive.drivePurposeId] -= 1
+        this.lastUpdated = drive.lastUpdated
+
+        this.reduceDriveWeightFromDriveId(drive.driveId)
+    }
+
+    static getMonthlyIdFromDate(date: Date) {
+        return `${new Date(date).getFullYear()}_${new Date(date).getMonth()}`
+    }
+
+    static getMonthlyIdFromDateRange(dateRange: YMDateRange) {
+        if (new Date(dateRange.startDate).getDate() === 1 &&
+            new Date(dateRange.endDate).getDate() === 1 &&
+            new Date(dateRange.startDate).getMonth() + 1 === new Date(dateRange.endDate).getMonth()) {
+                return `${new Date(dateRange.startDate).getFullYear()}_${new Date(dateRange.startDate).getMonth()}`
+        }
+        
+        return undefined
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMDriveSummaryResponse({}, 0, 0, 0, 0, YMDateRange.fromObject({}), 0, 0)
+        if(obj == null) return new YMDriveSummaryResponse({}, 0, 0, 0, 0, YMDateRange.fromObject({}), 0, 0, {}, 0)
 
-        return new YMDriveSummaryResponse(obj.drivesCount, obj.earned, obj.potential, obj.loggedMiles, obj.totalMiles, obj.dateRange, obj.parkingMoney, obj.tollMoney)
+        return new YMDriveSummaryResponse(obj.drivesCount, obj.earned, obj.potential, obj.loggedMiles, obj.totalMiles, obj.dateRange, obj.parkingMoney, obj.tollMoney, obj.driveWeights, obj.lastUpdated)
     }
 }
