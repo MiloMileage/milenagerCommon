@@ -109,19 +109,6 @@ export default class YMDriveSummaryResponse {
     }
 
     reduceDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
-        if (drive.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined) {
-            this.earned -= drive.miles * YMRate.getRateForPurposeId(drive.drivePurposeId, userSettings, globalSettings, drive)
-            this.loggedMiles -= drive.miles
-        } else {
-            this.potential -= drive.miles * YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)
-        }
-
-        this.totalMiles -= drive.miles
-        this.parkingMoney -= drive.driveNotes.parkingMoney
-        this.tollMoney -= drive.driveNotes.tollMoney
-        this.drivesCount[drive.drivePurposeId] -= 1
-        this.lastUpdated = drive.lastUpdated
-
         this.reduceDriveWeightFromDriveId(drive.driveId)
     }
 
