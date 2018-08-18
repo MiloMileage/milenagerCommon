@@ -7,6 +7,22 @@ export default class YMDateRange {
         this.endDate = endDate
     }
 
+    isEqualTo(anotherDateRange: YMDateRange) {
+        return YMDateRange.compareDates(this.startDate, anotherDateRange.startDate) && YMDateRange.compareDates(this.endDate, anotherDateRange.endDate)
+    }
+
+    static compareDates(date1: Date, date2: Date) {
+        if (date1 === undefined && date2 === undefined) {
+            return true
+        }
+
+        if (date1 !== undefined && date2 !== undefined) {
+            return new Date(date1).getTime() === new Date(date2).getTime()
+        }
+
+        return false
+    }
+
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
         if(obj == null) return new YMDateRange(new Date, new Date)
