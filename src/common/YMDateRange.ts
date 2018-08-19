@@ -1,3 +1,5 @@
+import * as Moment from 'moment';
+
 export default class YMDateRange {
     startDate: Date
     endDate: Date
@@ -12,7 +14,7 @@ export default class YMDateRange {
     }
 
     isMonthRange() {
-        return this.startDate.getDate() === 1 && this.endDate.getDate() === 1 && this.startDate.getMonth() + 1 === this.endDate.getMonth()
+        return Moment(this.startDate).isSame(Moment(this.startDate).startOf('month').startOf('day')) && Moment(this.endDate).isSame(Moment(this.endDate).endOf('month').startOf('day'))
     }
 
     static compareDates(date1: Date, date2: Date) {
