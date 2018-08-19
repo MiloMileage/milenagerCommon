@@ -19,7 +19,7 @@ export default class YMVehicle {
         this.year = year
         this.nickName = nickName
         this.odometerReads = odometerReads.map(x => YMOdometerRead.fromObject(x))
-        this.visible = true
+        this.visible = visible
     }
 
     public isPrimary(vehicles: Array<YMVehicle>) {
@@ -28,7 +28,7 @@ export default class YMVehicle {
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
-        if(obj == null) return new YMVehicle('', '', '', 0, '', '', [], false)
+        if(obj == null) return new YMVehicle('', '', '', 0, '', '', [], true)
 
         return new YMVehicle(obj.vehicleId, obj.make, obj.model, obj.primaryTime, obj.year, obj.nickName,
                                 obj.odometerReads, obj.visible)
