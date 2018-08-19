@@ -117,10 +117,8 @@ export default class YMDriveSummaryResponse {
     }
 
     static getMonthlyIdFromDateRange(dateRange: YMDateRange) {
-        if (new Date(dateRange.startDate).getDate() === 1 &&
-            new Date(dateRange.endDate).getDate() === 1 &&
-            new Date(dateRange.startDate).getMonth() + 1 === new Date(dateRange.endDate).getMonth()) {
-                return `${new Date(dateRange.startDate).getFullYear()}_${new Date(dateRange.startDate).getMonth()}`
+        if (dateRange.isMonthRange()) {
+            return `${new Date(dateRange.startDate).getFullYear()}_${new Date(dateRange.startDate).getMonth()}`
         }
         
         return undefined
