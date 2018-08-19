@@ -3,12 +3,16 @@ export default class YMDateRange {
     endDate: Date
 
     constructor (startDate: Date, endDate: Date) {
-        this.startDate = startDate
-        this.endDate = endDate
+        this.startDate = new Date(startDate)
+        this.endDate = new Date(endDate)
     }
 
     isEqualTo(anotherDateRange: YMDateRange) {
         return YMDateRange.compareDates(this.startDate, anotherDateRange.startDate) && YMDateRange.compareDates(this.endDate, anotherDateRange.endDate)
+    }
+
+    isMonthRange() {
+        return this.startDate.getDate() === 1 && this.endDate.getDate() === 1 && this.startDate.getMonth() + 1 === this.endDate.getMonth()
     }
 
     static compareDates(date1: Date, date2: Date) {
