@@ -23,7 +23,7 @@ export default class YMVehicle {
     }
 
     public isPrimary(vehicles: Array<YMVehicle>) {
-        return vehicles.filter(vehicle => vehicle.primaryTime > this.primaryTime).length === 0
+        return vehicles.filter(vehicle => vehicle.visible && vehicle.primaryTime > this.primaryTime).length === 0
     }
 
     // tslint:disable-next-line:member-ordering
