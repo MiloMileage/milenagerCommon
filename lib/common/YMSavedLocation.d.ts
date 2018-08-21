@@ -4,6 +4,6 @@ export default class YMSavedLocation {
     location: YMLocation;
     purposeId: string;
     key: string;
-    constructor(name: string, location: YMLocation, purposeId: string);
+    constructor(name: string, location: YMLocation, purposeId: string, key?: string);
     static fromObject: (obj: any) => YMSavedLocation;
 }

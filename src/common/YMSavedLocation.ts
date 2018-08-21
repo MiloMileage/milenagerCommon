@@ -8,17 +8,17 @@ export default class YMSavedLocation {
     key: string
 
     // tslint:disable-next-line:max-line-length
-    constructor (name: string, location: YMLocation, purposeId: string) {
+    constructor (name: string, location: YMLocation, purposeId: string, key: string = undefined) {
         this.name = name
         this.location = YMLocation.fromObject(location)
         this.purposeId = purposeId
-        this.key = common.getUniqueDriveId()
+        this.key = key === undefined ? common.getUniqueDriveId() : key
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
         if(obj == null) return new YMSavedLocation('', YMLocation.fromObject(undefined), '')
         // tslint:disable-next-line:max-line-length
-        return new YMSavedLocation(obj.name, obj.location, obj.purposeId)
+        return new YMSavedLocation(obj.name, obj.location, obj.purposeId, obj.key)
     }
 }
