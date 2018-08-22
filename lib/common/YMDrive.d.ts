@@ -23,7 +23,8 @@ export default class YMDrive {
     lastUpdated: number;
     startTimeTimestampUtc: number;
     timestampOffsetInSeconds: number;
-    constructor(driveId: string, autoClassifiedRuleId: string, reportIds: Array<string>, vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation, startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean, isDeleted: boolean, joinedFromIds: Array<string>, obj_db_id: string, lastUpdated: number, startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations?: Array<YMLocation>, isManual?: boolean);
+    deletionReason: string;
+    constructor(driveId: string, autoClassifiedRuleId: string, reportIds: Array<string>, vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation, startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean, isDeleted: boolean, joinedFromIds: Array<string>, obj_db_id: string, lastUpdated: number, startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations?: Array<YMLocation>, isManual?: boolean, deletionReason?: string);
     setPurposeId: (purposeId: string) => void;
     static fromObject: (obj: any) => YMDrive;
     static getUniqueDriveArray: (drives: YMDrive[]) => YMDrive[];

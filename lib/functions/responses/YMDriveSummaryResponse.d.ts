@@ -23,6 +23,7 @@ export default class YMDriveSummaryResponse {
     }, earned: number, potential: number, loggedMiles: number, totalMiles: number, dateRange: YMDateRange, parkingMoney: number, tollsMoney: number, driveWeights: {
         [driveId: string]: YMDriveWeight;
     }, lastUpdated: number);
+    getKey(): string;
     getClassifiedDrivesCount(): number;
     getTotalDrivesCount(): number;
     reduceDriveWeight(driveWeight: YMDriveWeight): void;

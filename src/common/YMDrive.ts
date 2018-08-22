@@ -27,13 +27,14 @@ export default class YMDrive {
     lastUpdated: number
     startTimeTimestampUtc: number
     timestampOffsetInSeconds: number
+    deletionReason: string
 
     constructor (driveId: string, autoClassifiedRuleId: string, reportIds: Array<string>,
         vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation,
         startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
         joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number,
-        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false) {
+        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false, deletionReason: string = '') {
         this.driveId = driveId
         this.autoClassifiedRuleId = autoClassifiedRuleId
         this.reportIds = reportIds
@@ -56,6 +57,7 @@ export default class YMDrive {
         this.routeLocations = routeLocations
         this.isManual = isManual
         this.isClassified = drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined
+        this.deletionReason = deletionReason
     }
 
     public setPurposeId = (purposeId: string) => {
@@ -66,12 +68,12 @@ export default class YMDrive {
     public static fromObject = function(obj: any) {
         if(obj == null) return new YMDrive('', '', [], '', '', 0,
             YMLocation.fromObject(undefined), YMLocation.fromObject(undefined), new Date, new Date,
-            YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0, [], false)
+            YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0, [], false, '')
         // tslint:disable-next-line:max-line-length
         return new YMDrive(obj.driveId, obj.autoClassifiedRuleId, obj.reportIds, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
-                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual)
+                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason)
     }
 
     public static getUniqueDriveArray = (drives: Array<YMDrive>) => {

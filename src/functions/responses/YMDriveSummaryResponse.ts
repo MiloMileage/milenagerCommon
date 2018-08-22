@@ -41,6 +41,10 @@ export default class YMDriveSummaryResponse {
         this.lastUpdated = lastUpdated
     }
 
+    getKey() {
+        return YMDriveSummaryResponse.getMonthlyIdFromDateRange(this.dateRange)
+    }
+
     getClassifiedDrivesCount() {
         return Object.keys(this.drivesCount).map(key =>
             YMPurpose.defaultPuposesIds.undetermined === key ? 0 : this.drivesCount[key])
