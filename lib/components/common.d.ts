@@ -23,6 +23,8 @@ export declare const getSavedLocationIfExist: (personalLocations: {
 export declare const getPersonalNameIfExist: (personalLocations: {
     [ind: string]: YMSavedLocation;
 }, location: YMLocation, defaultName: string, distance?: number) => string;
+export declare const milesToMetric: (num: number, convert?: boolean) => number;
+export declare const metricToMiles: (num: number, convert?: boolean) => number;
 declare const _default: {
     filterDrives: (drives: YMDrive[], dateRange: YMDateRange, filterTerm: string) => YMDrive[];
     selectedDrivesFromIds: (drives: YMDrive[], selectedDrivesIds: string[]) => YMDrive[];
@@ -45,5 +47,7 @@ declare const _default: {
     getSavedLocationIfExist: (personalLocations: {
         [ind: string]: YMSavedLocation;
     }, location: YMLocation, distance?: number) => YMSavedLocation;
+    milesToMetric: (num: number, convert?: boolean) => number;
+    metricToMiles: (num: number, convert?: boolean) => number;
 };
 export default _default;

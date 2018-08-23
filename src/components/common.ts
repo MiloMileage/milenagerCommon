@@ -95,6 +95,14 @@ export const getPersonalNameIfExist = (personalLocations : { [ind: string]: YMSa
     return savedLocation ? savedLocation.name : name
 }
 
+export const milesToMetric = (num: number, convert: boolean = true) => {
+    return convert ? Math.round(num * 16.0934) / 10 : num
+}
+
+export const metricToMiles = (num: number, convert: boolean = true) => {
+    return convert ? Number(num / 1.60934) : num
+}
+
 export default {
     filterDrives,
     selectedDrivesFromIds,
@@ -106,5 +114,7 @@ export default {
     getMapImage,
     getArrayOfsavedLocations,
     getPersonalNameIfExist,
-    getSavedLocationIfExist
+    getSavedLocationIfExist,
+    milesToMetric,
+    metricToMiles
 }
