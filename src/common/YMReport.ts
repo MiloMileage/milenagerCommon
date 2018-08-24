@@ -6,6 +6,7 @@ import YMUserSettings from './YMUserSettings'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
 
 export default class YMReport {
+    dateCreated: Date
     name: string
     project: string
     customerDetails: string
@@ -23,7 +24,8 @@ export default class YMReport {
     csvLink: string
     pdfLink: string
     
-    constructor (name: string,
+    constructor (dateCreated: Date,
+            name: string,
             project: string,
             customerDetails: string,
             details: string,
@@ -39,6 +41,7 @@ export default class YMReport {
             reportId: string,
             csvLink: string,
             pdfLink: string) {
+        this.dateCreated = dateCreated
         this.name = name
         this.project = project
         this.customerDetails = customerDetails
@@ -108,9 +111,10 @@ export default class YMReport {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReport('', '', '', '', 0, 0, 0, 0, false, YMDateRange.fromObject(undefined), [], [], [], '', '', '')
+        if(obj == null) return new YMReport(new Date(), '', '', '', '', 0, 0, 0, 0, false, YMDateRange.fromObject(undefined), [], [], [], '', '', '')
         
         return new YMReport(
+            obj.dateCreated,
             obj.name,
             obj.project,
             obj.customerDetails,

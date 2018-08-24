@@ -1,6 +1,7 @@
 import PdfObject from './PdfObject';
 import PdfText from './PdfText';
 export default class PdfTableSub {
+    headerRows: number;
     widths: Array<any>;
     body: Array<Array<PdfObject>>;
     constructor(widths: Array<any>, body: Array<Array<PdfObject>>);

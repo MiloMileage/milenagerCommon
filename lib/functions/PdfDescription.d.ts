@@ -15,5 +15,5 @@ export default class PdfDescription {
     static fromObject: (obj: any) => PdfDescription;
     static getFooterFunc: (name: string, project: string, customerDetails: string) => (currentPage: number, pageCount: number) => PdfText;
     static getHeaderFunc: (name: string, dateRanage: YMDateRange) => (currentPage: number, pageCount: number) => PdfText;
-    static fromReport: (report: YMReport) => void;
+    static fromReport: (report: YMReport) => PdfDescription;
 }
