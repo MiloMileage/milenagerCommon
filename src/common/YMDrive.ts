@@ -1,6 +1,9 @@
 import YMLocation from './YMLocation'
 import YMDriveNotes from './YMDriveNotes'
+import YMUserSettings from './YMUserSettings'
 import YMPurpose from './YMPurpose'
+import YMRate from './YMRate'
+import YMGlobalUserSettings from './YMGlobalUserSettings'
 import { getUniqueDriveId } from './../store/common'
 
 export default class YMDrive {
@@ -63,6 +66,20 @@ export default class YMDrive {
     public setPurposeId = (purposeId: string) => {
         this.drivePurposeId = purposeId
         this.isClassified = this.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined
+    }
+
+    public getVehicleName = (userSettings: YMUserSettings) => {
+        const vehicle = userSettings.vehicles.filter(v => v.vehicleId === this.vehicleId)[0]
+
+        return vehicle === undefined ? '' : vehicle.nickName
+    }
+
+    public getPurpose = (userSettings: YMUserSettings) => {
+        return userSettings.purposes.filter(p => p.purposeId === this.drivePurposeId)[0]
+    }
+
+    public getValue = (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => {
+        return YMRate.getRateForPurposeId(this.drivePurposeId, userSettings, globalSettings, this) * this.miles
     }
 
     public static fromObject = function(obj: any) {

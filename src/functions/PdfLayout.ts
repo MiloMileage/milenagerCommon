@@ -4,7 +4,7 @@ export default class PdfLayout {
     
     constructor (fillColor: (i: number, node: any) => string, hLineWidth: (i: number, node: any) => number) {
         this.fillColor = fillColor
-        this.hLineWidth = hLineWidth
+        this.hLineWidth = hLineWidth === undefined ? PdfLayout.getTableHeaderHLineWidthFunc() : hLineWidth
     }
 
     static getTableHeaderFillColorFunc = () => {

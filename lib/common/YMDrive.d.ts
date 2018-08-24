@@ -1,5 +1,8 @@
 import YMLocation from './YMLocation';
 import YMDriveNotes from './YMDriveNotes';
+import YMUserSettings from './YMUserSettings';
+import YMPurpose from './YMPurpose';
+import YMGlobalUserSettings from './YMGlobalUserSettings';
 export default class YMDrive {
     obj_db_id: string;
     driveId: string;
@@ -26,6 +29,9 @@ export default class YMDrive {
     deletionReason: string;
     constructor(driveId: string, autoClassifiedRuleId: string, reportIds: Array<string>, vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation, startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean, isDeleted: boolean, joinedFromIds: Array<string>, obj_db_id: string, lastUpdated: number, startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations?: Array<YMLocation>, isManual?: boolean, deletionReason?: string);
     setPurposeId: (purposeId: string) => void;
+    getVehicleName: (userSettings: YMUserSettings) => string;
+    getPurpose: (userSettings: YMUserSettings) => YMPurpose;
+    getValue: (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => number;
     static fromObject: (obj: any) => YMDrive;
     static getUniqueDriveArray: (drives: YMDrive[]) => YMDrive[];
 }

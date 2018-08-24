@@ -62,13 +62,13 @@ export default class PdfDescription {
     static getFooterFunc = (name: string, project: string, customerDetails: string) => {
         return (currentPage: number, pageCount: number) => {
             return new PdfText(
-                `(${currentPage} of ${pageCount})         Created using ThisIsMilo.com for ${name}, ${project}, ${customerDetails}      Submitted By: ______________     Date: ___________     Approved: ___________`,
-                [30],
+                `(${currentPage} of ${pageCount})         Created using ThisIsMilo.com for ${name}, ${project}, ${customerDetails}      Submitted By: ______________________     Date: ______________________     Approved: ______________________`,
+                [30, 10, 0, 10],
                 undefined,
                 false,
                 false,
                 'black',
-                8,
+                10,
                 'left'
                 )
         }
@@ -77,13 +77,13 @@ export default class PdfDescription {
     static getHeaderFunc = (name: string, dateRanage: YMDateRange) => {
         return (currentPage: number, pageCount: number) => {
             return new PdfText(
-                `Mileage Report (${Moment(dateRanage.endDate).format('MMMM Do YYYY')} to ${Moment(dateRanage.startDate).format('MMMM Do YYYY')}) - ${name}`,
+                `Mileage Report (${Moment(new Date(dateRanage.endDate)).format('MMMM Do YYYY')} to ${Moment(new Date(dateRanage.startDate)).format('MMMM Do YYYY')}) - ${name}`,
                 [30, 8, 30, 30],
                 'header',
                 false,
-                false,
+                true,
                 'black',
-                8,
+                undefined,
                 'left'
                 )
         }
@@ -99,7 +99,7 @@ export default class PdfDescription {
         pd.content = new Array<PdfObject>()
 
         // Add customer details table
-        const customerDetailsTableSub = new PdfTableSub([], new Array<Array<PdfObject>>())
+        const customerDetailsTableSub = new PdfTableSub(['*', '*', '*', '*', '*', '*', '*', '*'], new Array<Array<PdfObject>>())
         customerDetailsTableSub.body.push([
             PdfTableSub.getHeaderTableCell('Name'),
             PdfTableSub.getHeaderTableCell('Project'),
@@ -111,85 +111,120 @@ export default class PdfDescription {
             PdfTableSub.getHeaderTableCell('Details'),
         ])
         customerDetailsTableSub.body.push([
-            PdfTableSub.getHeaderTableCell(report.name),
-            PdfTableSub.getHeaderTableCell(report.project),
-            PdfTableSub.getHeaderTableCell(report.customerDetails),
-            PdfTableSub.getHeaderTableCell(`${Math.round(report.businessRateInMiles * 1000) / 1000}`),
-            PdfTableSub.getHeaderTableCell(`${Math.round(report.charityRateInMiles * 1000) / 1000}`),
-            PdfTableSub.getHeaderTableCell(`${Math.round(report.movingRateInMiles * 1000) / 1000}`),
-            PdfTableSub.getHeaderTableCell(`${Math.round(report.medicalRateInMiles * 1000) / 1000}`),
-            PdfTableSub.getHeaderTableCell(report.details),
+            PdfTableSub.getTableCell(report.name),
+            PdfTableSub.getTableCell(report.project),
+            PdfTableSub.getTableCell(report.customerDetails),
+            PdfTableSub.getTableCell(`${metricToMiles(Math.round(report.businessRateInMiles * 1000) / 1000, report.isMetricSystem)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
+            PdfTableSub.getTableCell(`${metricToMiles(Math.round(report.charityRateInMiles * 1000) / 1000, report.isMetricSystem)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
+            PdfTableSub.getTableCell(`${metricToMiles(Math.round(report.movingRateInMiles * 1000) / 1000, report.isMetricSystem)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
+            PdfTableSub.getTableCell(`${metricToMiles(Math.round(report.medicalRateInMiles * 1000) / 1000, report.isMetricSystem)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
+            PdfTableSub.getTableCell(report.details),
         ])
-        const customerDetailsTable = new PdfTable('tableExample', [], customerDetailsTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), undefined))
+        const customerDetailsTable = new PdfTable('tableExample', [0, 10, 0, 10], customerDetailsTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), undefined))
         pd.content.push(customerDetailsTable)
 
-        // Add vehicles table
-        pd.content.push(new PdfText('Report Summary', [], 'subheader', undefined, undefined, undefined, undefined))
-        const vehiclesTableSub = new PdfTableSub([], new Array<Array<PdfObject>>())
-        vehiclesTableSub.body.push([
+        // Add business vehicles table
+        pd.content.push(new PdfText('Report Summary (Business)', undefined, 'subheader', undefined, undefined, undefined, undefined))
+        const businessVehiclesTableSub = new PdfTableSub(['*', '*', '*', '*', '*', '*', '*'], new Array<Array<PdfObject>>())
+        businessVehiclesTableSub.body.push([
             PdfTableSub.getHeaderTableCell('Vehicle'),
             PdfTableSub.getHeaderTableCell('Odometer (Start of Year)'),
             PdfTableSub.getHeaderTableCell(`Business (${report.isMetricSystem ? 'km' : 'mi'})`),
-            PdfTableSub.getHeaderTableCell(`Personal (${report.isMetricSystem ? 'km' : 'mi'})`),
-            PdfTableSub.getHeaderTableCell(`Total Distance (${report.isMetricSystem ? 'km' : 'mi'})`),
-            PdfTableSub.getHeaderTableCell(`Business Value ($)`),
+            PdfTableSub.getHeaderTableCell(`Mileage Value`),
             PdfTableSub.getHeaderTableCell('Parking Value ($)'),
             PdfTableSub.getHeaderTableCell('Tolls Value ($)'),
             PdfTableSub.getHeaderTableCell('Total Value ($)'),
         ])
 
+        const businessSummaryLine = new YMReportVehicleLine('', 0, 0, 0, 0, 0)
+        report.vehicleBusinessLines.forEach(vl => {
+            businessSummaryLine.miles += vl.miles
+            businessSummaryLine.parkingValue += vl.parkingValue
+            businessSummaryLine.tollsValue += vl.tollsValue
+            businessSummaryLine.mileageValue += vl.mileageValue
+            businessSummaryLine.totalValue += vl.totalValue
+            businessVehiclesTableSub.body.push([
+                PdfTableSub.getTableCell(vl.vehicle),
+                PdfTableSub.getTableCell(`${vl.odometerRead}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(vl.miles * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(vl.mileageValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(vl.parkingValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${metricToMiles(Math.round(vl.tollsValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${metricToMiles(Math.round(vl.totalValue * 100) / 100, report.isMetricSystem)}`),
+            ])
+        })
 
-        const summaryLine = new YMReportVehicleLine('', 0, 0, 0, 0, 0, 0, 0, 0)
-        report.vehicleLines.forEach(vl => {
-            summaryLine.businessMiles += vl.businessMiles
-            summaryLine.businessValue += vl.businessValue
+        businessVehiclesTableSub.body.push([
+                PdfTableSub.getTotalCell(''),
+                PdfTableSub.getTotalCell('Total'),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(businessSummaryLine.miles * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(businessSummaryLine.mileageValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(businessSummaryLine.parkingValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${metricToMiles(Math.round(businessSummaryLine.tollsValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${metricToMiles(Math.round(businessSummaryLine.totalValue * 100) / 100, report.isMetricSystem)}`),
+            ])
+        
+        const businessVehiclesTable = new PdfTable('tableExample', undefined, businessVehiclesTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
+        pd.content.push(businessVehiclesTable)
+
+        // Add personal vehicles table
+        pd.content.push(new PdfText('Report Summary (Personal)', undefined, 'subheader', undefined, undefined, undefined, undefined))
+        const vehiclesTableSub = new PdfTableSub(['*', '*', '*', '*', '*', '*', '*'], new Array<Array<PdfObject>>())
+        vehiclesTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('Vehicle'),
+            PdfTableSub.getHeaderTableCell('Odometer (Start of Year)'),
+            PdfTableSub.getHeaderTableCell(`Personal (${report.isMetricSystem ? 'km' : 'mi'})`),
+            PdfTableSub.getHeaderTableCell(`Mileage Value`),
+            PdfTableSub.getHeaderTableCell('Parking Value ($)'),
+            PdfTableSub.getHeaderTableCell('Tolls Value ($)'),
+            PdfTableSub.getHeaderTableCell('Total Value ($)'),
+        ])
+
+        const summaryLine = new YMReportVehicleLine('', 0, 0, 0, 0, 0)
+        report.vehiclePersonalLines.forEach(vl => {
+            summaryLine.miles += vl.miles
             summaryLine.parkingValue += vl.parkingValue
-            summaryLine.personalMiles += vl.personalMiles
             summaryLine.tollsValue += vl.tollsValue
-            summaryLine.totalMiles += vl.totalMiles
+            summaryLine.mileageValue += vl.mileageValue
             summaryLine.totalValue += vl.totalValue
             vehiclesTableSub.body.push([
-                PdfTableSub.getHeaderTableCell(vl.vehicle),
-                PdfTableSub.getHeaderTableCell(`${vl.odometerRead}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(vl.businessMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(vl.personalMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(vl.businessMiles + vl.personalMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(vl.businessValue, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(vl.parkingValue, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(vl.tollsValue, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(vl.totalValue, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(vl.vehicle),
+                PdfTableSub.getTableCell(`${vl.odometerRead}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(vl.miles * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(vl.mileageValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(vl.parkingValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${metricToMiles(Math.round(vl.tollsValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${metricToMiles(Math.round(vl.totalValue * 100) / 100, report.isMetricSystem)}`),
             ])
         })
 
         vehiclesTableSub.body.push([
-                PdfTableSub.getHeaderTableCell(''),
-                PdfTableSub.getHeaderTableCell('Total'),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(summaryLine.businessMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(summaryLine.personalMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(summaryLine.businessMiles + summaryLine.personalMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(summaryLine.businessValue, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(summaryLine.parkingValue, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(summaryLine.tollsValue, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(summaryLine.totalValue, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(''),
+                PdfTableSub.getTotalCell('Total'),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(summaryLine.miles * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(summaryLine.mileageValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(summaryLine.parkingValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${metricToMiles(Math.round(summaryLine.tollsValue * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${metricToMiles(Math.round(summaryLine.totalValue * 100) / 100, report.isMetricSystem)}`),
             ])
         
-        const vehiclesTable = new PdfTable('tableExample', [], customerDetailsTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
+        const vehiclesTable = new PdfTable('tableExample', undefined, vehiclesTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
         pd.content.push(vehiclesTable)
 
         // Add drives table
-        pd.content.push(new PdfText('Mileage Log', [], 'subheader', undefined, undefined, undefined, undefined))
+        pd.content.push(new PdfText('Mileage Log', undefined, 'subheader', undefined, undefined, undefined, undefined, undefined, 'before'))
         const drivesSummaryLine = new YMReportLine(undefined, undefined, undefined, undefined, 0, 0, 0, 0)
-        const drivesTableSub = new PdfTableSub([], new Array<Array<PdfObject>>())
+        const drivesTableSub = new PdfTableSub([110, 110, 130, 70, 70, 50, 60, 50, '*'], new Array<Array<PdfObject>>())
         drivesTableSub.body.push([
-            PdfTableSub.getHeaderTableCell('Vehicle'),
-            PdfTableSub.getHeaderTableCell('Odometer (Start of Year)'),
-            PdfTableSub.getHeaderTableCell(`Business (${report.isMetricSystem ? 'km' : 'mi'})`),
-            PdfTableSub.getHeaderTableCell(`Personal (${report.isMetricSystem ? 'km' : 'mi'})`),
-            PdfTableSub.getHeaderTableCell(`Total Distance (${report.isMetricSystem ? 'km' : 'mi'})`),
-            PdfTableSub.getHeaderTableCell(`Business Value ($)`),
-            PdfTableSub.getHeaderTableCell('Parking Value ($)'),
-            PdfTableSub.getHeaderTableCell('Tolls Value ($)'),
-            PdfTableSub.getHeaderTableCell('Total Value ($)'),
+            PdfTableSub.getHeaderTableCell('When'),
+            PdfTableSub.getHeaderTableCell('Why'),
+            PdfTableSub.getHeaderTableCell(`From -> To (${report.isMetricSystem ? 'km' : 'mi'})`),
+            PdfTableSub.getHeaderTableCell(`Vehicle (${report.isMetricSystem ? 'km' : 'mi'})`),
+            PdfTableSub.getHeaderTableCell(`Distance (${report.isMetricSystem ? 'km' : 'mi'})`),
+            PdfTableSub.getHeaderTableCell(`Value ($)`),
+            PdfTableSub.getHeaderTableCell('Parking ($)'),
+            PdfTableSub.getHeaderTableCell('Tolls ($)'),
+            PdfTableSub.getHeaderTableCell('Total ($)'),
         ])
         
         report.lines.forEach(dl => {
@@ -198,31 +233,33 @@ export default class PdfDescription {
             drivesSummaryLine.tolls += dl.tolls
             drivesSummaryLine.value += dl.value
             drivesTableSub.body.push([
-                PdfTableSub.getHeaderTableCell(Moment(dl.when.startDate).format('MMMM Do YYYY')),
-                PdfTableSub.getHeaderTableCell(dl.purpose),
-                PdfTableSub.getHeaderTableCell(dl.fromTo),
-                PdfTableSub.getHeaderTableCell(dl.vehicle),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(dl.distanceInMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(dl.value, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(dl.parking, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(dl.tolls, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(dl.tolls + dl.parking + dl.value, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(Moment(new Date(dl.when.startDate)).format('MMMM Do YYYY, h:mm a')),
+                PdfTableSub.getTableCell(dl.purpose),
+                PdfTableSub.getTableCell(dl.fromTo),
+                PdfTableSub.getTableCell(dl.vehicle),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(dl.distanceInMiles * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(dl.value * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${milesToMetric(Math.round(dl.parking * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${metricToMiles(Math.round(dl.tolls * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTableCell(`${metricToMiles(Math.round((dl.tolls + dl.parking + dl.value) * 100) / 100, report.isMetricSystem)}`),
             ])
         })
 
         drivesTableSub.body.push([
-                PdfTableSub.getHeaderTableCell(''),
-                PdfTableSub.getHeaderTableCell(''),
-                PdfTableSub.getHeaderTableCell(''),
-                PdfTableSub.getHeaderTableCell('Report Total'),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(drivesSummaryLine.distanceInMiles, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(drivesSummaryLine.value, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${milesToMetric(drivesSummaryLine.parking, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(drivesSummaryLine.tolls, report.isMetricSystem)}`),
-                PdfTableSub.getHeaderTableCell(`${metricToMiles(drivesSummaryLine.tolls + drivesSummaryLine.parking + drivesSummaryLine.value, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(''),
+                PdfTableSub.getTotalCell(''),
+                PdfTableSub.getTotalCell(''),
+                PdfTableSub.getTotalCell('Report Total'),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(drivesSummaryLine.distanceInMiles * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(drivesSummaryLine.value * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${milesToMetric(Math.round(drivesSummaryLine.parking * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${metricToMiles(Math.round(drivesSummaryLine.tolls * 100) / 100, report.isMetricSystem)}`),
+                PdfTableSub.getTotalCell(`${metricToMiles(Math.round((drivesSummaryLine.tolls + drivesSummaryLine.parking + drivesSummaryLine.value) * 100) / 100, report.isMetricSystem)}`),
             ])
         
-        const drivesTable = new PdfTable('tableExample', [], drivesTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
+        const drivesTable = new PdfTable('tableExample', [0, 10, 0, 10], drivesTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
         pd.content.push(drivesTable)
+
+        return pd
     }
 }

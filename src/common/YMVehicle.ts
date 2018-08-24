@@ -26,6 +26,12 @@ export default class YMVehicle {
         return vehicles.filter(vehicle => vehicle.visible && vehicle.primaryTime > this.primaryTime).length === 0
     }
 
+    public getOdometerReadIfExist(year: number) {
+        const read = this.odometerReads.filter(x => x.year === year)[0]
+
+        return read !== undefined ? read.read : 0
+    }
+
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
         if(obj == null) return new YMVehicle('', '', '', 0, '', '', [], true)
