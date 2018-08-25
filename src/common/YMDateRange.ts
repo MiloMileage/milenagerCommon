@@ -15,7 +15,7 @@ export default class YMDateRange {
 
     isMonthRange() {
         return (
-            Moment(this.startDate).isSame(Moment(this.startDate).startOf('month').startOf('day')) && Moment(this.endDate).isSame(Moment(this.endDate).endOf('month').startOf('day')) ||
+            Moment(this.startDate).isSame(Moment(this.startDate).startOf('month').startOf('day')) && Moment(this.endDate).isSame(Moment(this.endDate).endOf('month').endOf('day')) ||
             Moment(this.startDate).isSame(Moment(this.startDate).startOf('month').startOf('day')) && Moment(this.endDate).isSame(Moment(this.startDate).add(1, 'month').startOf('month').startOf('day')))
     }
 
