@@ -47,6 +47,11 @@ export default class YMUserSettings {
                                         obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications)
     }
 
+    getPrimaryVehicle() {
+        const primaryVehicle = this.vehicles.filter(x => x.visible).sort((x, y) => y.primaryTime - x.primaryTime)[0]
+        return primaryVehicle === undefined ? '0' : primaryVehicle.vehicleId
+    }
+
     getPurposeCategory(purposeId: string) {
         let purpose: YMPurpose = this.purposes.filter(x => x.purposeId === purposeId)[0]
 

@@ -79,7 +79,7 @@ export const getSavedLocationIfExist = (personalLocations : { [ind: string]: YMS
     Object.keys(personalLocations).forEach(key => {
         const currPerLoc = personalLocations[key]
 
-        if (YMLocation.fromObject(currPerLoc.location).distanceFrom(location) < 0.2) {
+        if (YMLocation.fromObject(currPerLoc.location).distanceFrom(location) < 0.3) {
             result = currPerLoc
             return
         }

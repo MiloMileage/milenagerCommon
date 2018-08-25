@@ -5,7 +5,6 @@ import YMPersonalSettings from './YMPersonalSettings'
 import YMAutoLocationRule from './YMAutoLocationRule'
 import YMRate from './YMRate'
 import YMWorkingHour from './YMWorkingHour'
-import YMCustomClassification from './YMCustomClassification'
 
 export default class YMGlobalUserSettings {
     purposes: Array<YMPurpose>

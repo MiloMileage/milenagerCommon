@@ -10,8 +10,6 @@ export default class YMDrive {
     // tslint:disable-next-line:variable-name
     obj_db_id: string
     driveId: string
-    autoClassifiedRuleId: string
-    reportIds: Array<string>
     vehicleId: string
     drivePurposeId: string
     miles: number
@@ -25,6 +23,8 @@ export default class YMDrive {
     isVisible: boolean
     isDeleted: boolean
     isClassified: boolean
+    isAutoWorkHours: boolean
+    isAutoLocation: boolean
     isManual: boolean
     joinedFromIds: Array<string>
     lastUpdated: number
@@ -32,15 +32,13 @@ export default class YMDrive {
     timestampOffsetInSeconds: number
     deletionReason: string
 
-    constructor (driveId: string, autoClassifiedRuleId: string, reportIds: Array<string>,
+    constructor (driveId: string,
         vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation,
         startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
         joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number,
-        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false, deletionReason: string = '') {
+        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false, deletionReason: string = '', isAutoWorkHours: boolean = false, isAutoLocation: boolean = false) {
         this.driveId = driveId
-        this.autoClassifiedRuleId = autoClassifiedRuleId
-        this.reportIds = reportIds
         this.vehicleId = vehicleId
         this.drivePurposeId = drivePurposeId
         this.miles = miles
@@ -61,6 +59,8 @@ export default class YMDrive {
         this.isManual = isManual
         this.isClassified = drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined
         this.deletionReason = deletionReason
+        this.isAutoWorkHours = isAutoWorkHours
+        this.isAutoLocation = isAutoLocation
     }
 
     public setPurposeId = (purposeId: string) => {
@@ -83,14 +83,14 @@ export default class YMDrive {
     }
 
     public static fromObject = function(obj: any) {
-        if(obj == null) return new YMDrive('', '', [], '', '', 0,
+        if(obj == null) return new YMDrive('', '', '', 0,
             YMLocation.fromObject(undefined), YMLocation.fromObject(undefined), new Date, new Date,
-            YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0, [], false, '')
+            YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0, [], false, '', false, false)
         // tslint:disable-next-line:max-line-length
-        return new YMDrive(obj.driveId, obj.autoClassifiedRuleId, obj.reportIds, obj.vehicleId,
+        return new YMDrive(obj.driveId, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
-                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason)
+                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason, obj.isAutoWorkHours, obj.isAutoLocation)
     }
 
     public static getUniqueDriveArray = (drives: Array<YMDrive>) => {

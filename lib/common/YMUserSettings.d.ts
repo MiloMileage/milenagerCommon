@@ -20,5 +20,6 @@ export default class YMUserSettings {
     customClassifications: Array<YMCustomClassification>;
     constructor(vehicles?: Array<YMVehicle>, personalRates?: Array<YMRate>, purposes?: Array<YMPurpose>, notificationSettings?: Array<YMNotificationSetting>, personalSettings?: YMPersonalSettings, autoRules?: Array<YMAutoLocationRule>, workingHours?: Array<YMWorkingHour>, isWorkingHoursEnabled?: boolean, isAutoRulesEnabled?: boolean, isCustomClassificationEnabled?: boolean, customClassifications?: any[]);
     static fromObject(obj: any): YMUserSettings;
+    getPrimaryVehicle(): string;
     getPurposeCategory(purposeId: string): string;
 }
