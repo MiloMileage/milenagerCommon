@@ -23,7 +23,7 @@ export default class YMUserSettings {
     constructor (vehicles: Array<YMVehicle> = [], personalRates: Array<YMRate> = [], purposes: Array<YMPurpose> = [],
         notificationSettings: Array<YMNotificationSetting> = [], personalSettings: YMPersonalSettings = new YMPersonalSettings(false, '1'),
         autoRules: Array<YMAutoLocationRule> = [], workingHours: Array<YMWorkingHour> = [],
-        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = false, isCustomClassificationEnabled = false, customClassifications = []) {
+        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = true, isCustomClassificationEnabled = false, customClassifications = []) {
         this.vehicles = vehicles.map(x => YMVehicle.fromObject(x))
         this.personalRates = personalRates.map(x => YMRate.fromObject(x))
         this.purposes = purposes.map(x => YMPurpose.fromObject(x))
