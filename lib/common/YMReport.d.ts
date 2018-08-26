@@ -25,5 +25,15 @@ export default class YMReport {
     pdfLink: string;
     constructor(reportName: string, dateCreated: Date, name: string, project: string, customerDetails: string, details: string, businessRateInMiles: number, charityRateInMiles: number, movingRateInMiles: number, medicalRateInMiles: number, isMetricSystem: boolean, dateRange: YMDateRange, lines: Array<YMReportLine>, vehicleBusinessLines: Array<YMReportVehicleLine>, vehiclePersonalLines: Array<YMReportVehicleLine>, reportId: string, csvLink: string, pdfLink: string);
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): void;
+    getPersonalMiles(): number;
+    getBusinessMiles(): number;
+    getPersonalValue(): number;
+    getBusinessValue(): number;
+    getPersonalTollsValue(): number;
+    getBusinessTollsValue(): number;
+    getPersonalParkingValue(): number;
+    getBusinessParkingValue(): number;
+    getPersonalTotalValue(): number;
+    getBusinessTotalValue(): number;
     static fromObject: (obj: any) => YMReport;
 }

@@ -112,6 +112,46 @@ export default class YMReport {
         this.lines.sort((a, b) => new Date(b.when.startDate).getTime() - new Date(a.when.startDate).getTime())
     }
 
+    getPersonalMiles() {
+        return this.vehiclePersonalLines.map(x => x.miles).reduce((total, num) => total + num, 0)
+    }
+
+    getBusinessMiles() {
+        return this.vehicleBusinessLines.map(x => x.miles).reduce((total, num) => total + num, 0)
+    }
+
+    getPersonalValue() {
+        return this.vehiclePersonalLines.map(x => x.mileageValue).reduce((total, num) => total + num, 0)
+    }
+
+    getBusinessValue() {
+        return this.vehicleBusinessLines.map(x => x.mileageValue).reduce((total, num) => total + num, 0)
+    }
+
+    getPersonalTollsValue() {
+        return this.vehiclePersonalLines.map(x => x.tollsValue).reduce((total, num) => total + num, 0)
+    }
+
+    getBusinessTollsValue() {
+        return this.vehicleBusinessLines.map(x => x.tollsValue).reduce((total, num) => total + num, 0)
+    }
+
+    getPersonalParkingValue() {
+        return this.vehiclePersonalLines.map(x => x.parkingValue).reduce((total, num) => total + num, 0)
+    }
+
+    getBusinessParkingValue() {
+        return this.vehicleBusinessLines.map(x => x.parkingValue).reduce((total, num) => total + num, 0)
+    }
+
+    getPersonalTotalValue() {
+        return this.vehiclePersonalLines.map(x => x.totalValue).reduce((total, num) => total + num, 0)
+    }
+
+    getBusinessTotalValue() {
+        return this.vehicleBusinessLines.map(x => x.totalValue).reduce((total, num) => total + num, 0)
+    }
+
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
         if(obj == null) return new YMReport('', new Date(), '', '', '', '', 0, 0, 0, 0, false, YMDateRange.fromObject(undefined), [], [], [], '', '', '')
