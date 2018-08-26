@@ -95,11 +95,11 @@ export const getPersonalNameIfExist = (personalLocations : { [ind: string]: YMSa
     return savedLocation ? savedLocation.name : name
 }
 
-export const milesToMetric = (num: number, convert: boolean = true, roundFactor: number = 1) => {
+export const milesToMetric = (num: number, convert: boolean = true, roundFactor: number = 100) => {
     return Math.round((convert ? Math.round(num * 16.0934) / 10 : num) * roundFactor) / roundFactor
 }
 
-export const metricToMiles = (num: number, convert: boolean = true, roundFactor: number = 1) => {
+export const metricToMiles = (num: number, convert: boolean = true, roundFactor: number = 100) => {
     return Math.round((convert ? Number(num / 1.60934) : num) * roundFactor) / roundFactor
 }
 
