@@ -3,7 +3,10 @@ import YMReportLine from './YMReportLine'
 import YMReportVehicleLine from './YMReportVehicleLine'
 import YMDrive from './YMDrive'
 import YMUserSettings from './YMUserSettings'
+import YMSavedLocation from './YMSavedLocation'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
+import { milesToMetric, metricToMiles } from './../components/common'
+import * as Moment from 'moment'
 
 export default class YMReport {
     reportName: string
@@ -63,8 +66,8 @@ export default class YMReport {
         this.pdfLink = pdfLink
     }
 
-    addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
-        const newLine = YMReportLine.fromDrive(drive, userSettings, globalSettings)
+    addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations : { [ind: string]: YMSavedLocation }) {
+        const newLine = YMReportLine.fromDrive(drive, userSettings, globalSettings, savedLocations)
         this.lines.push(newLine)
 
         const vehicle = userSettings.vehicles.filter(v => v.vehicleId === drive.vehicleId)[0]
@@ -150,6 +153,160 @@ export default class YMReport {
 
     getBusinessTotalValue() {
         return this.vehicleBusinessLines.map(x => x.totalValue).reduce((total, num) => total + num, 0)
+    }
+
+    getCsvData() {
+        let data: string = ''
+        data += '****,****,****,****,****,****,****,****,****,****\n'
+        data += 'This,report,was,generated,by,ThisIsMilo.com\n'
+        data += '****,****,****,****,****,****,****,****,****,****\n'
+        data += '\n'
+        data += '\n'
+
+        data += 'Name,'
+        data += 'Project,'
+        data += 'Customer,'
+        data += 'Business Rate,'
+        data += 'Charity Rate,'
+        data += 'Moving Rate,'
+        data += 'Medical Rate,'
+        data += 'Details,'
+
+        data += '\n'
+
+        data += `${this.name},${this.project},${this.customerDetails},`
+        
+        data += `${metricToMiles(this.businessRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
+        data += `${metricToMiles(this.charityRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
+        data += `${metricToMiles(this.movingRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
+        data += `${metricToMiles(this.medicalRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
+        data += `${this.details}`
+
+        data += '\n'
+        data += '\n'
+
+        data += 'Business Summary'
+        
+        data += '\n'
+
+        data += 'Vehicle,'
+        data += 'Odometer (Start of Year),'
+        data += `Business (${this.isMetricSystem ? 'km' : 'mi'}),`
+        data += 'Mileage Value,'
+        data += 'Parking Value ($),'
+        data += 'Tolls Value ($),'
+        data += 'Total Value ($),'
+        
+        data += '\n'
+        
+        this.vehicleBusinessLines.forEach(vl => {
+            data += `${vl.vehicle},`
+            data += `${vl.odometerRead},`
+            data += `${milesToMetric(vl.miles , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.mileageValue , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.parkingValue , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.tollsValue , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.totalValue , this.isMetricSystem)},`
+            data += '\n'
+        })
+
+        data += `,`
+        data += `Total,`
+        data += `${milesToMetric(this.getBusinessMiles() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessValue() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessParkingValue() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessTollsValue() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessTotalValue() , this.isMetricSystem)},`
+        data += '\n'
+
+        data += '\n'
+        data += '\n'
+
+        data += 'Personal Summary'
+        
+        data += '\n'
+
+        data += 'Vehicle,'
+        data += 'Odometer (Start of Year),'
+        data += `Personal (${this.isMetricSystem ? 'km' : 'mi'}),`
+        data += 'Mileage Value,'
+        data += 'Parking Value ($),'
+        data += 'Tolls Value ($),'
+        data += 'Total Value ($),'
+        
+        data += '\n'
+        
+        this.vehiclePersonalLines.forEach(vl => {
+            data += `${vl.vehicle},`
+            data += `${vl.odometerRead},`
+            data += `${milesToMetric(vl.miles , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.mileageValue , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.parkingValue , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.tollsValue , this.isMetricSystem)},`
+            data += `${metricToMiles(vl.totalValue , this.isMetricSystem)},`
+            data += '\n'
+        })
+
+        data += `,`
+        data += `Total,`
+        data += `${milesToMetric(this.getPersonalMiles() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getPersonalValue() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getPersonalParkingValue() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getPersonalTollsValue() , this.isMetricSystem)},`
+        data += `${metricToMiles(this.getPersonalTotalValue() , this.isMetricSystem)},`
+        data += '\n'
+
+        data += '\n'
+        data += '\n'
+
+        data += 'Mileage Log'
+        
+        data += '\n'
+
+        data += 'When,'
+        data += `Why,`
+        data += `From -> To,`
+        data += `From -> To (Frequent Locations),`
+        data += `Vehicle (${this.isMetricSystem ? 'km' : 'mi'}),`
+        data += `Distance (${this.isMetricSystem ? 'km' : 'mi'}),`
+        data += `Value ($),`
+        data += `Parking ($),`
+        data += `Tolls ($),`
+        data += `Total ($),`
+
+        data += '\n'
+
+        this.lines.forEach(dl => {
+            data += `${Moment(new Date(dl.when.startDate)).format('MMMM Do YYYY h:mm a')},`
+            data += `${dl.purpose},`
+            data += `${dl.fromTo},`
+            data += `${dl.fromToPersonalized},`
+            data += `${dl.vehicle},`
+            data += `${milesToMetric(dl.distanceInMiles, this.isMetricSystem)},`
+            data += `${metricToMiles(dl.value, this.isMetricSystem)},`
+            data += `${metricToMiles(dl.parking, this.isMetricSystem)},`
+            data += `${metricToMiles(dl.tolls, this.isMetricSystem)},`
+            data += `${metricToMiles(dl.tolls + dl.parking + dl.value, this.isMetricSystem)},`
+            data += '\n'
+        })
+
+        data += `,`
+        data += `,`
+        data += `,`
+        data += `Total,`
+        data += `${milesToMetric(this.getBusinessMiles() + this.getPersonalMiles(), this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessValue() + this.getPersonalValue(), this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessParkingValue() + this.getPersonalParkingValue(), this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessTollsValue() + this.getPersonalTollsValue(), this.isMetricSystem)},`
+        data += `${metricToMiles(this.getBusinessTotalValue() + this.getPersonalTotalValue(), this.isMetricSystem)},`
+        data += '\n'
+        data += '\n'
+
+        data += '****,****,****,****,****,****,****,****,****,****\n'
+        data += 'This,report,was,generated,by,ThisIsMilo.com\n'
+        data += '****,****,****,****,****,****,****,****,****,****\n'
+
+        return data
     }
 
     // tslint:disable-next-line:member-ordering

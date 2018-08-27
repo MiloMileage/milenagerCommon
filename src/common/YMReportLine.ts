@@ -3,13 +3,16 @@ import YMDrive from './YMDrive'
 import YMPurpose from './YMPurpose'
 import YMUserSettings from './YMUserSettings'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
+import YMSavedLocation from './YMSavedLocation'
 import YMRate from './YMRate'
 import * as Moment from 'moment'
+import * as Common from './../components/common'
 
 export default class YMReportLine {
     when: YMDateRange
     purpose: string
     fromTo: string
+    fromToPersonalized: string
     vehicle: string
     distanceInMiles: number
     value: number
@@ -19,6 +22,7 @@ export default class YMReportLine {
     constructor (when: YMDateRange,
             purpose: string,
             fromTo: string,
+            fromToPersonalized: string,
             vehicle: string,
             distanceInMiles: number,
             value: number,
@@ -27,6 +31,7 @@ export default class YMReportLine {
         this.when = when
         this.purpose = purpose
         this.fromTo = fromTo
+        this.fromToPersonalized = fromToPersonalized
         this.vehicle = vehicle
         this.distanceInMiles = distanceInMiles
         this.value = value
@@ -34,10 +39,14 @@ export default class YMReportLine {
         this.tolls = tolls
     }
 
-    static fromDrive(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
+    static fromDrive(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations : { [ind: string]: YMSavedLocation }) {
+        const originPersonal = Common.getPersonalNameIfExist(savedLocations, drive.origin, drive.origin.address.name)
+        const destPersonal = Common.getPersonalNameIfExist(savedLocations, drive.dest, drive.dest.address.name)
+        
         return new YMReportLine(new YMDateRange(drive.startTime, drive.endTime),
                                 YMReportLine.getPurposeString(drive.drivePurposeId),
                                 `${drive.origin.address.name} -> ${drive.dest.address.name}`,
+                                `${originPersonal} -> ${destPersonal}`,
                                 drive.getVehicleName(userSettings),
                                 drive.miles,
                                 drive.getValue(userSettings, globalSettings),
@@ -69,8 +78,8 @@ export default class YMReportLine {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReportLine(new YMDateRange(undefined, undefined), '', '', '', 0, 0, 0, 0)
+        if(obj == null) return new YMReportLine(new YMDateRange(undefined, undefined), '', '', '', '', 0, 0, 0, 0)
         
-        return new YMReportLine(obj.when, obj.purpose, obj.fromTo, obj.vehicle, obj.distanceInMiles, obj.value, obj.parking, obj.tolls)
+        return new YMReportLine(obj.when, obj.purpose, obj.fromTo, obj.fromToPersonalized, obj.vehicle, obj.distanceInMiles, obj.value, obj.parking, obj.tolls)
     }
 }
