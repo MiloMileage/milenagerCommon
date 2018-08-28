@@ -44,7 +44,7 @@ export const filterDeletedDrives = function(drives: Array<YMDrive>) {
     return drives.filter(x => (x.isDeleted === undefined || x.isDeleted === false))
 }
 
-export const roundNumber = function(num: number, pow: number) {
+export const roundNumber = function(num: number, pow: number = 2) {
     const factor = Math.pow(10, pow)
 
     return Math.round(num * factor) / factor
@@ -96,7 +96,7 @@ export const getPersonalNameIfExist = (personalLocations : { [ind: string]: YMSa
 }
 
 export const milesToMetric = (num: number, convert: boolean = true, roundFactor: number = 100) => {
-    return Math.round((convert ? Math.round(num * 16.0934) / 10 : num) * roundFactor) / roundFactor
+    return Math.round((convert ? Math.round(num * 1.60934) : num) * roundFactor) / roundFactor
 }
 
 export const metricToMiles = (num: number, convert: boolean = true, roundFactor: number = 100) => {

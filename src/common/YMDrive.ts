@@ -79,7 +79,7 @@ export default class YMDrive {
     }
 
     public getValue = (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => {
-        return YMRate.getRateForPurposeId(this.drivePurposeId, userSettings, globalSettings, this) * this.miles
+        return this.drivePurposeId === YMPurpose.defaultPuposesIds.undetermined ? 0 : YMRate.getRateForPurposeId(this.drivePurposeId, userSettings, globalSettings, this) * this.miles
     }
 
     public static fromObject = function(obj: any) {

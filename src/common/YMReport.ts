@@ -5,7 +5,7 @@ import YMDrive from './YMDrive'
 import YMUserSettings from './YMUserSettings'
 import YMSavedLocation from './YMSavedLocation'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
-import { milesToMetric, metricToMiles } from './../components/common'
+import { milesToMetric, metricToMiles, roundNumber } from './../components/common'
 import * as Moment from 'moment'
 
 export default class YMReport {
@@ -112,7 +112,7 @@ export default class YMReport {
 
         this.vehicleBusinessLines.sort((a, b) => { return b.miles - a.miles})
         this.vehiclePersonalLines.sort((a, b) => { return b.miles - a.miles})
-        this.lines.sort((a, b) => new Date(b.when.startDate).getTime() - new Date(a.when.startDate).getTime())
+        this.lines.sort((a, b) => new Date(a.when.startDate).getTime() - new Date(b.when.startDate).getTime())
     }
 
     getPersonalMiles() {
@@ -203,20 +203,20 @@ export default class YMReport {
             data += `${vl.vehicle},`
             data += `${vl.odometerRead},`
             data += `${milesToMetric(vl.miles , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.mileageValue , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.parkingValue , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.tollsValue , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.totalValue , this.isMetricSystem)},`
+            data += `${roundNumber(vl.mileageValue)},`
+            data += `${roundNumber(vl.parkingValue)},`
+            data += `${roundNumber(vl.tollsValue)},`
+            data += `${roundNumber(vl.totalValue)},`
             data += '\n'
         })
 
         data += `,`
         data += `Total,`
         data += `${milesToMetric(this.getBusinessMiles() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessValue() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessParkingValue() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessTollsValue() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessTotalValue() , this.isMetricSystem)},`
+        data += `${roundNumber(this.getBusinessValue())},`
+        data += `${roundNumber(this.getBusinessParkingValue())},`
+        data += `${roundNumber(this.getBusinessTollsValue())},`
+        data += `${roundNumber(this.getBusinessTotalValue())},`
         data += '\n'
 
         data += '\n'
@@ -238,22 +238,22 @@ export default class YMReport {
         
         this.vehiclePersonalLines.forEach(vl => {
             data += `${vl.vehicle},`
-            data += `${vl.odometerRead},`
+            data += `${milesToMetric(vl.odometerRead)},`
             data += `${milesToMetric(vl.miles , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.mileageValue , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.parkingValue , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.tollsValue , this.isMetricSystem)},`
-            data += `${metricToMiles(vl.totalValue , this.isMetricSystem)},`
+            data += `${roundNumber(vl.mileageValue)},`
+            data += `${roundNumber(vl.parkingValue)},`
+            data += `${roundNumber(vl.tollsValue)},`
+            data += `${roundNumber(vl.totalValue)},`
             data += '\n'
         })
 
         data += `,`
         data += `Total,`
         data += `${milesToMetric(this.getPersonalMiles() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getPersonalValue() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getPersonalParkingValue() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getPersonalTollsValue() , this.isMetricSystem)},`
-        data += `${metricToMiles(this.getPersonalTotalValue() , this.isMetricSystem)},`
+        data += `${roundNumber(this.getPersonalValue())},`
+        data += `${roundNumber(this.getPersonalParkingValue())},`
+        data += `${roundNumber(this.getPersonalTollsValue())},`
+        data += `${roundNumber(this.getPersonalTotalValue())},`
         data += '\n'
 
         data += '\n'
@@ -283,10 +283,10 @@ export default class YMReport {
             data += `${dl.fromToPersonalized},`
             data += `${dl.vehicle},`
             data += `${milesToMetric(dl.distanceInMiles, this.isMetricSystem)},`
-            data += `${metricToMiles(dl.value, this.isMetricSystem)},`
-            data += `${metricToMiles(dl.parking, this.isMetricSystem)},`
-            data += `${metricToMiles(dl.tolls, this.isMetricSystem)},`
-            data += `${metricToMiles(dl.tolls + dl.parking + dl.value, this.isMetricSystem)},`
+            data += `${roundNumber(dl.value)},`
+            data += `${roundNumber(dl.parking)},`
+            data += `${roundNumber(dl.tolls)},`
+            data += `${roundNumber(dl.tolls + dl.parking + dl.value)},`
             data += '\n'
         })
 
@@ -295,10 +295,10 @@ export default class YMReport {
         data += `,`
         data += `Total,`
         data += `${milesToMetric(this.getBusinessMiles() + this.getPersonalMiles(), this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessValue() + this.getPersonalValue(), this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessParkingValue() + this.getPersonalParkingValue(), this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessTollsValue() + this.getPersonalTollsValue(), this.isMetricSystem)},`
-        data += `${metricToMiles(this.getBusinessTotalValue() + this.getPersonalTotalValue(), this.isMetricSystem)},`
+        data += `${roundNumber(this.getBusinessValue() + this.getPersonalValue())},`
+        data += `${roundNumber(this.getBusinessParkingValue() + this.getPersonalParkingValue())},`
+        data += `${roundNumber(this.getBusinessTollsValue() + this.getPersonalTollsValue())},`
+        data += `${roundNumber(this.getBusinessTotalValue() + this.getPersonalTotalValue())},`
         data += '\n'
         data += '\n'
 
