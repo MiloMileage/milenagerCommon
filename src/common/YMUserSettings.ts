@@ -21,7 +21,7 @@ export default class YMUserSettings {
     customClassifications: Array<YMCustomClassification>
 
     constructor (vehicles: Array<YMVehicle> = [], personalRates: Array<YMRate> = [], purposes: Array<YMPurpose> = [],
-        notificationSettings: Array<YMNotificationSetting> = [], personalSettings: YMPersonalSettings = new YMPersonalSettings(false, '1'),
+        notificationSettings: Array<YMNotificationSetting> = [], personalSettings: YMPersonalSettings = new YMPersonalSettings(false, '1', undefined),
         autoRules: Array<YMAutoLocationRule> = [], workingHours: Array<YMWorkingHour> = [],
         isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = true, isCustomClassificationEnabled = false, customClassifications = []) {
         this.vehicles = vehicles.map(x => YMVehicle.fromObject(x))
