@@ -11,6 +11,10 @@ export default class YMPersonalSettings {
         this.monitorFromTimestamp = monitorFromTimestamp === undefined ? Moment().add(-1, 'day').toDate().getTime() : monitorFromTimestamp
     }
 
+    isDriveDetectionEnabled() {
+        return this.monitorFromTimestamp < new Date().getTime()
+    }
+
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
         if(obj == null) return new YMPersonalSettings(false, '', Moment().add(-1, 'day').toDate().getTime())
