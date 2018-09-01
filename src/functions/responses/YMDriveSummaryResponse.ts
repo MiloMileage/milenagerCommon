@@ -5,6 +5,7 @@ import YMPurpose from './../../common/YMPurpose'
 import YMRate from './../../common/YMRate'
 import YMUserSettings from './../../common/YMUserSettings'
 import YMGlobalUserSettings from './../../common/YMGlobalUserSettings'
+import * as Moment from 'moment'
 
 export default class YMDriveSummaryResponse {
     drivesCount: { [purposeId: string]: number }
@@ -122,7 +123,7 @@ export default class YMDriveSummaryResponse {
 
     static getMonthlyIdFromDateRange(dateRange: YMDateRange) {
         if (dateRange.isMonthRange()) {
-            return `${new Date(dateRange.startDate).getFullYear()}_${new Date(dateRange.startDate).getMonth()}`
+            return `${Moment.utc(dateRange.startDate).toDate().getFullYear()}_${Moment.utc(dateRange.startDate).toDate().getMonth()}`
         }
         
         return undefined
