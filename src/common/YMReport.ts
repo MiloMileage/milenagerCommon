@@ -277,7 +277,7 @@ export default class YMReport {
         data += '\n'
 
         this.lines.forEach(dl => {
-            data += `${Moment(new Date(dl.when.startDate)).format('MMMM Do YYYY h:mm a')},`
+            data += `${Moment.utc(new Date(dl.when.startDate)).format('MMMM Do YYYY h:mm a')},`
             data += `${dl.purpose},`
             data += `${dl.fromTo},`
             data += `${dl.fromToPersonalized},`

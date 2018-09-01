@@ -8,7 +8,7 @@ export default class YMPersonalSettings {
     constructor (isMetricSystem: boolean, monitoringLevel: string, monitorFromTimestamp: number) {
         this.isMetricSystem = isMetricSystem
         this.monitoringLevel = monitoringLevel
-        this.monitorFromTimestamp = monitorFromTimestamp === undefined ? Moment().add(-1, 'day').toDate().getTime() : monitorFromTimestamp
+        this.monitorFromTimestamp = monitorFromTimestamp === undefined ? Moment.utc().add(-1, 'day').toDate().getTime() : monitorFromTimestamp
     }
 
     isDriveDetectionEnabled() {
@@ -17,7 +17,7 @@ export default class YMPersonalSettings {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMPersonalSettings(false, '', Moment().add(-1, 'day').toDate().getTime())
+        if(obj == null) return new YMPersonalSettings(false, '', Moment.utc().add(-1, 'day').toDate().getTime())
 
         return new YMPersonalSettings(obj.isMetricSystem, obj.monitoringLevel, obj.monitorFromTimestamp)
     }

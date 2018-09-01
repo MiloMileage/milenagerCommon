@@ -14,9 +14,9 @@ export default class YMDateRange {
     }
 
     isMonthRange() {
-        return Moment(this.startDate).date() === 1 &&
-                Moment(this.endDate).date() === Moment(this.startDate).endOf('month').date() &&
-                    Moment(this.startDate).month() === Moment(this.endDate).month()
+        return Moment.utc(this.startDate).date() === 1 &&
+                Moment.utc(this.endDate).date() === Moment.utc(this.startDate).endOf('month').date() &&
+                    Moment.utc(this.startDate).month() === Moment.utc(this.endDate).month()
     }
 
     static compareDates(date1: Date, date2: Date) {
