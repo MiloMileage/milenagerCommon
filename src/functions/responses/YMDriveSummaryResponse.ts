@@ -123,7 +123,7 @@ export default class YMDriveSummaryResponse {
 
     static getMonthlyIdFromDateRange(dateRange: YMDateRange) {
         if (dateRange.isMonthRange()) {
-            return `${Moment.utc(dateRange.startDate).toDate().getFullYear()}_${Moment.utc(dateRange.startDate).toDate().getMonth()}`
+            return `${Moment.utc(dateRange.startDate).format('YYYY')}_${Moment.utc(dateRange.startDate).format('MM')}`
         }
         
         return undefined
