@@ -118,12 +118,12 @@ export default class YMDriveSummaryResponse {
     }
 
     static getMonthlyIdFromDate(date: Date) {
-        return `${new Date(date).getFullYear()}_${new Date(date).getMonth()}`
+        return `${Moment.utc(date).format('YYYY')}_${Moment.utc(date).format('MM')}`
     }
 
     static getMonthlyIdFromDateRange(dateRange: YMDateRange) {
         if (dateRange.isMonthRange()) {
-            return `${Moment.utc(dateRange.startDate).format('YYYY')}_${Moment.utc(dateRange.startDate).format('MM')}`
+            return YMDriveSummaryResponse.getMonthlyIdFromDate(dateRange.startDate)
         }
         
         return undefined

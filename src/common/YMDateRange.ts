@@ -19,6 +19,10 @@ export default class YMDateRange {
                     Moment.utc(this.startDate).month() === Moment.utc(this.endDate).month()
     }
 
+    static monthDateRange(date: Date = undefined) {
+        return new YMDateRange(Moment.utc(date).startOf('month').startOf('day').toDate(), Moment.utc(date).endOf('month').endOf('day').toDate())
+    }
+
     static compareDates(date1: Date, date2: Date) {
         if (date1 === undefined && date2 === undefined) {
             return true
