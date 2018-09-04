@@ -87,18 +87,18 @@ export default class YMDriveSummaryResponse {
 
             driveWeight.loggedMiles = drive.miles
             this.loggedMiles += drive.miles
+            
+            driveWeight.parkingMoney = drive.drivePurposeId === YMPurpose.defaultPuposesIds.personal ? 0 : drive.driveNotes.parkingMoney
+            driveWeight.tollMoney = drive.drivePurposeId === YMPurpose.defaultPuposesIds.personal ? 0 : drive.driveNotes.tollMoney
+            this.parkingMoney += driveWeight.parkingMoney
+            this.tollMoney += driveWeight.tollMoney
         } else {
             driveWeight.potential = drive.miles * YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)
             this.potential += driveWeight.potential
         }
 
         driveWeight.totalMiles = drive.miles
-        driveWeight.parkingMoney = drive.driveNotes.parkingMoney
-        driveWeight.tollMoney += drive.driveNotes.tollMoney
-
         this.totalMiles += driveWeight.totalMiles
-        this.parkingMoney += driveWeight.parkingMoney
-        this.tollMoney += driveWeight.tollMoney
 
         if (this.drivesCount[drive.drivePurposeId] === undefined) {
             this.drivesCount[drive.drivePurposeId] = 1
