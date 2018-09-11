@@ -18,8 +18,8 @@ export const filterDrives = function (drives: Array<YMDrive>, dateRange: YMDateR
     return drives.filter(d =>  d.isVisible &&
         ((d.origin.address.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
             || d.dest.address.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1)
-                && new Date(d.startTime).getTime() >= new Date(dateRange.startDate).getTime()
-                && new Date(d.startTime).getTime() <= addDays(new Date(dateRange.endDate), 1).getTime()))
+                && d.startTime().getTime() >= new Date(dateRange.startDate).getTime()
+                && d.startTime().getTime() <= addDays(new Date(dateRange.endDate), 1).getTime()))
 }
 
 export const selectedDrivesFromIds = function (drives: Array<YMDrive>, selectedDrivesIds: Array<string>) {
@@ -27,7 +27,7 @@ export const selectedDrivesFromIds = function (drives: Array<YMDrive>, selectedD
 }
 
 export const selectedDrivesOnDay = function (drives: Array<YMDrive>, day: Date) {
-    return drives.filter(drive => new Date(drive.startTime).toDateString() === day.toDateString())
+    return drives.filter(drive => drive.startTime().toDateString() === day.toDateString())
 }
 
 export const sortDrivesByDate = function(drives: Array<YMDrive>) {
@@ -35,7 +35,7 @@ export const sortDrivesByDate = function(drives: Array<YMDrive>) {
         return []
     }
 
-    drives.sort( (x1, x2) => (new Date(x2.startTime).getTime() - new Date(x1.startTime).getTime()) )
+    drives.sort( (x1, x2) => (x2.startTime().getTime() - x1.startTime().getTime()) )
 
     return drives
 }

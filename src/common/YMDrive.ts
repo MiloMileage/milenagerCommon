@@ -5,6 +5,7 @@ import YMPurpose from './YMPurpose'
 import YMRate from './YMRate'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
 import { getUniqueDriveId } from './../store/common'
+import * as Moment from 'moment'
 
 export default class YMDrive {
     // tslint:disable-next-line:variable-name
@@ -16,8 +17,6 @@ export default class YMDrive {
     origin: YMLocation
     dest: YMLocation
     routeLocations: Array<YMLocation>
-    startTime: Date
-    endTime: Date
     endTimeTimestampUtc: number
     driveNotes: YMDriveNotes
     isVisible: boolean
@@ -34,7 +33,7 @@ export default class YMDrive {
 
     constructor (driveId: string,
         vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation,
-        startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
+        driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
         joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number,
         startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false, deletionReason: string = '', isAutoWorkHours: boolean = false, isAutoLocation: boolean = false) {
@@ -44,8 +43,6 @@ export default class YMDrive {
         this.miles = miles
         this.origin = YMLocation.fromObject(origin)
         this.dest = YMLocation.fromObject(dest)
-        this.startTime = new Date(startTime)
-        this.endTime = new Date(endTime)
         this.driveNotes = YMDriveNotes.fromObject(driveNotes)
         this.isVisible = isVisible
         this.isDeleted = isDeleted
@@ -61,6 +58,14 @@ export default class YMDrive {
         this.deletionReason = deletionReason
         this.isAutoWorkHours = isAutoWorkHours
         this.isAutoLocation = isAutoLocation
+    }
+
+    public startTime = () => {
+        return Moment.unix(this.startTimeTimestampUtc).clone().add(this.timestampOffsetInSeconds, 'seconds').toDate()
+    }
+
+    public endTime = () => {
+        return Moment.unix(this.endTimeTimestampUtc).clone().add(this.timestampOffsetInSeconds, 'seconds').toDate()
     }
 
     public setPurposeId = (purposeId: string) => {
@@ -84,11 +89,11 @@ export default class YMDrive {
 
     public static fromObject = function(obj: any) {
         if(obj == null) return new YMDrive('', '', '', 0,
-            YMLocation.fromObject(undefined), YMLocation.fromObject(undefined), new Date, new Date,
+            YMLocation.fromObject(undefined), YMLocation.fromObject(undefined),
             YMDriveNotes.fromObject(undefined), false, false, [], '', 0, 0, 0, 0, [], false, '', false, false)
         // tslint:disable-next-line:max-line-length
         return new YMDrive(obj.driveId, obj.vehicleId,
-                obj.drivePurposeId, obj.miles, obj.origin, obj.dest, obj.startTime, obj.endTime,
+                obj.drivePurposeId, obj.miles, obj.origin, obj.dest,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
                     new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason, obj.isAutoWorkHours, obj.isAutoLocation)
     }

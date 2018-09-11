@@ -43,7 +43,7 @@ export default class YMReportLine {
         const originPersonal = Common.getPersonalNameIfExist(savedLocations, drive.origin, drive.origin.address.name)
         const destPersonal = Common.getPersonalNameIfExist(savedLocations, drive.dest, drive.dest.address.name)
         
-        return new YMReportLine(new YMDateRange(drive.startTime, drive.endTime),
+        return new YMReportLine(new YMDateRange(drive.startTime(), drive.endTime()),
                                 YMReportLine.getPurposeString(drive.drivePurposeId),
                                 `${drive.origin.address.name} -> ${drive.dest.address.name}`,
                                 `${originPersonal} -> ${destPersonal}`,

@@ -12,8 +12,6 @@ export default class YMDrive {
     origin: YMLocation;
     dest: YMLocation;
     routeLocations: Array<YMLocation>;
-    startTime: Date;
-    endTime: Date;
     endTimeTimestampUtc: number;
     driveNotes: YMDriveNotes;
     isVisible: boolean;
@@ -27,7 +25,9 @@ export default class YMDrive {
     startTimeTimestampUtc: number;
     timestampOffsetInSeconds: number;
     deletionReason: string;
-    constructor(driveId: string, vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation, startTime: Date, endTime: Date, driveNotes: YMDriveNotes, isVisible: boolean, isDeleted: boolean, joinedFromIds: Array<string>, obj_db_id: string, lastUpdated: number, startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations?: Array<YMLocation>, isManual?: boolean, deletionReason?: string, isAutoWorkHours?: boolean, isAutoLocation?: boolean);
+    constructor(driveId: string, vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation, driveNotes: YMDriveNotes, isVisible: boolean, isDeleted: boolean, joinedFromIds: Array<string>, obj_db_id: string, lastUpdated: number, startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations?: Array<YMLocation>, isManual?: boolean, deletionReason?: string, isAutoWorkHours?: boolean, isAutoLocation?: boolean);
+    startTime: () => Date;
+    endTime: () => Date;
     setPurposeId: (purposeId: string) => void;
     getVehicleName: (userSettings: YMUserSettings) => string;
     getPurpose: (userSettings: YMUserSettings) => YMPurpose;

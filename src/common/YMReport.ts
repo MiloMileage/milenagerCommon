@@ -76,7 +76,7 @@ export default class YMReport {
 
         const newVehicleLine = new YMReportVehicleLine(
                                     newLine.vehicle,
-                                    vehicle === undefined ? 0 : vehicle.getOdometerReadIfExist(new Date(drive.startTime).getFullYear()),
+                                    vehicle === undefined ? 0 : vehicle.getOdometerReadIfExist(drive.startTime().getFullYear()),
                                     drive.miles,
                                     drive.getValue(userSettings, globalSettings),
                                     drive.driveNotes.parkingMoney,
