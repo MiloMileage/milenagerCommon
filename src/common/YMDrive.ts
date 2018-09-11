@@ -61,11 +61,11 @@ export default class YMDrive {
     }
 
     public startTime = () => {
-        return Moment.unix(this.startTimeTimestampUtc).clone().add(this.timestampOffsetInSeconds, 'seconds').toDate()
+        return Moment.unix(this.startTimeTimestampUtc).clone().toDate()
     }
 
     public endTime = () => {
-        return Moment.unix(this.endTimeTimestampUtc).clone().add(this.timestampOffsetInSeconds, 'seconds').toDate()
+        return Moment.unix(this.endTimeTimestampUtc).clone().toDate()
     }
 
     public setPurposeId = (purposeId: string) => {
