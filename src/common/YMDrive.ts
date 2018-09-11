@@ -44,8 +44,8 @@ export default class YMDrive {
         this.miles = miles
         this.origin = YMLocation.fromObject(origin)
         this.dest = YMLocation.fromObject(dest)
-        this.startTime = startTime
-        this.endTime = endTime
+        this.startTime = new Date(startTime)
+        this.endTime = new Date(endTime)
         this.driveNotes = YMDriveNotes.fromObject(driveNotes)
         this.isVisible = isVisible
         this.isDeleted = isDeleted

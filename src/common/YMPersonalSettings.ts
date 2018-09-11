@@ -7,7 +7,7 @@ export default class YMPersonalSettings {
 
     constructor (isMetricSystem: boolean, monitoringLevel: string, monitorFromTimestamp: number) {
         this.isMetricSystem = isMetricSystem
-        this.monitoringLevel = monitoringLevel
+        this.monitoringLevel = monitoringLevel === undefined ? '1' : monitoringLevel
         this.monitorFromTimestamp = monitorFromTimestamp === undefined ? Moment.utc().add(-1, 'day').toDate().getTime() : monitorFromTimestamp
     }
 
