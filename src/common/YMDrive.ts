@@ -31,13 +31,14 @@ export default class YMDrive {
     timestampOffsetInSeconds: number
     deletionReason: string
     signalSource: string
+    didApplyDefaults: boolean
 
     constructor (driveId: string,
         vehicleId: string, drivePurposeId: string, miles: number, origin: YMLocation, dest: YMLocation,
         driveNotes: YMDriveNotes, isVisible: boolean = true, isDeleted: boolean = false,
         // tslint:disable-next-line:variable-name
         joinedFromIds: Array<string> = [], obj_db_id: string, lastUpdated: number,
-        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false, deletionReason: string = '', isAutoWorkHours: boolean = false, isAutoLocation: boolean = false, signalSource: string = 'unknown') {
+        startTimeTimestampUtc: number, endTimeTimestampUtc: number, timestampOffsetInSeconds: number, routeLocations: Array<YMLocation> = [], isManual: boolean = false, deletionReason: string = '', isAutoWorkHours: boolean = false, isAutoLocation: boolean = false, signalSource: string = 'unknown', didApplyDefaults: boolean = false) {
         this.driveId = driveId
         this.vehicleId = vehicleId
         this.drivePurposeId = drivePurposeId
@@ -60,6 +61,7 @@ export default class YMDrive {
         this.isAutoWorkHours = isAutoWorkHours
         this.isAutoLocation = isAutoLocation
         this.signalSource = signalSource
+        this.didApplyDefaults = didApplyDefaults
     }
 
     public startTime = () => {
@@ -97,7 +99,7 @@ export default class YMDrive {
         return new YMDrive(obj.driveId, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
-                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason, obj.isAutoWorkHours, obj.isAutoLocation, obj.signalSource)
+                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason, obj.isAutoWorkHours, obj.isAutoLocation, obj.signalSource, obj.didApplyDefaults)
     }
 
     public static getUniqueDriveArray = (drives: Array<YMDrive>) => {
