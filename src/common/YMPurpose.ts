@@ -21,7 +21,7 @@ export default class YMPurpose {
     static fromObject = function(obj: any) {
         if(obj == null) return new YMPurpose('', '', '', '', '', false, 0)
 
-        return new YMPurpose(obj.purposeId, obj.rateId, obj.name, obj.category, obj.iconName, obj.visible, 0)
+        return new YMPurpose(obj.purposeId, obj.rateId, obj.name, obj.category, obj.iconName, obj.visible, obj.order)
     }
 
     static categories = {
