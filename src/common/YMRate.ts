@@ -31,11 +31,14 @@ export default class YMRate {
 
         const currPurposeId = purposeId === YMPurpose.defaultPuposesIds.undetermined ? YMPurpose.defaultPuposesIds.business : purposeId
         
-        // find purpose
-        const purpose = userSettings.purposes.filter(x => x.purposeId === currPurposeId)[0]
+        // find purpose first from user, then global
+        let purpose = userSettings.purposes.filter(x => x.purposeId === currPurposeId)[0]
 
         if (purpose === undefined) {
-            return 0
+            purpose = gloablSettings.purposes.filter(x => x.purposeId === currPurposeId)[0]
+            if (purpose === undefined) {
+                return 0
+            }
         }
 
         // find rate

@@ -44,4 +44,25 @@ export default class YMPurpose {
         temporarySite: '10',
         businessTravel: '11'
     }
+
+    static mergePuprosesArrays = (first: Array<YMPurpose>, second: Array<YMPurpose>) => {
+        const purposes = new Array<YMPurpose>()
+        
+        if (first) {
+            for(let i=0; i<first.length; i++) {
+                purposes.push(YMPurpose.fromObject(JSON.parse(JSON.stringify(first[i]))))
+            }
+        }
+        
+        if (second) {
+            for(let i=0; i<second.length; i++) {
+                const purpose = second[i]
+                if (purposes.filter(x => x.purposeId === purpose.purposeId).length === 0) {
+                    purposes.push(YMPurpose.fromObject(JSON.parse(JSON.stringify(purpose))))
+                }
+            }
+        }
+
+        return purposes
+    }
 }
