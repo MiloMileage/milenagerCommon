@@ -45,7 +45,7 @@ export default class YMPurpose {
         businessTravel: '11'
     }
 
-    static mergePuprosesArrays = (first: Array<YMPurpose>, second: Array<YMPurpose>) => {
+    static mergePuprosesArrays = (first: Array<YMPurpose>, second: Array<YMPurpose>, filterVisible: boolean = true) => {
         const purposes = new Array<YMPurpose>()
         
         if (first) {
@@ -63,6 +63,6 @@ export default class YMPurpose {
             }
         }
 
-        return purposes
+        return filterVisible ? purposes.filter(x => x.visible) : purposes
     }
 }

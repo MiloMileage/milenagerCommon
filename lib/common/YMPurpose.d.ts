@@ -27,5 +27,5 @@ export default class YMPurpose {
         temporarySite: string;
         businessTravel: string;
     };
-    static mergePuprosesArrays: (first: YMPurpose[], second: YMPurpose[]) => YMPurpose[];
+    static mergePuprosesArrays: (first: YMPurpose[], second: YMPurpose[], filterVisible?: boolean) => YMPurpose[];
 }
