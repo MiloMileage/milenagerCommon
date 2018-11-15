@@ -36,4 +36,5 @@ export default class YMDrive {
     getValue: (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => number;
     static fromObject: (obj: any) => YMDrive;
     static getUniqueDriveArray: (drives: YMDrive[]) => YMDrive[];
+    static smartConcatDrivesArray: (drives1: YMDrive[], drives2: YMDrive[]) => YMDrive[];
 }
