@@ -43,7 +43,7 @@ export default class YMRate {
 
         // find rate
         if (purpose.rateId.startsWith('irs_')) {
-            return gloablSettings.irsRates[(drive === undefined ? new Date() : drive.startTime()).getFullYear()][purpose.rateId.substring(4)]
+            return Number(gloablSettings.irsRates[(drive === undefined ? new Date() : drive.startTime()).getFullYear()][purpose.rateId.substring(4)])
         }
 
         const rate = userSettings.personalRates.filter(x => x.rateId === purpose.rateId)[0]

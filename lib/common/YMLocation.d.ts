@@ -6,5 +6,6 @@ export default class YMLocation {
     constructor(address: YMAddress, lat: number, lon: number);
     getLatLonKey: () => string;
     distanceFrom: (loc: YMLocation) => number;
+    getPrettyAddress: () => string;
     static fromObject: (obj: any) => YMLocation;
 }

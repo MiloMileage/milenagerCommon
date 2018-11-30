@@ -8,5 +8,5 @@ export default class YMRate {
     rateId: string;
     constructor(name: string, deductable: number, rateId?: string, visible?: boolean);
     static fromObject: (obj: any) => YMRate;
-    static getRateForPurposeId: (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive) => any;
+    static getRateForPurposeId: (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive) => number;
 }
