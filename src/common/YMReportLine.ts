@@ -46,8 +46,8 @@ export default class YMReportLine {
         const startTime = drive.startTime()
         const endTime = drive.endTime()
 
-        return new YMReportLine(new YMDateRange(startTime.getFullYear(), startTime.getMonth(), startTime.getDay(),
-                                    endTime.getFullYear(), endTime.getMonth(), endTime.getDay(), Math.round(drive.timestampOffsetInSeconds / 60)),
+        return new YMReportLine(new YMDateRange(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(),
+                                    endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), Math.round(drive.timestampOffsetInSeconds / 60)),
                                 YMReportLine.getPurposeString(drive.drivePurposeId),
                                 `${drive.origin.address.name} -> ${drive.dest.address.name}`,
                                 `${originPersonal} -> ${destPersonal}`,
