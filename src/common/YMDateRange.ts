@@ -61,7 +61,7 @@ export default class YMDateRange {
     }
 
     static monthDateRange(month: number, year: number, timezoneOffsetInMinutes: number) {
-        return new YMDateRange(year, month, 1, month === 11 ? year + 1 : year, month === 11 ? 1 : month + 1, 1, timezoneOffsetInMinutes)
+        return new YMDateRange(year, month, 1, month === 11 ? year + 1 : year, month === 11 ? 0 : month + 1, 1, timezoneOffsetInMinutes)
     }
 
     // tslint:disable-next-line:member-ordering
