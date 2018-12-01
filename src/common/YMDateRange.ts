@@ -49,6 +49,16 @@ export default class YMDateRange {
             ((this.startDateMonth + 1 === this.endDateMonth && this.startDateYear === this.endDateYear) ||
             (this.startDateMonth === 11 && this.endDateMonth === 1 && this.startDateYear + 1 === this.endDateYear)) 
     }
+    
+    addMonth(number: number = 1) {
+        this.startDateMonth = Moment(this.getStartDateLocal()).add(number).month()
+        this.startDateYear = Moment(this.getStartDateLocal()).add(number).year()
+        this.startDateDay = Moment(this.getStartDateLocal()).add(number).day()
+
+        this.endDateMonth = Moment(this.getEndDateLocal()).add(number).month()
+        this.endDateYear = Moment(this.getEndDateLocal()).add(number).year()
+        this.endDateDay = Moment(this.getEndDateLocal()).add(number).day()
+    }
 
     static monthDateRange(month: number, year: number, timezoneOffsetInMinutes: number) {
         return new YMDateRange(year, month, 1, month === 11 ? year + 1 : year, month === 11 ? 1 : month + 1, 1, timezoneOffsetInMinutes)
