@@ -47,7 +47,7 @@ export default class YMDateRange {
     isMonthRange() {
         return this.startDateDay === 1 && this.endDateDay === 1 &&
             ((this.startDateMonth + 1 === this.endDateMonth && this.startDateYear === this.endDateYear) ||
-            (this.startDateMonth === 11 && this.endDateMonth === 1 && this.startDateYear + 1 === this.endDateYear)) 
+            (this.startDateMonth === 11 && this.endDateMonth === 0 && this.startDateYear + 1 === this.endDateYear)) 
     }
     
     addMonth(number: number = 1) {
