@@ -66,7 +66,7 @@ export default class YMDateRange {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMDateRange(new Date().getFullYear(), 1, 1, new Date().getFullYear(), 1, 1, 0)
+        if(obj == null) return new YMDateRange(undefined, undefined, undefined, undefined, undefined, undefined, undefined)
 
         return new YMDateRange(obj.startDateYear, obj.startDateMonth, obj.startDateDay, obj.endDateYear, obj.endDateMonth, obj.endDateDay, obj.timezoneOffsetInMinutes)
     }
