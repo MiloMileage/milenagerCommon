@@ -52,12 +52,12 @@ export default class YMDateRange {
     
     addMonth(number: number = 1) {
         this.startDateMonth = Moment(this.getStartDateLocal()).add(number, 'month').month()
-        this.startDateYear = Moment(this.getStartDateLocal()).add(number, 'year').year()
-        this.startDateDay = Moment(this.getStartDateLocal()).add(number, 'days').day()
+        this.startDateYear = Moment(this.getStartDateLocal()).add(number, 'month').year()
+        this.startDateDay = Moment(this.getStartDateLocal()).add(number, 'month').day()
 
         this.endDateMonth = Moment(this.getEndDateLocal()).add(number, 'month').month()
-        this.endDateYear = Moment(this.getEndDateLocal()).add(number, 'year').year()
-        this.endDateDay = Moment(this.getEndDateLocal()).add(number, 'days').day()
+        this.endDateYear = Moment(this.getEndDateLocal()).add(number, 'month').year()
+        this.endDateDay = Moment(this.getEndDateLocal()).add(number, 'month').day()
     }
 
     static monthDateRange(month: number, year: number, timezoneOffsetInMinutes: number) {
