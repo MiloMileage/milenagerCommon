@@ -1,44 +1,63 @@
 import * as Moment from 'moment';
 
 export default class YMDateRange {
-    startDate: Date
-    endDate: Date
+    startDateYear: number
+    startDateMonth: number
+    startDateDay: number
 
-    constructor (startDate: Date, endDate: Date) {
-        this.startDate = startDate
-        this.endDate = endDate
+    endDateYear: number
+    endDateMonth: number
+    endDateDay: number
+
+    timezoneOffsetInMinutes: number
+
+    constructor (startDateYear: number, startDateMonth: number, startDateDay: number, endDateYear: number, endDateMonth: number, endDateDay: number, timezoneOffsetInMinutes: number) {
+        this.startDateYear = startDateYear
+        this.startDateMonth = startDateMonth
+        this.startDateDay = startDateDay
+        this.endDateYear = endDateYear
+        this.endDateMonth = endDateMonth
+        this.endDateDay = endDateDay
+        this.timezoneOffsetInMinutes = timezoneOffsetInMinutes
+    }
+
+    getStartDateLocal() {
+        const d = new Date(Date.UTC(this.startDateYear, this.startDateMonth, this.startDateDay));
+        d.setTime(d.getTime() + this.timezoneOffsetInMinutes*60*1000 )
+
+        return d
+    }
+
+    getEndDateLocal() {
+        const d = new Date(Date.UTC(this.endDateYear, this.endDateMonth, this.endDateDay));
+        d.setTime(d.getTime() + this.timezoneOffsetInMinutes*60*1000 )
+        
+        return d
     }
 
     isEqualTo(anotherDateRange: YMDateRange) {
-        return YMDateRange.compareDates(this.startDate, anotherDateRange.startDate) && YMDateRange.compareDates(this.endDate, anotherDateRange.endDate)
+        return this.startDateYear === anotherDateRange.startDateYear &&
+            this.startDateMonth === anotherDateRange.startDateMonth &&
+            this.startDateDay === anotherDateRange.startDateDay &&
+            this.endDateYear === anotherDateRange.endDateYear &&
+            this.endDateMonth === anotherDateRange.endDateMonth &&
+            this.endDateDay === anotherDateRange.endDateDay
     }
 
     isMonthRange() {
-        return Moment.utc(this.startDate).date() === 1 &&
-                Moment.utc(this.endDate).date() === Moment.utc(this.startDate).endOf('month').date() &&
-                    Moment.utc(this.startDate).month() === Moment.utc(this.endDate).month()
+        return this.startDateDay === 1 && this.endDateDay === 1 &&
+            ((this.startDateMonth + 1 === this.endDateMonth && this.startDateYear === this.endDateYear) ||
+            (this.startDateMonth === 11 && this.endDateMonth === 1 && this.startDateYear + 1 === this.endDateYear)) 
     }
 
-    static monthDateRange(date: Date = undefined) {
-        return new YMDateRange(Moment.utc(date).startOf('month').startOf('day').toDate(), Moment.utc(date).endOf('month').endOf('day').toDate())
-    }
-
-    static compareDates(date1: Date, date2: Date) {
-        if (date1 === undefined && date2 === undefined) {
-            return true
-        }
-
-        if (date1 !== undefined && date2 !== undefined) {
-            return new Date(date1).getTime() === new Date(date2).getTime()
-        }
-
-        return false
+    static monthDateRange(month: number, year: number, timezoneOffsetInMinutes: number) {
+        return new YMDateRange(year, month, 1, month === 11 ? year + 1 : year, month === 11 ? 1 : month + 1, 1, timezoneOffsetInMinutes)
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMDateRange(new Date, new Date)
+        if(obj == null) return new YMDateRange(new Date().getFullYear(), 1, 1, new Date().getFullYear(), 1, 1, 0)
 
-        return new YMDateRange(new Date(obj.startDate), new Date(obj.endDate))
+        return new YMDateRange(obj.startDateYear, obj.startDateMonth, obj.startDateDay, obj.endDateYear, obj.endDateMonth, obj.endDateDay, obj.timezoneOffsetInMinutes)
     }
 }

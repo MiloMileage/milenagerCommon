@@ -77,7 +77,7 @@ export default class PdfDescription {
     static getHeaderFunc = (name: string, dateRanage: YMDateRange) => {
         return (currentPage: number, pageCount: number) => {
             return new PdfText(
-                `Mileage Report (${Moment.utc(new Date(dateRanage.startDate)).format('MMMM Do YYYY')} to ${Moment.utc(new Date(dateRanage.endDate)).format('MMMM Do YYYY')}) - ${name}`,
+                `Mileage Report (${Moment.utc(new Date(dateRanage.getStartDateLocal())).format('MMMM Do YYYY')} to ${Moment.utc(new Date(dateRanage.getEndDateLocal())).format('MMMM Do YYYY')}) - ${name}`,
                 [30, 8, 30, 30],
                 'header',
                 false,
@@ -233,7 +233,7 @@ export default class PdfDescription {
             drivesSummaryLine.tolls += dl.tolls
             drivesSummaryLine.value += dl.value
             drivesTableSub.body.push([
-                PdfTableSub.getTableCell(Moment.utc(new Date(dl.when.startDate)).format('MMMM Do YYYY, h:mm a')),
+                PdfTableSub.getTableCell(Moment.utc(new Date(dl.when.getStartDateLocal())).format('MMMM Do YYYY, h:mm a')),
                 PdfTableSub.getTableCell(dl.purpose),
                 PdfTableSub.getTableCell(dl.fromToPersonalized),
                 PdfTableSub.getTableCell(dl.vehicle),

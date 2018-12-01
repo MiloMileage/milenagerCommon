@@ -43,7 +43,11 @@ export default class YMReportLine {
         const originPersonal = Common.getPersonalNameIfExist(savedLocations, drive.origin, drive.origin.address.name)
         const destPersonal = Common.getPersonalNameIfExist(savedLocations, drive.dest, drive.dest.address.name)
         
-        return new YMReportLine(new YMDateRange(drive.startTime(), drive.endTime()),
+        const startTime = drive.startTime()
+        const endTime = drive.endTime()
+
+        return new YMReportLine(new YMDateRange(startTime.getFullYear(), startTime.getMonth(), startTime.getDay(),
+                                    endTime.getFullYear(), endTime.getMonth(), endTime.getDay(), Math.round(drive.timestampOffsetInSeconds / 60)),
                                 YMReportLine.getPurposeString(drive.drivePurposeId),
                                 `${drive.origin.address.name} -> ${drive.dest.address.name}`,
                                 `${originPersonal} -> ${destPersonal}`,
@@ -78,7 +82,7 @@ export default class YMReportLine {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReportLine(new YMDateRange(undefined, undefined), '', '', '', '', 0, 0, 0, 0)
+        if(obj == null) return new YMReportLine(YMDateRange.fromObject(undefined), '', '', '', '', 0, 0, 0, 0)
         
         return new YMReportLine(obj.when, obj.purpose, obj.fromTo, obj.fromToPersonalized, obj.vehicle, obj.distanceInMiles, obj.value, obj.parking, obj.tolls)
     }

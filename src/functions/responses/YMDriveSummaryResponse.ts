@@ -117,13 +117,9 @@ export default class YMDriveSummaryResponse {
         this.reduceDriveWeightFromDriveId(drive.driveId)
     }
 
-    static getMonthlyIdFromDate(date: Date) {
-        return `${Moment.utc(date).format('YYYY')}_${Moment.utc(date).format('MM')}`
-    }
-
     static getMonthlyIdFromDateRange(dateRange: YMDateRange) {
         if (dateRange.isMonthRange()) {
-            return YMDriveSummaryResponse.getMonthlyIdFromDate(dateRange.startDate)
+            return `${dateRange.startDateYear}_${dateRange.startDateMonth}_${dateRange.timezoneOffsetInMinutes}`
         }
         
         return undefined

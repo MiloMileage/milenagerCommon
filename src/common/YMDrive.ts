@@ -65,11 +65,17 @@ export default class YMDrive {
     }
 
     public startTime = () => {
-        return Moment.unix(this.startTimeTimestampUtc).clone().toDate()
+        const d = new Date(this.startTimeTimestampUtc)
+        d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
+
+        return d
     }
 
     public endTime = () => {
-        return Moment.unix(this.endTimeTimestampUtc).clone().toDate()
+        const d = new Date(this.endTimeTimestampUtc)
+        d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
+
+        return d
     }
 
     public setPurposeId = (purposeId: string) => {

@@ -30,7 +30,6 @@ export default class YMDriveSummaryResponse {
     reduceDriveWeightFromDriveId(driveId: string): void;
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): void;
     reduceDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): void;
-    static getMonthlyIdFromDate(date: Date): string;
     static getMonthlyIdFromDateRange(dateRange: YMDateRange): string;
     static fromObject: (obj: any) => YMDriveSummaryResponse;
 }

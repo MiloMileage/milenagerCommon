@@ -18,8 +18,8 @@ export const filterDrives = function (drives: Array<YMDrive>, dateRange: YMDateR
     return drives.filter(d =>  d.isVisible &&
         ((d.origin.address.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1
             || d.dest.address.name.toLowerCase().indexOf(filterTerm.toLowerCase()) > -1)
-                && d.startTime().getTime() >= new Date(dateRange.startDate).getTime()
-                && d.startTime().getTime() <= addDays(new Date(dateRange.endDate), 1).getTime()))
+                && d.startTime().getTime() >= new Date(dateRange.getStartDateLocal()).getTime()
+                && d.startTime().getTime() <= addDays(new Date(dateRange.getEndDateLocal()), 1).getTime()))
 }
 
 export const selectedDrivesFromIds = function (drives: Array<YMDrive>, selectedDrivesIds: Array<string>) {
