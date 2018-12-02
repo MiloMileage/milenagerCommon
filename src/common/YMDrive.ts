@@ -65,14 +65,14 @@ export default class YMDrive {
     }
 
     public startTime = () => {
-        const d = new Date(this.startTimeTimestampUtc)
+        const d = new Date(this.startTimeTimestampUtc * 1000)
         d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
 
         return d
     }
 
     public endTime = () => {
-        const d = new Date(this.endTimeTimestampUtc)
+        const d = new Date(this.endTimeTimestampUtc * 1000)
         d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
 
         return d
