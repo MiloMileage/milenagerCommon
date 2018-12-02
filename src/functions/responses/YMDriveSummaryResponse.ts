@@ -119,14 +119,14 @@ export default class YMDriveSummaryResponse {
 
     static getMonthlyIdFromDateRange(dateRange: YMDateRange) {
         if (dateRange.isMonthRange()) {
-            return YMDriveSummaryResponse.getMonthlyId(dateRange.startDateMonth, dateRange.startDateYear, dateRange.timezoneOffsetInMinutes)
+            return YMDriveSummaryResponse.getMonthlyId(dateRange.startDateMonth, dateRange.startDateYear)
         }
         
         return undefined
     }
 
-    static getMonthlyId(month: number, year: number, timezoneOffsetInMinutes: number) {
-        return `${year}_${month}_${timezoneOffsetInMinutes}`
+    static getMonthlyId(month: number, year: number) {
+        return `${year}_${month}_v2`
     }
 
     // tslint:disable-next-line:member-ordering

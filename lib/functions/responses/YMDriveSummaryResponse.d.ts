@@ -31,6 +31,6 @@ export default class YMDriveSummaryResponse {
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): void;
     reduceDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): void;
     static getMonthlyIdFromDateRange(dateRange: YMDateRange): string;
-    static getMonthlyId(month: number, year: number, timezoneOffsetInMinutes: number): string;
+    static getMonthlyId(month: number, year: number): string;
     static fromObject: (obj: any) => YMDriveSummaryResponse;
 }
