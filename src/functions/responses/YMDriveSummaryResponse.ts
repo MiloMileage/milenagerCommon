@@ -126,7 +126,7 @@ export default class YMDriveSummaryResponse {
     }
 
     static getMonthlyId(month: number, year: number) {
-        return `${year}_${month}_v2`
+        return `${year}_${month}`
     }
 
     // tslint:disable-next-line:member-ordering
