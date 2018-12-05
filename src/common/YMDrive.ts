@@ -65,13 +65,21 @@ export default class YMDrive {
     }
 
     public startTime = () => {
+        return new Date().getTimezoneOffset() === 0 ? this.startTimeInUtcEnv() : new Date(this.startTimeTimestampUtc * 1000)
+    }
+
+    public endTime = () => {
+        return new Date().getTimezoneOffset() === 0 ? this.endTimeInUtcEnv() : new Date(this.endTimeTimestampUtc * 1000)
+    }
+
+    public startTimeInUtcEnv = () => {
         const d = new Date(this.startTimeTimestampUtc * 1000)
         d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
 
         return d
     }
 
-    public endTime = () => {
+    public endTimeInUtcEnv = () => {
         const d = new Date(this.endTimeTimestampUtc * 1000)
         d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
 
