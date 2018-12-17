@@ -57,10 +57,10 @@ export default class YMReport {
         this.movingRateInMiles = movingRateInMiles
         this.medicalRateInMiles = medicalRateInMiles
         this.isMetricSystem = isMetricSystem
-        this.dateRange = dateRange
-        this.lines = lines
-        this.vehicleBusinessLines = vehicleBusinessLines
-        this.vehiclePersonalLines = vehiclePersonalLines
+        this.dateRange = YMDateRange.fromObject(dateRange)
+        this.lines = lines.map(line => YMReportLine.fromObject(line))
+        this.vehicleBusinessLines = vehicleBusinessLines.map(line => YMReportVehicleLine.fromObject(line))
+        this.vehiclePersonalLines = vehiclePersonalLines.map(line => YMReportVehicleLine.fromObject(line))
         this.reportId = reportId
         this.csvLink = csvLink
         this.pdfLink = pdfLink
