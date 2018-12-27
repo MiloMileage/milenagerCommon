@@ -74,14 +74,14 @@ export default class YMDrive {
 
     public startTimeInUtcEnv = () => {
         const d = new Date(this.startTimeTimestampUtc * 1000)
-        d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
+        d.setTime(d.getTime() + (this.timestampOffsetInSeconds === undefined ? new Date().getTimezoneOffset() : this.timestampOffsetInSeconds) *1000)
 
         return d
     }
 
     public endTimeInUtcEnv = () => {
         const d = new Date(this.endTimeTimestampUtc * 1000)
-        d.setTime(d.getTime() + this.timestampOffsetInSeconds*1000)
+        d.setTime(d.getTime() + (this.timestampOffsetInSeconds === undefined ? new Date().getTimezoneOffset() : this.timestampOffsetInSeconds) *1000)
 
         return d
     }
