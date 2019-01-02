@@ -1,8 +1,15 @@
+import YMSubscriptionDateRange from './YMSubscriptionDateRange';
 export default class YMSubscription {
-    subscriptionId: string;
     subscriptionType: string;
-    startDate: Date;
-    endDate: Date;
-    constructor(subscriptionId?: string, subscriptionType?: string, startDate?: Date, endDate?: Date);
+    subscriptionDateRanges: Array<YMSubscriptionDateRange>;
+    constructor(subscriptionType: string, subscriptionDateRanges: Array<YMSubscriptionDateRange>);
+    isNone(): boolean;
+    isAnnual(): boolean;
+    isMonthly(): boolean;
     static fromObject: (obj: any) => YMSubscription;
+    static subscriptionsTypes: {
+        none: string;
+        annual: string;
+        monthly: string;
+    };
 }
