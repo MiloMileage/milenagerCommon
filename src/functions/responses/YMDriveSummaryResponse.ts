@@ -81,6 +81,10 @@ export default class YMDriveSummaryResponse {
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
         const driveWeight = YMDriveWeight.fromObject(undefined)
         
+        if (drive.isDeleted || !drive.isVisible) {
+            return
+        }
+
         if (drive.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined) {
             driveWeight.earned = drive.miles * YMRate.getRateForPurposeId(drive.drivePurposeId, userSettings, globalSettings, drive)
             this.earned += driveWeight.earned
