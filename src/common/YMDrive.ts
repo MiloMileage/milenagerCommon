@@ -113,7 +113,7 @@ export default class YMDrive {
         return new YMDrive(obj.driveId, obj.vehicleId,
                 obj.drivePurposeId, obj.miles, obj.origin, obj.dest,
                     obj.driveNotes, obj.isVisible, obj.isDeleted, obj.joinedFromIds, obj.obj_db_id,
-                    new Date().getTime(), obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason, obj.isAutoWorkHours, obj.isAutoLocation, obj.signalSource, obj.didApplyDefaults)
+                    obj.lastUpdated, obj.startTimeTimestampUtc, obj.endTimeTimestampUtc, obj.timestampOffsetInSeconds, obj.routeLocations, obj.isManual, obj.deletionReason, obj.isAutoWorkHours, obj.isAutoLocation, obj.signalSource, obj.didApplyDefaults)
     }
 
     public static getUniqueDriveArray = (drives: Array<YMDrive>) => {
