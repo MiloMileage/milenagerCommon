@@ -4,9 +4,4 @@ export default class YMSubscriptionDateRange {
     appStoreReceipt: any;
     constructor(dateRange: YMDateRange, appStoreReceipt: any);
     static fromObject: (obj: any) => YMSubscriptionDateRange;
-    static subscriptionsTypes: {
-        none: string;
-        annual: string;
-        monthly: string;
-    };
 }

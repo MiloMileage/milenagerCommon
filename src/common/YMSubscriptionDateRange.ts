@@ -15,10 +15,4 @@ export default class YMSubscriptionDateRange {
 
         return new YMSubscriptionDateRange(obj.dateRange, obj.appStoreReceipt)
     }
-
-    static subscriptionsTypes = {
-        none: 'none',
-        annual: 'anual',
-        monthly: 'monthly'
-    }
 }
