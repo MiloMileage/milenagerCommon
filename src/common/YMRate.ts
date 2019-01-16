@@ -25,7 +25,7 @@ export default class YMRate {
 
       // tslint:disable-next-line:max-line-length
     static getRateForPurposeId = (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive) => {
-        if (userSettings === null) {
+        if (userSettings == null || gloablSettings == null) {
             return 0
         }
 
@@ -43,7 +43,7 @@ export default class YMRate {
 
         // find rate
         if (purpose.rateId.startsWith('irs_')) {
-            const rates = gloablSettings.irsRates[(drive === undefined ? new Date() : drive.startTime()).getFullYear()]
+            const rates = gloablSettings.irsRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
 
             return Number(rates === undefined ? 0 : rates[purpose.rateId.substring(4)])
         }
