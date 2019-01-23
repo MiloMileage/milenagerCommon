@@ -110,7 +110,7 @@ var Swipeable = function (_PureComponent) {
 
       _reactNative.Animated.timing(pan, {
         toValue: toValue,
-        duration: 250,
+        duration: 700,
         easing: _reactNative.Easing.elastic(0.5)
       }).start(function () {
         return _this.recenter(swipeReleaseAnimationFn, swipeReleaseAnimationConfig, function () {
