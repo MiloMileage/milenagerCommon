@@ -88,7 +88,7 @@ var Swipeable = function (_PureComponent) {
           rightButtonsActivated: true,
           rightButtonsOpen: true
         });
-        _this._bounce({ x: -50, y: 0 }, onDone);
+        _this._bounce({ x: -100, y: 0 }, onDone);
       }
     }, _this.bounceLeft = function (onDone) {
       if (_this._canSwipeRight()) {
@@ -97,7 +97,7 @@ var Swipeable = function (_PureComponent) {
           leftButtonsActivated: true,
           leftButtonsOpen: true
         });
-        _this._bounce({ x: 50, y: 0 }, onDone);
+        _this._bounce({ x: 100, y: 0 }, onDone);
       }
     }, _this._bounce = function (toValue, onDone) {
       var pan = _this.state.pan;
@@ -368,7 +368,7 @@ var Swipeable = function (_PureComponent) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       if (this.props.bounceOnMount) {
-        setTimeout(this._bounceOnMount, 700);
+        setTimeout(this._bounceOnMount, 1000);
       }
     }
   }, {
