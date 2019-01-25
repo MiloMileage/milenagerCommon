@@ -8,7 +8,7 @@ export default class YMTutorialCard {
     constructor (headline: string, description: string, image: YMImage) {
         this.headline = headline
         this.description = description
-        this.image = image == null ? YMImage.fromObject(undefined) : image
+        this.image = YMImage.fromObject(image)
     }
 
     // tslint:disable-next-line:member-ordering

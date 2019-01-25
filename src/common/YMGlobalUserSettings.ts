@@ -23,7 +23,7 @@ export default class YMGlobalUserSettings {
         this.notificationSettings = notificationSettings.map(x => YMNotificationSetting.fromObject(x))
         this.workingHours = workingHours.map(x => YMWorkingHour.fromObject(x))
         this.irsRates = irsRates
-        this.tutorialViews = tutorialViews
+        this.tutorialViews = tutorialViews.map(x => YMTutorialView.fromObject(x))
     }
 
     // tslint:disable-next-line:member-ordering

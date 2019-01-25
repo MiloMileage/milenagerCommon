@@ -4,7 +4,7 @@ export default class YMTutorialView {
     cards: Array<YMTutorialCard>
 
     constructor (cards: Array<YMTutorialCard>) {
-        this.cards = cards == null ? new Array<YMTutorialCard>() : cards
+        this.cards = cards == null ? new Array<YMTutorialCard>() : cards.map(c => YMTutorialCard.fromObject(c))
     }
 
     // tslint:disable-next-line:member-ordering
