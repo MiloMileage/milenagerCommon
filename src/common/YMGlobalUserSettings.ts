@@ -11,14 +11,14 @@ export default class YMGlobalUserSettings {
     purposes: Array<YMPurpose>
     notificationSettings: Array<YMNotificationSetting>
     workingHours: Array<YMWorkingHour>
-    irsRates: Map<string, Map<string, number>>
-    tutorialContainers: Map<string, Array<YMTutorialContainer>>
+    irsRates: { [ind: string]: { [ind: string]: number } }
+    tutorialContainers: { [ind: string]: Array<YMTutorialContainer> }
 
     constructor (purposes: Array<YMPurpose> = [],
         notificationSettings: Array<YMNotificationSetting> = [],
         workingHours: Array<YMWorkingHour> = [],
-        irsRates: Map<string, Map<string, number>>,
-        tutorialContainers: Map<string, Array<YMTutorialContainer>>) {
+        irsRates: { [ind: string]: { [ind: string]: number } },
+        tutorialContainers: { [ind: string]: Array<YMTutorialContainer> }) {
         this.purposes = purposes.map(x => YMPurpose.fromObject(x))
         this.notificationSettings = notificationSettings.map(x => YMNotificationSetting.fromObject(x))
         this.workingHours = workingHours.map(x => YMWorkingHour.fromObject(x))
@@ -28,7 +28,7 @@ export default class YMGlobalUserSettings {
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
-        if(obj == null) return new YMGlobalUserSettings([], [], [], new Map<string, Map<string, number>>(), new Map<string, Array<YMTutorialContainer>>())
+        if(obj == null) return new YMGlobalUserSettings([], [], [], {}, {})
 
         return new YMGlobalUserSettings(obj.purposes, obj.notificationSettings, obj.workingHours, obj.irsRates, obj.tutorialContainers)
     }
