@@ -1,8 +1,6 @@
-import YMTutorialView from './YMTutorialView';
 export default class YMTutorialContainer {
-    views: Array<YMTutorialView>;
+    tutorialId: string;
     name: string;
-    category: string;
-    constructor(views: Array<YMTutorialView>, name: string, category: string);
+    constructor(tutorialId: string, name: string);
     static fromObject: (obj: any) => YMTutorialContainer;
 }

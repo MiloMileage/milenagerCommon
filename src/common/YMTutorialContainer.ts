@@ -1,18 +1,16 @@
-import YMTutorialView from './YMTutorialView'
-
 export default class YMTutorialContainer {
-    views: Array<YMTutorialView>
+    tutorialId: string
     name: string
-    category: string
 
-    constructor (views: Array<YMTutorialView>, name: string, category: string) {
-        this.views = views == null ? new Array<YMTutorialView>() : views.map(v => YMTutorialView.fromObject(v))
+    constructor (tutorialId: string, name: string) {
+        this.tutorialId = tutorialId
+        this.name = name
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMTutorialContainer(new Array<YMTutorialView>(), '', '')
+        if(obj == null) return new YMTutorialContainer('', '')
         
-        return new YMTutorialContainer(obj.views, obj.name, obj.category)
+        return new YMTutorialContainer(obj.tutorialId, obj.name)
     }
 }
