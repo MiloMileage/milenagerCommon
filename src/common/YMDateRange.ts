@@ -23,7 +23,7 @@ export default class YMDateRange {
 
     getStartDateLocal() {
         const d = new Date(Date.UTC(this.startDateYear, this.startDateMonth, this.startDateDay));
-        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment().isDST() ? 1 : 0))*60*1000 )
+        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment().isDST() ? 60 : 0))*60*1000 )
 
         return d
     }
