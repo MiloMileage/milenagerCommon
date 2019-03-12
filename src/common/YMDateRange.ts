@@ -30,7 +30,7 @@ export default class YMDateRange {
 
     getEndDateLocal() {
         const d = new Date(Date.UTC(this.endDateYear, this.endDateMonth, this.endDateDay));
-        d.setTime(d.getTime() + this.timezoneOffsetInMinutes*60*1000 )
+        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment().isDST() ? 60 : 0))*60*1000 )
         
         return d
     }
