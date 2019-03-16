@@ -33,27 +33,27 @@ export default class YMLocation {
     }
     
     getPrettyAddress = () => {
-        if (this.address.name !== undefined && this.address.name.length > 0) {
+        if (this.address.name && this.address.name.length > 0) {
             return this.address.name
         }
 
-        if (this.address.neighborhood !== undefined && this.address.neighborhood.length > 0) {
+        if (this.address.neighborhood && this.address.neighborhood.length > 0) {
             return this.address.neighborhood
         }
 
-        if (this.address.street !== undefined && this.address.street.length > 0) {
+        if (this.address.street && this.address.street.length > 0) {
             return this.address.street
         }
 
-        if (this.address.city !== undefined && this.address.city.length > 0) {
+        if (this.address.city && this.address.city.length > 0) {
             return this.address.city
         }
 
-        if (this.address.county !== undefined && this.address.county.length > 0) {
+        if (this.address.county && this.address.county.length > 0) {
             return this.address.county
         }
 
-        if (this.address.country !== undefined && this.address.country.length > 0) {
+        if (this.address.country && this.address.country.length > 0) {
             return this.address.country
         }
 
