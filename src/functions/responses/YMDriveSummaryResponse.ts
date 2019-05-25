@@ -5,7 +5,6 @@ import YMPurpose from './../../common/YMPurpose'
 import YMRate from './../../common/YMRate'
 import YMUserSettings from './../../common/YMUserSettings'
 import YMGlobalUserSettings from './../../common/YMGlobalUserSettings'
-import * as Moment from 'moment'
 
 export default class YMDriveSummaryResponse {
     drivesCount: { [purposeId: string]: number }

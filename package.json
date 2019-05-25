@@ -5,10 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/tslint -p tslint.json && ./node_modules/.bin/tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jest"
   },
   "dependencies": {
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "typescript": "^3.4.5"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,8 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/lyair1/milenagercommon#readme",
   "devDependencies": {
-    "tslint": "^5.8.0",
-    "typescript": "^2.5.3"
+    "@types/jest": "^24.0.13",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.8.0"
   }
 }
