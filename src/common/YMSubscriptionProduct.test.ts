@@ -87,3 +87,12 @@ test('Late charge months 0 yearly', () => {
 
     expect(subscriptionProduct.lateChargeMonths).toBe(0)
 });
+
+test('10 or more panelty', () => {
+    const json = "{\"description\":\"Subscription for Unlimited Mileage Reports\",\"introductoryPrice\":\"₪239.90\",\"subscriptionPeriodNumberIOS\":\"1\",\"introductoryPriceNumberOfPeriodsIOS\":\"1\",\"introductoryPriceSubscriptionPeriodIOS\":\"YEAR\",\"productId\":\"ios.thisismilo.milo_subscription_annualy_3_10\",\"price\":\"181.9\",\"introductoryPricePaymentModeIOS\":\"PAYUPFRONT\",\"discounts\":[],\"type\":\"Do not use this. It returned sub only before\",\"title\":\"Milo Annual Subscription\",\"subscriptionPeriodUnitIOS\":\"YEAR\",\"localizedPrice\":\"₪181.90\",\"currency\":\"ILS\"}";
+
+    const subscriptionProductIos: YMSubscriptionProductIos = JSON.parse(json);
+    const subscriptionProduct = YMSubscriptionProduct.fromIos(subscriptionProductIos);
+
+    expect(subscriptionProduct.peneltyMonths).toBe(7)
+});

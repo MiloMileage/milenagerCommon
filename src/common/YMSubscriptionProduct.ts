@@ -39,7 +39,7 @@ export default class YMSubscriptionProduct {
 
     // tslint:disable-next-line:member-ordering
     static fromIos = function(subscription: YMSubscriptionProductIos) {
-        const monthsFromId = parseInt(subscription.productId.substring(subscription.productId.length - 1))
+        const monthsFromId = parseInt(subscription.productId.substring(subscription.productId.length - 2).replace('_', ''))
         const introductoryPrice = parseFloat(subscription.introductoryPrice.substring(1))
         const localizedSymbol = subscription.localizedPrice.substring(0,1)
         const periodType = subscription.subscriptionPeriodUnitIOS
