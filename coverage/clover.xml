@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1558900053512" clover="3.2.0">
+  <project timestamp="1558900053512" name="All files">
+    <metrics statements="34" coveredstatements="34" conditionals="6" coveredconditionals="6" methods="7" coveredmethods="7" elements="47" coveredelements="47" complexity="0" loc="34" ncloc="34" packages="2" files="2" classes="2"/>
+    <package name="common">
+      <metrics statements="21" coveredstatements="21" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+      <file name="YMSubscriptionProduct.ts" path="/Users/yair/src/milenagercommon/src/common/YMSubscriptionProduct.ts">
+        <metrics statements="21" coveredstatements="21" conditionals="2" coveredconditionals="2" methods="4" coveredmethods="4"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
+        <line num="24" count="2" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="31" count="2" type="stmt"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="43" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="48" count="2" type="stmt"/>
+      </file>
+    </package>
+    <package name="functions.responses">
+      <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
+      <file name="YMUserUsageHistory.ts" path="/Users/yair/src/milenagercommon/src/functions/responses/YMUserUsageHistory.ts">
+        <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="12" count="7" type="stmt"/>
+        <line num="13" count="7" type="stmt"/>
+        <line num="17" count="7" type="stmt"/>
+        <line num="18" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
+        <line num="24" count="7" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="1" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

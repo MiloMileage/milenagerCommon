@@ -24,3 +24,26 @@ test('Subscription ended 2 months ago', () => {
 
     expect(history.monthsToPayFor()).toBe(2)
 });
+
+test('create default with null', () => {
+    const history = YMUserUsageHistory.fromObject(null)
+
+    expect(history.monthsToPayFor()).toBe(0)
+});
+
+test('create default with undefined', () => {
+    const history = YMUserUsageHistory.fromObject(undefined)
+
+    expect(history.monthsToPayFor()).toBe(0)
+});
+
+test('create default with object', () => {
+    const obj = {
+        didHaveSubscription: true,
+        firstDriveDate: Moment().subtract(10, 'month'),
+        subscriptionEndTime: Moment().subtract(5, 'month'),
+    }
+    const history = YMUserUsageHistory.fromObject(obj)
+
+    expect(history.monthsToPayFor()).toBe(5)
+});
