@@ -22,7 +22,7 @@ export default class YMUserUsageHistory {
             startDate = Moment(this.firstDriveDate)
         }
 
-        return Moment().diff(Moment(startDate), 'month')
+        return Math.min(12, Moment().diff(Moment(startDate), 'month'))
     }
 
     // tslint:disable-next-line:member-ordering
