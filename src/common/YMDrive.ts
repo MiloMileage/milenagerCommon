@@ -4,8 +4,6 @@ import YMUserSettings from './YMUserSettings'
 import YMPurpose from './YMPurpose'
 import YMRate from './YMRate'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
-import { getUniqueDriveId } from './../store/common'
-import * as Moment from 'moment'
 
 export default class YMDrive {
     // tslint:disable-next-line:variable-name
@@ -158,8 +156,8 @@ export default class YMDrive {
                 continue
             }
             
-            let drive1 = drives1[i]
-            let drive2 = drives2[j]
+            const drive1 = drives1[i]
+            const drive2 = drives2[j]
 
             if (drive1.startTimeTimestampUtc > drive2.startTimeTimestampUtc) {
                 drives.push(drive1)

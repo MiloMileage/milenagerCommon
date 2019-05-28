@@ -59,7 +59,7 @@ export default class YMUserSettings {
     }
 
     getPurposeCategory(purposeId: string) {
-        let purpose: YMPurpose = this.purposes.filter(x => x.purposeId === purposeId)[0]
+        const purpose: YMPurpose = this.purposes.filter(x => x.purposeId === purposeId)[0]
 
         if (purpose == null) {
             return ''

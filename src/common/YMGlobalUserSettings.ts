@@ -1,9 +1,5 @@
-import YMVehicle from './YMVehicle'
 import YMPurpose from './YMPurpose'
 import YMNotificationSetting from './YMNotificationSetting'
-import YMPersonalSettings from './YMPersonalSettings'
-import YMAutoLocationRule from './YMAutoLocationRule'
-import YMRate from './YMRate'
 import YMWorkingHour from './YMWorkingHour'
 import YMTutorialContainer from './YMTutorialContainer'
 

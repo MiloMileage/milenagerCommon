@@ -19,10 +19,10 @@ export default class YMLocation {
     }
 
     distanceFrom = function(loc: YMLocation) {
-        let radlat1 = Math.PI * this.lat/180
-        let radlat2 = Math.PI * loc.lat/180
-        let theta = this.lon-loc.lon
-        let radtheta = Math.PI * theta/180
+        const radlat1 = Math.PI * this.lat/180
+        const radlat2 = Math.PI * loc.lat/180
+        const theta = this.lon-loc.lon
+        const radtheta = Math.PI * theta/180
         let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
         dist = Math.acos(dist)
         dist = dist * 180/Math.PI

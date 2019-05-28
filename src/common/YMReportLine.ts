@@ -4,8 +4,6 @@ import YMPurpose from './YMPurpose'
 import YMUserSettings from './YMUserSettings'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
 import YMSavedLocation from './YMSavedLocation'
-import YMRate from './YMRate'
-import * as Moment from 'moment'
 import * as Common from './../components/common'
 
 export default class YMReportLine {

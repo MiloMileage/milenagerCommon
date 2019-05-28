@@ -49,14 +49,13 @@ export default class YMPurpose {
         const purposes = new Array<YMPurpose>()
         
         if (first) {
-            for(let i=0; i<first.length; i++) {
-                purposes.push(YMPurpose.fromObject(JSON.parse(JSON.stringify(first[i]))))
+            for (const purpose of first) {
+                purposes.push(YMPurpose.fromObject(JSON.parse(JSON.stringify(purpose))))
             }
         }
         
         if (second) {
-            for(let i=0; i<second.length; i++) {
-                const purpose = second[i]
+            for (const purpose of second) {
                 if (purposes.filter(x => x.purposeId === purpose.purposeId).length === 0) {
                     purposes.push(YMPurpose.fromObject(JSON.parse(JSON.stringify(purpose))))
                 }
