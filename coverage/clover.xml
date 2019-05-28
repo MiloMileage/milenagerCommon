@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1558930269197" clover="3.2.0">
-  <project timestamp="1558930269197" name="All files">
-    <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3" elements="20" coveredelements="20" complexity="0" loc="13" ncloc="13" packages="1" files="1" classes="1"/>
-    <file name="YMUserUsageHistory.ts" path="/Users/yair/src/milenagercommon/src/functions/responses/YMUserUsageHistory.ts">
-      <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="11" count="11" type="stmt"/>
-      <line num="12" count="11" type="stmt"/>
-      <line num="13" count="11" type="stmt"/>
-      <line num="17" count="11" type="stmt"/>
-      <line num="18" count="11" type="cond" truecount="2" falsecount="0"/>
-      <line num="20" count="2" type="stmt"/>
-      <line num="22" count="9" type="stmt"/>
-      <line num="25" count="9" type="stmt"/>
-      <line num="29" count="1" type="stmt"/>
-      <line num="30" count="3" type="cond" truecount="2" falsecount="0"/>
-      <line num="32" count="1" type="stmt"/>
+<coverage generated="1559062570482" clover="3.2.0">
+  <project timestamp="1559062570482" name="All files">
+    <metrics statements="26" coveredstatements="26" conditionals="12" coveredconditionals="12" methods="7" coveredmethods="7" elements="45" coveredelements="45" complexity="0" loc="26" ncloc="26" packages="1" files="1" classes="1"/>
+    <file name="YMSubscription.ts" path="/Users/yair/src/milenagercommon/src/common/YMSubscription.ts">
+      <metrics statements="26" coveredstatements="26" conditionals="12" coveredconditionals="12" methods="7" coveredmethods="7"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="13" count="5" type="stmt"/>
+      <line num="14" count="5" type="stmt"/>
+      <line num="15" count="5" type="stmt"/>
+      <line num="16" count="5" type="stmt"/>
+      <line num="17" count="5" type="stmt"/>
+      <line num="18" count="5" type="stmt"/>
+      <line num="22" count="3" type="stmt"/>
+      <line num="26" count="3" type="stmt"/>
+      <line num="30" count="3" type="stmt"/>
+      <line num="34" count="1" type="stmt"/>
+      <line num="35" count="5" type="stmt"/>
+      <line num="37" count="5" type="stmt"/>
+      <line num="38" count="5" type="stmt"/>
+      <line num="39" count="5" type="cond" truecount="4" falsecount="0"/>
+      <line num="40" count="5" type="stmt"/>
+      <line num="41" count="5" type="cond" truecount="4" falsecount="0"/>
+      <line num="43" count="5" type="stmt"/>
+      <line num="47" count="5" type="stmt"/>
+      <line num="49" count="5" type="stmt"/>
+      <line num="50" count="24" type="stmt"/>
+      <line num="52" count="24" type="cond" truecount="4" falsecount="0"/>
+      <line num="53" count="23" type="stmt"/>
+      <line num="57" count="5" type="stmt"/>
+      <line num="60" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>

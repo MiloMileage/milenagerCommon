@@ -1,4 +1,4 @@
-import YMUserUsageHistory from './YMUserUsageHistory'
+import YMUserUsageHistory from '../src/functions/responses/YMUserUsageHistory'
 import * as Moment from 'moment'
 
 test('first drive 6 months use', () => {
