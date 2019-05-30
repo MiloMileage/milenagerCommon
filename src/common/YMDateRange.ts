@@ -23,14 +23,14 @@ export default class YMDateRange {
 
     getStartDateLocal() {
         const d = new Date(Date.UTC(this.startDateYear, this.startDateMonth, this.startDateDay));
-        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment().isDST() ? 60 : 0))*60*1000 )
+        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment(d).isDST() ? 60 : 0))*60*1000 )
 
         return d
     }
 
     getEndDateLocal() {
         const d = new Date(Date.UTC(this.endDateYear, this.endDateMonth, this.endDateDay));
-        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment().isDST() ? 60 : 0))*60*1000 )
+        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment(d).isDST() ? 60 : 0))*60*1000 )
         
         return d
     }
@@ -54,12 +54,12 @@ export default class YMDateRange {
         const startDate = this.getStartDateLocal()
         this.startDateMonth = Moment(startDate).add(number, 'month').month()
         this.startDateYear = Moment(startDate).add(number, 'month').year()
-        this.startDateDay = Moment(startDate).add(number, 'month').date()
+        this.startDateDay = Moment(startDate).add(number, 'month').add(1, 'day').date()
 
         const endDate = this.getEndDateLocal()
         this.endDateMonth = Moment(endDate).add(number, 'month').month()
         this.endDateYear = Moment(endDate).add(number, 'month').year()
-        this.endDateDay = Moment(endDate).add(number, 'month').date()
+        this.endDateDay = Moment(endDate).add(number, 'month').add(1, 'day').date()
     }
 
     static monthDateRange(month: number, year: number, timezoneOffsetInMinutes: number) {
@@ -68,7 +68,7 @@ export default class YMDateRange {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMDateRange(undefined, undefined, undefined, undefined, undefined, undefined, undefined)
+        if(obj == null) return YMDateRange.monthDateRange(Moment().month(), Moment().year(), 0)
 
         return new YMDateRange(obj.startDateYear, obj.startDateMonth, obj.startDateDay, obj.endDateYear, obj.endDateMonth, obj.endDateDay, obj.timezoneOffsetInMinutes)
     }

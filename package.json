@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "build": "./node_modules/.bin/tslint -p tslint.json && ./node_modules/.bin/tsc",
-    "test": "npx jest --watch"
+    "test": "npx jest --coverage"
   },
   "dependencies": {
+    "@types/node": "^12.0.3",
     "moment": "^2.18.1",
     "typescript": "^3.4.5"
   },
