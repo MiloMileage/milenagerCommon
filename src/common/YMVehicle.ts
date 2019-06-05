@@ -10,8 +10,8 @@ export default class YMVehicle {
     odometerReads: Array<YMOdometerRead>
     visible: boolean
 
-    constructor (vehicleId = '', make = '', model = '', primaryTime = 0,
-    year = '', nickName = '', odometerReads = [new YMOdometerRead()], visible = true) {
+    constructor (vehicleId: string, make: string, model: string, primaryTime: number,
+            year: string, nickName: string, odometerReads: Array<YMOdometerRead>, visible: boolean) {
         this.vehicleId = vehicleId
         this.make = make
         this.model = model
@@ -38,10 +38,5 @@ export default class YMVehicle {
 
         return new YMVehicle(obj.vehicleId, obj.make, obj.model, obj.primaryTime, obj.year, obj.nickName,
                                 obj.odometerReads, obj.visible)
-    }
-
-    // tslint:disable-next-line:member-ordering
-    static getOldestOdometerRead = function(vehicle) {
-        return Number(vehicle.odometerReads.sort((x, y) => x.year - y.year)[0].year)
     }
 }

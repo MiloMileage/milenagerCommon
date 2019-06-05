@@ -9,7 +9,7 @@ export default class YMRate {
     visible: boolean
     rateId: string
 
-    constructor (name: string, deductable: number, rateId: string = new Date().getTime().toString(), visible: boolean = true) {
+    constructor (name: string, deductable: number, rateId: string, visible: boolean) {
         this.name = name
         this.deductable = deductable
         this.visible = visible
@@ -45,11 +45,11 @@ export default class YMRate {
         if (purpose.rateId.startsWith('irs_')) {
             const rates = gloablSettings.irsRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
 
-            return Number(rates === undefined ? 0 : rates[purpose.rateId.substring(4)])
+            return Number(rates === undefined ? 0 : rates[purpose.rateId.substring(4)] == undefined ? 0 : rates[purpose.rateId.substring(4)])
         }
 
         const rate = userSettings.personalRates.filter(x => x.rateId === purpose.rateId)[0]
-
+        
         return rate === undefined ? 0 : rate.deductable
     }
 }

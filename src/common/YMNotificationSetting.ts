@@ -7,8 +7,8 @@ export default class YMNotificationSetting {
     isEnabledByDefault: boolean
     isActive: boolean
 
-    constructor (notificationId = '0', notificationType = 'mail', title = 'title', description = 'description'
-            , enabled = true, isEnabledByDefault = true, isActive = true) {
+    constructor (notificationId: string, notificationType: string, title: string, description: string
+            , enabled: boolean, isEnabledByDefault: boolean, isActive: boolean) {
         this.notificationId = notificationId
         this.notificationType = notificationType // Mail \ Phone
         this.title = title

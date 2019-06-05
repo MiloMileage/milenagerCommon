@@ -7,7 +7,7 @@ export default class YMPurpose {
     iconName: string
     order: number
 
-    constructor (purposeId = 'id', rateId = 'rateId', name = 'name', category = 'category', iconName = 'iconName', visible: boolean = true, order: number = 0) {
+    constructor (purposeId: string, rateId: string, name: string, category: string, iconName: string, visible: boolean, order: number) {
         this.purposeId = purposeId
         this.rateId = rateId
         this.name = name
@@ -50,7 +50,9 @@ export default class YMPurpose {
         
         if (first) {
             for (const purpose of first) {
-                purposes.push(YMPurpose.fromObject(JSON.parse(JSON.stringify(purpose))))
+                if (purposes.filter(x => x.purposeId === purpose.purposeId).length === 0) {
+                    purposes.push(YMPurpose.fromObject(JSON.parse(JSON.stringify(purpose))))   
+                }
             }
         }
         

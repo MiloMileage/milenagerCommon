@@ -3,7 +3,7 @@ export default class YMDriveNotes {
     parkingMoney: number
     tollMoney: number
 
-    constructor (note = '', parkingMoney = 0, tollMoney = 0) {
+    constructor (note: string, parkingMoney: number, tollMoney: number) {
         this.note = note
         this.parkingMoney = Number(parkingMoney)
         this.tollMoney = Number(tollMoney)

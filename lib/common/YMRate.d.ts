@@ -6,7 +6,7 @@ export default class YMRate {
     deductable: number;
     visible: boolean;
     rateId: string;
-    constructor(name: string, deductable: number, rateId?: string, visible?: boolean);
+    constructor(name: string, deductable: number, rateId: string, visible: boolean);
     static fromObject: (obj: any) => YMRate;
     static getRateForPurposeId: (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive) => number;
 }

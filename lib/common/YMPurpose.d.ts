@@ -6,7 +6,7 @@ export default class YMPurpose {
     visible: boolean;
     iconName: string;
     order: number;
-    constructor(purposeId?: string, rateId?: string, name?: string, category?: string, iconName?: string, visible?: boolean, order?: number);
+    constructor(purposeId: string, rateId: string, name: string, category: string, iconName: string, visible: boolean, order: number);
     static fromObject: (obj: any) => YMPurpose;
     static categories: {
         personal: string;

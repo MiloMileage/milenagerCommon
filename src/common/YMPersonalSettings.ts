@@ -17,7 +17,7 @@ export default class YMPersonalSettings {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMPersonalSettings(false, '', Moment.utc().add(-1, 'day').toDate().getTime())
+        if(obj == null) return new YMPersonalSettings(false, undefined, undefined)
 
         return new YMPersonalSettings(obj.isMetricSystem, obj.monitoringLevel, obj.monitorFromTimestamp)
     }

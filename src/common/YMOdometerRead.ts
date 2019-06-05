@@ -2,7 +2,7 @@ export default class YMOdometerRead {
     year: number
     read: number
 
-    constructor (year = new Date().getFullYear(), read = 0) {
+    constructor (year: number, read: number) {
         this.year = year
         this.read = read
     }
