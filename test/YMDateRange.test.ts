@@ -109,25 +109,82 @@ test('addMonth test', () => {
     const dateRangeObj = {
         'startDateYear': 2019,
         'startDateMonth': 8,
-        'startDateDay': 13,
+        'startDateDay': 1,
         'endDateYear': 2019,
         'endDateMonth': 9,
-        'endDateDay': 5,
+        'endDateDay': 1,
         'timezoneOffsetInMinutes' : 0,
     }
 
     const dateRangeObj2 = {
         'startDateYear': 2019,
         'startDateMonth': 9,
-        'startDateDay': 13,
+        'startDateDay': 1,
         'endDateYear': 2019,
         'endDateMonth': 10,
+        'endDateDay': 1,
+        'timezoneOffsetInMinutes' : 0,
+    }
+
+    const dateRange = YMDateRange.fromObject(dateRangeObj)
+    dateRange.addMonth(1)
+    const dateRange2 = YMDateRange.fromObject(dateRangeObj2)
+
+    expect(dateRange.isEqualTo(dateRange2)).toBeTruthy()
+});
+
+test('addMonth skip year test', () => {
+    const dateRangeObj = {
+        'startDateYear': 2018,
+        'startDateMonth': 8,
+        'startDateDay': 1,
+        'endDateYear': 2018,
+        'endDateMonth': 9,
+        'endDateDay': 1,
+        'timezoneOffsetInMinutes' : 0,
+    }
+
+    const dateRangeObj2 = {
+        'startDateYear': 2019,
+        'startDateMonth': 9,
+        'startDateDay': 1,
+        'endDateYear': 2019,
+        'endDateMonth': 10,
+        'endDateDay': 1,
+        'timezoneOffsetInMinutes' : 0,
+    }
+
+    const dateRange = YMDateRange.fromObject(dateRangeObj)
+    dateRange.addMonth(13)
+    const dateRange2 = YMDateRange.fromObject(dateRangeObj2)
+
+    expect(dateRange.isEqualTo(dateRange2)).toBeTruthy()
+});
+
+test('addMonth end of year year test', () => {
+    const dateRangeObj = {
+        'startDateYear': 2019,
+        'startDateMonth': 10,
+        'startDateDay': 2,
+        'endDateYear': 2019,
+        'endDateMonth': 11,
+        'endDateDay': 5,
+        'timezoneOffsetInMinutes' : 0,
+    }
+
+    const dateRangeObj2 = {
+        'startDateYear': 2020,
+        'startDateMonth': 0,
+        'startDateDay': 2,
+        'endDateYear': 2020,
+        'endDateMonth': 1,
         'endDateDay': 5,
         'timezoneOffsetInMinutes' : 0,
     }
 
     const dateRange = YMDateRange.fromObject(dateRangeObj)
-    dateRange.addMonth(1) 
+    dateRange.addMonth(2)
+    console.log(`dateRange: ${JSON.stringify(dateRange)}`)
     const dateRange2 = YMDateRange.fromObject(dateRangeObj2)
 
     expect(dateRange.isEqualTo(dateRange2)).toBeTruthy()
