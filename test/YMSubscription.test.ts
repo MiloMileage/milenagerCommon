@@ -11,21 +11,21 @@ test('Create Subscription from ios receipt active', () => {
     const appleReceipt: AppleReceiptResponse = JSON.parse(annualJson);
     const subscription = YMSubscription.fromIosReceipt(appleReceipt);
 
-    expect(subscription.isActive).toBeTruthy()
+    expect(subscription.isSetToRenew).toBeTruthy()
 });
 
 test('Create Subscription from ios receipt not active', () => {
     const appleReceipt: AppleReceiptResponse = JSON.parse(monthlyJson);
     const subscription = YMSubscription.fromIosReceipt(appleReceipt);
 
-    expect(subscription.isActive).toBeFalsy()
+    expect(subscription.isSetToRenew).toBeFalsy()
 });
 
 test('Create Subscription from ios receipt annual', () => {
     const appleReceipt: AppleReceiptResponse = JSON.parse(annualJson);
     const subscription = YMSubscription.fromIosReceipt(appleReceipt);
 
-    expect(subscription.isActive).toBeTruthy()
+    expect(subscription.isSetToRenew).toBeTruthy()
     expect(subscription.isAnnual()).toBeTruthy()
     expect(subscription.isNone()).toBeFalsy()
     expect(subscription.isMonthly()).toBeFalsy()
@@ -38,7 +38,7 @@ test('Create Subscription from ios receipt monthly active', () => {
     const appleReceipt: AppleReceiptResponse = JSON.parse(monthlyActiveJson);
     const subscription = YMSubscription.fromIosReceipt(appleReceipt);
 
-    expect(subscription.isActive).toBeTruthy()
+    expect(subscription.isSetToRenew).toBeTruthy()
     expect(subscription.isAnnual()).toBeFalsy()
     expect(subscription.isNone()).toBeFalsy()
     expect(subscription.isMonthly()).toBeTruthy()
@@ -51,7 +51,7 @@ test('Create Subscription from ios receipt monthly active', () => {
     const appleReceipt: AppleReceiptResponse = JSON.parse(momnthlyActiveJsonFlipped);
     const subscription = YMSubscription.fromIosReceipt(appleReceipt);
 
-    expect(subscription.isActive).toBeTruthy()
+    expect(subscription.isSetToRenew).toBeTruthy()
     expect(subscription.isAnnual()).toBeFalsy()
     expect(subscription.isNone()).toBeFalsy()
     expect(subscription.isMonthly()).toBeTruthy()
@@ -69,4 +69,12 @@ test('Check if dummy subscription', () => {
     const subscription2 = YMSubscription.fromIosReceipt(appleReceipt);
     
     expect(subscription2.isDummy()).toBeFalsy()
+});
+
+test('Check if under subscription', () => {
+    const appleReceipt: AppleReceiptResponse = JSON.parse(monthlyActiveJson);
+    const subscription = YMSubscription.fromIosReceipt(appleReceipt);
+    subscription.latestPaidDate = Moment().add(-1, 'day').toDate()
+    
+    expect(subscription.isUnderSubscription()).toBeFalsy()
 });

@@ -1,12 +1,13 @@
 import { AppleReceiptResponse } from './YMAppleReceiptResponse';
 export default class YMSubscription {
     subscriptionType: string;
-    isActive: boolean;
+    isSetToRenew: boolean;
     renewalDate: Date;
     latestPaidDate: Date;
     receipt: any;
     isIos: boolean;
-    constructor(subscriptionType: string, isActive: boolean, renewalDate: Date, latestPaidDate: Date, receipt: any, isIos: boolean);
+    constructor(subscriptionType: string, isSetToRenew: boolean, renewalDate: Date, latestPaidDate: Date, receipt: any, isIos: boolean);
+    isUnderSubscription(): boolean;
     isNone(): boolean;
     isAnnual(): boolean;
     isMonthly(): boolean;
