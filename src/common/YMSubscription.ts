@@ -44,11 +44,14 @@ export default class YMSubscription {
 
         const latestPaidDate = YMSubscription.getLatestPaidDate(appleReceipt)
         const isSetToRenew = appleReceipt.pending_renewal_info[0].auto_renew_status === '1'
-        const subscriptionType = !isSetToRenew ? YMSubscription.subscriptionsTypes.none : appleReceipt.pending_renewal_info[0].auto_renew_product_id.indexOf('annualy') === -1 ? YMSubscription.subscriptionsTypes.monthly : YMSubscription.subscriptionsTypes.annual
         const receipt = appleReceipt
-        const renewalDate = isSetToRenew ? Moment(latestPaidDate).add(1, subscriptionType === YMSubscription.subscriptionsTypes.monthly ? 'month' : 'year').toDate() : null
+        const subscription = new YMSubscription(YMSubscription.subscriptionsTypes.none, isSetToRenew, null, latestPaidDate, receipt, true)
+
+        const subscriptionType = !subscription.isUnderSubscription() ? YMSubscription.subscriptionsTypes.none : appleReceipt.pending_renewal_info[0].auto_renew_product_id.indexOf('annualy') === -1 ? YMSubscription.subscriptionsTypes.monthly : YMSubscription.subscriptionsTypes.annual
+        subscription.subscriptionType = subscriptionType
+        subscription.renewalDate = isSetToRenew ? Moment(latestPaidDate).add(1, subscriptionType === YMSubscription.subscriptionsTypes.monthly ? 'month' : 'year').toDate() : null
     
-        return new YMSubscription(subscriptionType, isSetToRenew, renewalDate, latestPaidDate, receipt, true)
+        return subscription
     }
 
     static getLatestPaidDate(appleReceipt: AppleReceiptResponse) {
