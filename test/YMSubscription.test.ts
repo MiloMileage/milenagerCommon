@@ -59,3 +59,14 @@ test('Create Subscription from ios receipt monthly active', () => {
     expect(Moment(subscription.latestPaidDate).format()).toEqual('2019-06-19T20:06:40-07:00')
     expect(Moment(subscription.renewalDate).format()).toEqual('2019-07-19T20:06:40-07:00')
 });
+
+test('Check if dummy subscription', () => {
+    const subscription = YMSubscription.createDummySubscription();
+
+    expect(subscription.isDummy()).toBeTruthy()
+
+    const appleReceipt: AppleReceiptResponse = JSON.parse(monthlyActiveJson);
+    const subscription2 = YMSubscription.fromIosReceipt(appleReceipt);
+    
+    expect(subscription2.isDummy()).toBeFalsy()
+});

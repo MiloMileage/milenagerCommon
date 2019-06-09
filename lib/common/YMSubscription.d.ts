@@ -10,8 +10,10 @@ export default class YMSubscription {
     isNone(): boolean;
     isAnnual(): boolean;
     isMonthly(): boolean;
+    isDummy(): boolean;
     static fromIosReceipt: (obj: any) => YMSubscription;
     static getLatestPaidDate(appleReceipt: AppleReceiptResponse): any;
+    static createDummySubscription(): YMSubscription;
     static subscriptionsTypes: {
         none: string;
         annual: string;

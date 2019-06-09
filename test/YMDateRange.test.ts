@@ -184,7 +184,6 @@ test('addMonth end of year year test', () => {
 
     const dateRange = YMDateRange.fromObject(dateRangeObj)
     dateRange.addMonth(2)
-    console.log(`dateRange: ${JSON.stringify(dateRange)}`)
     const dateRange2 = YMDateRange.fromObject(dateRangeObj2)
 
     expect(dateRange.isEqualTo(dateRange2)).toBeTruthy()

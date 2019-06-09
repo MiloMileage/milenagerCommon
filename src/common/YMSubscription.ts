@@ -30,6 +30,10 @@ export default class YMSubscription {
         return this.subscriptionType === YMSubscription.subscriptionsTypes.monthly
     }
 
+    isDummy() {
+        return this.receipt == null
+    }
+
     // tslint:disable-next-line:member-ordering
     static fromIosReceipt = function(obj: any) {
         const appleReceipt: AppleReceiptResponse = obj;
@@ -55,6 +59,10 @@ export default class YMSubscription {
         })
 
         return latestDate
+    }
+
+    static createDummySubscription() {
+        return new YMSubscription(YMSubscription.subscriptionsTypes.none, null, null, null, null, true)
     }
 
     static subscriptionsTypes = {
