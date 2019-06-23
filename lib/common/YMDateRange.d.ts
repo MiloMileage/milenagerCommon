@@ -7,8 +7,8 @@ export default class YMDateRange {
     endDateDay: number;
     timezoneOffsetInMinutes: number;
     constructor(startDateYear: number, startDateMonth: number, startDateDay: number, endDateYear: number, endDateMonth: number, endDateDay: number, timezoneOffsetInMinutes: number);
-    getStartDateLocal(): Date;
-    getEndDateLocal(): Date;
+    getStartDateLocal(ignoreDst?: boolean): Date;
+    getEndDateLocal(ignoreDst?: boolean): Date;
     isEqualTo(anotherDateRange: YMDateRange): boolean;
     isMonthRange(): boolean;
     addMonth(number?: number): void;

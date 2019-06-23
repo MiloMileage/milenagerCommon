@@ -21,16 +21,16 @@ export default class YMDateRange {
         this.timezoneOffsetInMinutes = timezoneOffsetInMinutes
     }
 
-    getStartDateLocal() {
+    getStartDateLocal(ignoreDst: boolean = false) { 
         const d = new Date(Date.UTC(this.startDateYear, this.startDateMonth, this.startDateDay));
-        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment(d).isDST() ? 60 : 0))*60*1000 )
+        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (!ignoreDst && Moment(d).isDST() ? 60 : 0))*60*1000 )
 
         return d
     }
 
-    getEndDateLocal() {
+    getEndDateLocal(ignoreDst: boolean = false) {
         const d = new Date(Date.UTC(this.endDateYear, this.endDateMonth, this.endDateDay));
-        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (Moment(d).isDST() ? 60 : 0))*60*1000 )
+        d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (!ignoreDst && Moment(d).isDST() ? 60 : 0))*60*1000 )
         
         return d
     }
