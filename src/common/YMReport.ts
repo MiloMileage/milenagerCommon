@@ -27,6 +27,7 @@ export default class YMReport {
     reportId: string
     csvLink: string
     pdfLink: string
+    isOutsideOfSubscriptionPeriod: boolean
     
     constructor (reportName: string,
             dateCreated: Date,
@@ -45,7 +46,8 @@ export default class YMReport {
             vehiclePersonalLines: Array<YMReportVehicleLine>,
             reportId: string,
             csvLink: string,
-            pdfLink: string) {
+            pdfLink: string,
+            isOutsideOfSubscriptionPeriod: boolean) {
         this.reportName = reportName
         this.dateCreated = dateCreated
         this.name = name
@@ -64,6 +66,7 @@ export default class YMReport {
         this.reportId = reportId
         this.csvLink = csvLink
         this.pdfLink = pdfLink
+        this.isOutsideOfSubscriptionPeriod = isOutsideOfSubscriptionPeriod
     }
 
     addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations : { [ind: string]: YMSavedLocation }) {
@@ -311,7 +314,7 @@ export default class YMReport {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReport('', new Date(), '', '', '', '', 0, 0, 0, 0, false, YMDateRange.fromObject(undefined), [], [], [], '', '', '')
+        if(obj == null) return new YMReport('', new Date(), '', '', '', '', 0, 0, 0, 0, false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false)
         
         return new YMReport(
             obj.reportName,
@@ -331,6 +334,7 @@ export default class YMReport {
             obj.vehiclePersonalLines,
             obj.reportId,
             obj.csvLink,
-            obj.pdfLink)
+            obj.pdfLink,
+            obj.isOutsideOfSubscriptionPeriod)
     }
 }
