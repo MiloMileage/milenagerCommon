@@ -115,7 +115,7 @@ export default class YMReport {
 
         this.vehicleBusinessLines.sort((a, b) => { return b.miles - a.miles})
         this.vehiclePersonalLines.sort((a, b) => { return b.miles - a.miles})
-        this.lines.sort((a, b) => a.when.getStartDateLocal().getTime() - b.when.getStartDateLocal().getTime())
+        this.lines.sort((a, b) => a.when.getTime() - b.when.getTime())
     }
 
     getPersonalMiles() {
@@ -280,7 +280,7 @@ export default class YMReport {
         data += '\n'
 
         this.lines.forEach(dl => {
-            data += `${Moment.utc(dl.when.getStartDateLocal()).format('MMMM Do YYYY h:mm a')},`
+            data += `${Moment.utc(dl.when.getTime()).format('MMMM Do YYYY h:mm a')},`
             data += `${dl.purpose},`
             data += `${dl.fromTo},`
             data += `${dl.fromToPersonalized},`

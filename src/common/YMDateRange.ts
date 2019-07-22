@@ -12,13 +12,13 @@ export default class YMDateRange {
     timezoneOffsetInMinutes: number
 
     constructor (startDateYear: number, startDateMonth: number, startDateDay: number, endDateYear: number, endDateMonth: number, endDateDay: number, timezoneOffsetInMinutes: number) {
-        this.startDateYear = startDateYear
-        this.startDateMonth = startDateMonth
-        this.startDateDay = startDateDay
-        this.endDateYear = endDateYear
-        this.endDateMonth = endDateMonth
-        this.endDateDay = endDateDay
-        this.timezoneOffsetInMinutes = timezoneOffsetInMinutes
+        this.startDateYear = Number(startDateYear)
+        this.startDateMonth = Number(startDateMonth)
+        this.startDateDay = Number(startDateDay)
+        this.endDateYear = Number(endDateYear)
+        this.endDateMonth = Number(endDateMonth)
+        this.endDateDay = Number(endDateDay)
+        this.timezoneOffsetInMinutes = Number(timezoneOffsetInMinutes)
     }
 
     getStartDateLocal(ignoreDst: boolean = false) { 

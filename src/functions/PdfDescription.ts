@@ -233,7 +233,7 @@ export default class PdfDescription {
             drivesSummaryLine.tolls += dl.tolls
             drivesSummaryLine.value += dl.value
             drivesTableSub.body.push([
-                PdfTableSub.getTableCell(Moment.utc(new Date(dl.when.getStartDateLocal())).format('MMMM Do YYYY, h:mm a')),
+                PdfTableSub.getTableCell(Moment.utc(dl.when).format('MMMM Do YYYY, h:mm a')),
                 PdfTableSub.getTableCell(dl.purpose),
                 PdfTableSub.getTableCell(dl.fromToPersonalized),
                 PdfTableSub.getTableCell(dl.vehicle),

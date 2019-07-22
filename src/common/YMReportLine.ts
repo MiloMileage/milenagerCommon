@@ -7,7 +7,7 @@ import YMSavedLocation from './YMSavedLocation'
 import * as Common from './../components/common'
 
 export default class YMReportLine {
-    when: YMDateRange
+    when: Date
     purpose: string
     fromTo: string
     fromToPersonalized: string
@@ -17,7 +17,7 @@ export default class YMReportLine {
     parking: number
     tolls: number
     
-    constructor (when: YMDateRange,
+    constructor (when: Date,
             purpose: string,
             fromTo: string,
             fromToPersonalized: string,
@@ -40,13 +40,11 @@ export default class YMReportLine {
     static fromDrive(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations : { [ind: string]: YMSavedLocation }) {
         const originPersonal = Common.getPersonalNameIfExist(savedLocations, drive.origin, drive.origin.address.name)
         const destPersonal = Common.getPersonalNameIfExist(savedLocations, drive.dest, drive.dest.address.name)
-        
-        const startTime = drive.startTime()
-        const endTime = drive.endTime()
+        const purposes =  YMPurpose.mergePuprosesArrays(globalSettings.purposes, userSettings.purposes, true)
+        const purpose = YMPurpose.fromObject(purposes.filter(x => x.purposeId === drive.drivePurposeId)[0])
 
-        return new YMReportLine(new YMDateRange(startTime.getFullYear(), startTime.getMonth(), startTime.getDate(),
-                                    endTime.getFullYear(), endTime.getMonth(), endTime.getDate(), Math.round(drive.timestampOffsetInSeconds / 60)),
-                                YMReportLine.getPurposeString(drive.drivePurposeId),
+        return new YMReportLine(drive.startTime(),
+                                YMReportLine.getPurposeString(purpose, drive),
                                 `${drive.origin.address.name} -> ${drive.dest.address.name}`,
                                 `${originPersonal} -> ${destPersonal}`,
                                 drive.getVehicleName(userSettings),
@@ -56,31 +54,21 @@ export default class YMReportLine {
                                 Common.roundNumber(drive.driveNotes.tollMoney))
     }
 
-    static getPurposeString(purposeId: string) {
-        switch (purposeId) {
-            case YMPurpose.defaultPuposesIds.business:
-                return 'Business to Business'
-
-            case YMPurpose.defaultPuposesIds.charity:
-                return 'Charity'
-
-            case YMPurpose.defaultPuposesIds.medical:
-                return 'Medical'
-
-            case YMPurpose.defaultPuposesIds.moving:
-                return 'Moving'
-
-            case YMPurpose.defaultPuposesIds.personal:
-                return 'Personal to Personal'
-            
-            default:
-                return ''
+    static getPurposeString(purpose: YMPurpose, drive: YMDrive) {
+        if (drive.isAutoLocation) {
+            return purpose.purposeId === YMPurpose.defaultPuposesIds.business ? 'Business to Business' : 'Personal to Personal'
         }
+
+        if (drive.isAutoWorkHours) {
+            return 'Outside working hours'
+        }
+
+        return purpose.name
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReportLine(YMDateRange.fromObject(undefined), '', '', '', '', 0, 0, 0, 0)
+        if(obj == null) return new YMReportLine(new Date(), '', '', '', '', 0, 0, 0, 0)
         
         return new YMReportLine(obj.when, obj.purpose, obj.fromTo, obj.fromToPersonalized, obj.vehicle, obj.distanceInMiles, obj.value, obj.parking, obj.tolls)
     }
