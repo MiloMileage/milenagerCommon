@@ -66,7 +66,7 @@ export default class YMDateRange {
         const startDate = Moment(this.getStartDateLocal())
         this.startDateDay = startDate.endOf('month').date() < this.startDateDay ? startDate.endOf('month').date() : this.startDateDay
 
-        addYears = this.endDateMonth + number > 12
+        addYears = this.endDateMonth + number >= 12
         this.endDateMonth = (this.endDateMonth + number) % 12
         this.endDateYear = this.endDateYear + (addYears ? 1 : 0)
         const endDate = Moment(this.getStartDateLocal())
@@ -82,7 +82,7 @@ export default class YMDateRange {
             this.addMonth(Math.abs(number))
             return
         }
-        
+
         let subYears = this.startDateMonth - number < 0
         this.startDateMonth = (this.startDateMonth - number + 12) % 12
         this.startDateYear = this.startDateYear - (subYears ? 1 : 0)
