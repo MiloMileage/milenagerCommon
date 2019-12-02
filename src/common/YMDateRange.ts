@@ -51,6 +51,15 @@ export default class YMDateRange {
     }
     
     addMonth(number: number = 1) {
+        if (number == 0) {
+            return
+        }
+
+        if (number < 0) {
+            this.substructMonth(Math.abs(number))
+            return
+        }
+
         let addYears = this.startDateMonth + number >= 12
         this.startDateMonth = (this.startDateMonth + number) % 12
         this.startDateYear = this.startDateYear + (addYears ? 1 : 0)
@@ -65,6 +74,15 @@ export default class YMDateRange {
     }
 
     substructMonth(number: number = 1) {
+        if (number == 0) {
+            return
+        }
+
+        if (number < 0) {
+            this.addMonth(Math.abs(number))
+            return
+        }
+        
         let subYears = this.startDateMonth - number < 0
         this.startDateMonth = (this.startDateMonth - number + 12) % 12
         this.startDateYear = this.startDateYear - (subYears ? 1 : 0)
