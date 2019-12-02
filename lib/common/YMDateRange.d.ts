@@ -12,6 +12,7 @@ export default class YMDateRange {
     isEqualTo(anotherDateRange: YMDateRange): boolean;
     isMonthRange(): boolean;
     addMonth(number?: number): void;
+    substructMonth(number?: number): void;
     static monthDateRange(month: number, year: number, timezoneOffsetInMinutes: number): YMDateRange;
     static fromObject: (obj: any) => YMDateRange;
 }
