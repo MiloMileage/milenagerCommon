@@ -12,10 +12,8 @@ export default class YMReport {
     project: string;
     customerDetails: string;
     details: string;
-    businessRateInMiles: number;
-    charityRateInMiles: number;
-    movingRateInMiles: number;
-    medicalRateInMiles: number;
+    userSettings: YMUserSettings;
+    globalSettings: YMGlobalUserSettings;
     isMetricSystem: boolean;
     dateRange: YMDateRange;
     lines: Array<YMReportLine>;
@@ -25,8 +23,12 @@ export default class YMReport {
     csvLink: string;
     pdfLink: string;
     isOutsideOfSubscriptionPeriod: boolean;
-    constructor(reportName: string, dateCreated: Date, name: string, project: string, customerDetails: string, details: string, businessRateInMiles: number, charityRateInMiles: number, movingRateInMiles: number, medicalRateInMiles: number, isMetricSystem: boolean, dateRange: YMDateRange, lines: Array<YMReportLine>, vehicleBusinessLines: Array<YMReportVehicleLine>, vehiclePersonalLines: Array<YMReportVehicleLine>, reportId: string, csvLink: string, pdfLink: string, isOutsideOfSubscriptionPeriod: boolean);
-    addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations: {
+    businessRateInMiles: number;
+    movingRateInMiles: number;
+    charityRateInMiles: number;
+    medicalRateInMiles: number;
+    constructor(reportName: string, dateCreated: Date, name: string, project: string, customerDetails: string, details: string, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, isMetricSystem: boolean, dateRange: YMDateRange, lines: Array<YMReportLine>, vehicleBusinessLines: Array<YMReportVehicleLine>, vehiclePersonalLines: Array<YMReportVehicleLine>, reportId: string, csvLink: string, pdfLink: string, isOutsideOfSubscriptionPeriod: boolean, businessRateInMiles: number, movingRateInMiles: number, charityRateInMiles: number, medicalRateInMiles: number);
+    addDriveValue(drive: YMDrive, savedLocations: {
         [ind: string]: YMSavedLocation;
     }): void;
     getPersonalMiles(): number;

@@ -103,8 +103,13 @@ export default class YMDrive {
         return vehicle === undefined ? '' : vehicle.nickName
     }
 
-    public getPurpose = (userSettings: YMUserSettings) => {
-        return userSettings.purposes.filter(p => p.purposeId === this.drivePurposeId)[0]
+    public getPurpose = (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => {
+        const purposeFromUserSettings = userSettings.purposes.filter(p => p.purposeId === this.drivePurposeId)
+        if (purposeFromUserSettings.length > 0) {
+            return purposeFromUserSettings[0]
+        }
+
+        return globalSettings.purposes.filter(p => p.purposeId === this.drivePurposeId)[0]
     }
 
     public getValue = (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => {

@@ -7,6 +7,7 @@ import YMSavedLocation from './YMSavedLocation'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
 import { milesToMetric, metricToMiles, roundNumber } from './../components/common'
 import * as Moment from 'moment'
+import YMRate from './YMRate'
 
 export default class YMReport {
     reportName: string
@@ -15,10 +16,8 @@ export default class YMReport {
     project: string
     customerDetails: string
     details: string
-    businessRateInMiles: number
-    charityRateInMiles: number
-    movingRateInMiles: number
-    medicalRateInMiles: number
+    userSettings: YMUserSettings
+    globalSettings: YMGlobalUserSettings
     isMetricSystem: boolean
     dateRange: YMDateRange
     lines: Array<YMReportLine>
@@ -28,6 +27,10 @@ export default class YMReport {
     csvLink: string
     pdfLink: string
     isOutsideOfSubscriptionPeriod: boolean
+    businessRateInMiles: number
+    movingRateInMiles: number
+    charityRateInMiles: number
+    medicalRateInMiles: number
     
     constructor (reportName: string,
             dateCreated: Date,
@@ -35,10 +38,8 @@ export default class YMReport {
             project: string,
             customerDetails: string,
             details: string,
-            businessRateInMiles: number,
-            charityRateInMiles: number,
-            movingRateInMiles: number,
-            medicalRateInMiles: number,
+            userSettings: YMUserSettings,
+            globalSettings: YMGlobalUserSettings,
             isMetricSystem: boolean,
             dateRange: YMDateRange,
             lines: Array<YMReportLine>,
@@ -47,17 +48,19 @@ export default class YMReport {
             reportId: string,
             csvLink: string,
             pdfLink: string,
-            isOutsideOfSubscriptionPeriod: boolean) {
+            isOutsideOfSubscriptionPeriod: boolean,
+            businessRateInMiles: number,
+            movingRateInMiles: number,
+            charityRateInMiles: number,
+            medicalRateInMiles: number) {
         this.reportName = reportName
         this.dateCreated = dateCreated
         this.name = name
         this.project = project
         this.customerDetails = customerDetails
         this.details = details
-        this.businessRateInMiles = businessRateInMiles
-        this.charityRateInMiles = charityRateInMiles
-        this.movingRateInMiles = movingRateInMiles
-        this.medicalRateInMiles = medicalRateInMiles
+        this.userSettings = userSettings
+        this.globalSettings = globalSettings
         this.isMetricSystem = isMetricSystem
         this.dateRange = YMDateRange.fromObject(dateRange)
         this.lines = lines.map(line => YMReportLine.fromObject(line))
@@ -67,21 +70,27 @@ export default class YMReport {
         this.csvLink = csvLink
         this.pdfLink = pdfLink
         this.isOutsideOfSubscriptionPeriod = isOutsideOfSubscriptionPeriod
+        this.businessRateInMiles = businessRateInMiles
+        this.movingRateInMiles = movingRateInMiles
+        this.charityRateInMiles = charityRateInMiles
+        this.medicalRateInMiles = medicalRateInMiles
     }
 
-    addDriveValue(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations : { [ind: string]: YMSavedLocation }) {
-        const newLine = YMReportLine.fromDrive(drive, userSettings, globalSettings, savedLocations)
+    addDriveValue(drive: YMDrive, savedLocations : { [ind: string]: YMSavedLocation }) {
+        const newLine = YMReportLine.fromDrive(drive, this.userSettings, this.globalSettings, savedLocations)
         this.lines.push(newLine)
 
-        const vehicle = userSettings.vehicles.filter(v => v.vehicleId === drive.vehicleId)[0]
-        const purpose = drive.getPurpose(userSettings)
+        const vehicle = this.userSettings.vehicles.filter(v => v.vehicleId === drive.vehicleId)[0]
+        const purpose = drive.getPurpose(this.userSettings, this.globalSettings)
+        
+        // Every custom rate the user creates is considered to be 'business'
         const isBusiness = purpose !== undefined && purpose.category.toLowerCase() === 'business'
 
         const newVehicleLine = new YMReportVehicleLine(
                                     newLine.vehicle,
                                     vehicle === undefined ? 0 : vehicle.getOdometerReadIfExist(drive.startTime().getFullYear()),
                                     drive.miles,
-                                    drive.getValue(userSettings, globalSettings),
+                                    drive.getValue(this.userSettings, this.globalSettings),
                                     drive.driveNotes.parkingMoney,
                                     drive.driveNotes.tollMoney)
 
@@ -98,7 +107,7 @@ export default class YMReport {
 
                 this.vehicleBusinessLines = [...this.vehicleBusinessLines.filter(v => v.vehicle !== newLine.vehicle), vehicleLine]
             }
-        } else {
+        } else { // Personal
             const vehicleLine = this.vehiclePersonalLines.filter(v => v.vehicle === newLine.vehicle)[0]
             if (vehicleLine === undefined) {
                 this.vehiclePersonalLines.push(newVehicleLine)
@@ -266,11 +275,13 @@ export default class YMReport {
         
         data += '\n'
 
+        data += '#,'
         data += 'When,'
+        data += 'Rate ($),'
         data += `Why,`
         data += `From -> To,`
         data += `From -> To (Frequent Locations),`
-        data += `Vehicle (${this.isMetricSystem ? 'km' : 'mi'}),`
+        data += `Vehicle,`
         data += `Distance (${this.isMetricSystem ? 'km' : 'mi'}),`
         data += `Value ($),`
         data += `Parking ($),`
@@ -279,8 +290,10 @@ export default class YMReport {
 
         data += '\n'
 
-        this.lines.forEach(dl => {
+        this.lines.forEach((dl, index) => {
+            data += `${index + 1},`
             data += `${Moment.utc(dl.when.getTime()).format('MMMM Do YYYY h:mm a')},`
+            data += `${dl.rate},`
             data += `${dl.purpose},`
             data += `${dl.fromTo},`
             data += `${dl.fromToPersonalized},`
@@ -314,7 +327,7 @@ export default class YMReport {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReport('', new Date(), '', '', '', '', 0, 0, 0, 0, false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false)
+        if(obj == null) return new YMReport('', new Date(), '', '', '', '', YMUserSettings.fromObject(undefined), YMGlobalUserSettings.fromObject(undefined), false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false, 0, 0, 0, 0)
         
         return new YMReport(
             obj.reportName,
@@ -323,10 +336,8 @@ export default class YMReport {
             obj.project,
             obj.customerDetails,
             obj.details,
-            obj.businessRateInMiles,
-            obj.charityRateInMiles,
-            obj.movingRateInMiles,
-            obj.medicalRateInMiles,
+            obj.userSettings,
+            obj.globalSettings,
             obj.isMetricSystem,
             obj.dateRange,
             obj.lines,
@@ -335,6 +346,10 @@ export default class YMReport {
             obj.reportId,
             obj.csvLink,
             obj.pdfLink,
-            obj.isOutsideOfSubscriptionPeriod)
+            obj.isOutsideOfSubscriptionPeriod,
+            obj.businessRateInMiles,
+            obj.movingRateInMiles,
+            obj.charityRateInMiles,
+            obj.medicalRateInMiles)
     }
 }

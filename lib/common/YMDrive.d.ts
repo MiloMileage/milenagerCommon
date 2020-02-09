@@ -36,7 +36,7 @@ export default class YMDrive {
     endTimeInUtcEnv: () => Date;
     setPurposeId: (purposeId: string) => void;
     getVehicleName: (userSettings: YMUserSettings) => string;
-    getPurpose: (userSettings: YMUserSettings) => YMPurpose;
+    getPurpose: (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => YMPurpose;
     getValue: (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => number;
     static fromObject: (obj: any) => YMDrive;
     static getUniqueDriveArray: (drives: YMDrive[]) => YMDrive[];

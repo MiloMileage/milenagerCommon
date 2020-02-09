@@ -6,6 +6,7 @@ import YMSavedLocation from './YMSavedLocation';
 export default class YMReportLine {
     when: Date;
     purpose: string;
+    rate: number;
     fromTo: string;
     fromToPersonalized: string;
     vehicle: string;
@@ -13,7 +14,7 @@ export default class YMReportLine {
     value: number;
     parking: number;
     tolls: number;
-    constructor(when: Date, purpose: string, fromTo: string, fromToPersonalized: string, vehicle: string, distanceInMiles: number, value: number, parking: number, tolls: number);
+    constructor(when: Date, purpose: string, rate: number, fromTo: string, fromToPersonalized: string, vehicle: string, distanceInMiles: number, value: number, parking: number, tolls: number);
     static fromDrive(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations: {
         [ind: string]: YMSavedLocation;
     }): YMReportLine;

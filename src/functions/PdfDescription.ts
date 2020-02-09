@@ -213,10 +213,12 @@ export default class PdfDescription {
 
         // Add drives table
         pd.content.push(new PdfText('Mileage Log', undefined, 'subheader', undefined, undefined, undefined, undefined, undefined, 'before'))
-        const drivesSummaryLine = new YMReportLine(undefined, undefined, undefined, undefined, undefined, 0, 0, 0, 0)
-        const drivesTableSub = new PdfTableSub([110, 110, 130, 70, 70, 50, 60, 50, '*'], new Array<Array<PdfObject>>())
+        const drivesSummaryLine = YMReportLine.fromObject(undefined)
+        const drivesTableSub = new PdfTableSub([14, 110, 30, 110, 130, 60, 60, 40, 50, 40, '*'], new Array<Array<PdfObject>>())
         drivesTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('#'),
             PdfTableSub.getHeaderTableCell('When'),
+            PdfTableSub.getHeaderTableCell('Rate ($)'),
             PdfTableSub.getHeaderTableCell('Why'),
             PdfTableSub.getHeaderTableCell(`From -> To (${report.isMetricSystem ? 'km' : 'mi'})`),
             PdfTableSub.getHeaderTableCell(`Vehicle (${report.isMetricSystem ? 'km' : 'mi'})`),
@@ -227,13 +229,15 @@ export default class PdfDescription {
             PdfTableSub.getHeaderTableCell('Total ($)'),
         ])
         
-        report.lines.forEach(dl => {
+        report.lines.forEach((dl, index) => {
             drivesSummaryLine.distanceInMiles += dl.distanceInMiles
             drivesSummaryLine.parking += dl.parking
             drivesSummaryLine.tolls += dl.tolls
             drivesSummaryLine.value += dl.value
             drivesTableSub.body.push([
+                PdfTableSub.getTableCell(`${index + 1}`),
                 PdfTableSub.getTableCell(Moment.utc(dl.when).format('MMMM Do YYYY, h:mm a')),
+                PdfTableSub.getTableCell(`${dl.rate}`),
                 PdfTableSub.getTableCell(dl.purpose),
                 PdfTableSub.getTableCell(dl.fromToPersonalized),
                 PdfTableSub.getTableCell(dl.vehicle),
@@ -246,6 +250,8 @@ export default class PdfDescription {
         })
 
         drivesTableSub.body.push([
+                PdfTableSub.getTotalCell(''),
+                PdfTableSub.getTotalCell(''),
                 PdfTableSub.getTotalCell(''),
                 PdfTableSub.getTotalCell(''),
                 PdfTableSub.getTotalCell(''),
