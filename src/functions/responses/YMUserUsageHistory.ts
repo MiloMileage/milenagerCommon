@@ -4,13 +4,24 @@ export default class YMUserUsageHistory {
     didHaveSubscription: boolean
     firstDriveDate: Date
     subscriptionEndTime: Date
+    numberOfTrialDays: number
     
     constructor (didHaveSubscription: boolean,
         firstDriveDate: Date,
-        subscriptionEndTime: Date) {
+        subscriptionEndTime: Date,
+        numberOfTrialDays: number) {
         this.didHaveSubscription = didHaveSubscription
         this.firstDriveDate = firstDriveDate
         this.subscriptionEndTime = subscriptionEndTime
+        this.numberOfTrialDays = numberOfTrialDays
+    }
+
+    trialDaysRemaining() {
+        return Moment(this.firstDriveDate).diff(Moment(), 'days')
+    }
+
+    isInTrial() {
+        return this.trialDaysRemaining() < this.numberOfTrialDays
     }
 
     monthsToPayFor() {
@@ -27,8 +38,8 @@ export default class YMUserUsageHistory {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMUserUsageHistory(false, new Date(), new Date())
+        if(obj == null) return new YMUserUsageHistory(false, new Date(), new Date(), 30)
         
-        return new YMUserUsageHistory(obj.didHaveSubscription, obj.firstDriveDate, obj.subscriptionEndTime)
+        return new YMUserUsageHistory(obj.didHaveSubscription, obj.firstDriveDate, obj.subscriptionEndTime, obj.numberOfTrialDays)
     }
 }
