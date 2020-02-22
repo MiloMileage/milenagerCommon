@@ -29,6 +29,10 @@ export default class YMUserSubscription {
         return this.status === YMSubscriptionStatus.ACTIVE && Moment(this.expiresAt).isAfter(Moment())
     }
 
+    isDummy() {
+        return this.status === YMSubscriptionStatus.NONE && this.subscriptionType === YMSubscription.subscriptionsTypes.none
+    }
+
     static createDummyUserSubscription() {
         return new YMUserSubscription(YMSubscription.subscriptionsTypes.none, YMSubscriptionStatus.NONE, undefined, undefined, undefined, undefined)
     }

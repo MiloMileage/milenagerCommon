@@ -13,6 +13,7 @@ export default class YMUserSubscription {
     google_original_transaction_id: string;
     constructor(subscriptionType: string, status: YMSubscriptionStatus, promoCode: string, expiresAt: Date, apple_original_transaction_id: string, google_original_transaction_id: string);
     isUnderSubscription(): boolean;
+    isDummy(): boolean;
     static createDummyUserSubscription(): YMUserSubscription;
     static fromObject: (obj: any) => YMUserSubscription;
 }
