@@ -16,12 +16,12 @@ export default class YMUserUsageHistory {
         this.numberOfTrialDays = numberOfTrialDays
     }
 
-    trialDaysRemaining() {
-        return Moment(this.firstDriveDate).diff(Moment(), 'days')
+    daysUsingTheApp() {
+        return Moment().diff(Moment(this.firstDriveDate), 'days')
     }
 
     isInTrial() {
-        return this.trialDaysRemaining() < this.numberOfTrialDays
+        return this.daysUsingTheApp() < this.numberOfTrialDays
     }
 
     monthsToPayFor() {
