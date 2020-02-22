@@ -8,14 +8,16 @@ export default class YMSubscription {
     latestPaidDate: Date
     receipt: any
     isIos: boolean
+    userId: string
 
-    constructor (subscriptionType: string, isSetToRenew: boolean, renewalDate: Date, latestPaidDate: Date, receipt: any, isIos: boolean) {
+    constructor (subscriptionType: string, isSetToRenew: boolean, renewalDate: Date, latestPaidDate: Date, receipt: any, isIos: boolean, userId: string) {
         this.subscriptionType = subscriptionType
         this.isSetToRenew = isSetToRenew
         this.renewalDate = renewalDate
         this.latestPaidDate = latestPaidDate
         this.receipt = receipt
         this.isIos = isIos
+        this.userId = userId
     }
 
     isUnderSubscription() {
@@ -39,13 +41,13 @@ export default class YMSubscription {
     }
 
     // tslint:disable-next-line:member-ordering
-    static fromIosReceipt = function(obj: any) {
+    static fromIosReceipt = function(obj: any, userId: string) {
         const appleReceipt: AppleReceiptResponse = obj;
 
         const latestPaidDate = YMSubscription.getLatestPaidDate(appleReceipt)
         const isSetToRenew = appleReceipt.pending_renewal_info[0].auto_renew_status === '1'
         const receipt = appleReceipt
-        const subscription = new YMSubscription(YMSubscription.subscriptionsTypes.none, isSetToRenew, null, latestPaidDate, receipt, true)
+        const subscription = new YMSubscription(YMSubscription.subscriptionsTypes.none, isSetToRenew, null, latestPaidDate, receipt, true, userId)
 
         const subscriptionType = !subscription.isUnderSubscription() ? YMSubscription.subscriptionsTypes.none : appleReceipt.pending_renewal_info[0].auto_renew_product_id.indexOf('annualy') === -1 ? YMSubscription.subscriptionsTypes.monthly : YMSubscription.subscriptionsTypes.annual
         subscription.subscriptionType = subscriptionType
@@ -68,8 +70,8 @@ export default class YMSubscription {
         return latestDate
     }
 
-    static createDummySubscription() {
-        return new YMSubscription(YMSubscription.subscriptionsTypes.none, null, null, null, null, true)
+    static createDummySubscription(userId: string) {
+        return new YMSubscription(YMSubscription.subscriptionsTypes.none, null, null, null, null, true, userId)
     }
 
     static subscriptionsTypes = {
