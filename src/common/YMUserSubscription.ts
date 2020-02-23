@@ -34,7 +34,7 @@ export default class YMUserSubscription {
     }
 
     daysTillExpire() {
-        return Moment().diff(Moment(this.expiresAt), 'days')
+        return Moment(this.expiresAt).diff(Moment(), 'days')
     }
 
     isDummy() {
