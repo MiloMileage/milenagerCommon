@@ -32,6 +32,7 @@ export interface Receipt {
     original_purchase_date_ms:    string;
     original_purchase_date_pst:   string;
     original_application_version: string;
+    expiration_date_ms: string;
     in_app:                       ReceiptInfo[];
 }
 

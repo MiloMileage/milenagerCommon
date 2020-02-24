@@ -7,14 +7,14 @@ export default class YMSubscription {
     receipt: any;
     isIos: boolean;
     userId: string;
-    constructor(subscriptionType: string, isSetToRenew: boolean, renewalDate: Date, latestPaidDate: Date, receipt: any, isIos: boolean, userId: string);
+    originalTransactionId: string;
+    constructor(subscriptionType: string, isSetToRenew: boolean, renewalDate: Date, latestPaidDate: Date, receipt: any, isIos: boolean, userId: string, originalTransactionId: string);
     isUnderSubscription(): boolean;
     isNone(): boolean;
     isAnnual(): boolean;
     isMonthly(): boolean;
     isDummy(): boolean;
-    static fromIosReceipt: (obj: any, userId: string) => YMSubscription;
-    static getLatestPaidDate(appleReceipt: AppleReceiptResponse): any;
+    static getLatestPaidDate(appleReceipt: AppleReceiptResponse): Date;
     static createDummySubscription(userId: string): YMSubscription;
     static subscriptionsTypes: {
         none: string;
