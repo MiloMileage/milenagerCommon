@@ -21,7 +21,7 @@ export default class YMDateRange {
         this.timezoneOffsetInMinutes = Number(timezoneOffsetInMinutes)
     }
 
-    getStartDateLocal(ignoreDst: boolean = false) { 
+    getStartDateLocal(ignoreDst: boolean = false) {  
         const d = new Date(Date.UTC(this.startDateYear, this.startDateMonth, this.startDateDay));
         d.setTime(d.getTime() + (this.timezoneOffsetInMinutes + (!ignoreDst && Moment(d).isDST() ? 60 : 0))*60*1000 )
 
@@ -95,13 +95,14 @@ export default class YMDateRange {
         this.endDateDay = endDate.endOf('month').date() < this.endDateDay ? endDate.endOf('month').date() : this.endDateDay
     }
 
-    static monthDateRange(month: number, year: number, timezoneOffsetInMinutes: number) {
-        return new YMDateRange(year, month, 1, month === 11 ? year + 1 : year, month === 11 ? 0 : month + 1, 1, timezoneOffsetInMinutes)
+    static monthDateRange(month: number, year: number, timezoneOffsetInMinutes?: number) {
+        const tzInMinutes = timezoneOffsetInMinutes ? timezoneOffsetInMinutes : Moment().month(month).date(1).toDate().getTimezoneOffset()
+        return new YMDateRange(year, month, 1, month === 11 ? year + 1 : year, month === 11 ? 0 : month + 1, 1, tzInMinutes)
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return YMDateRange.monthDateRange(Moment().month(), Moment().year(), 0)
+        if(obj == null) return YMDateRange.monthDateRange(Moment().month(), Moment().year())
 
         return new YMDateRange(obj.startDateYear, obj.startDateMonth, obj.startDateDay, obj.endDateYear, obj.endDateMonth, obj.endDateDay, obj.timezoneOffsetInMinutes)
     }
