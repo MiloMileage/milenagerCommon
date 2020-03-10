@@ -1,4 +1,5 @@
 import * as Moment from 'moment';
+import YMDrive from './YMDrive'
 
 export default class YMDateRange {
     startDateYear: number
@@ -94,6 +95,13 @@ export default class YMDateRange {
         const endDate = Moment(this.getStartDateLocal())
         this.endDateDay = endDate.endOf('month').date() < this.endDateDay ? endDate.endOf('month').date() : this.endDateDay
     }
+
+    isInDateRange = (drive: YMDrive) => {
+        const endDateRange = (Date.UTC(this.endDateYear, this.endDateMonth, this.endDateDay) / 1000) - drive.timestampOffsetInSeconds // get the local time reletively to the specific drive
+        const startDateRange = (Date.UTC(this.startDateYear, this.startDateMonth, this.startDateDay) / 1000) - drive.timestampOffsetInSeconds // get the local time reletively to the specific drive
+    
+        return drive.startTimeTimestampUtc >= startDateRange && drive.startTimeTimestampUtc <= endDateRange 
+      }
 
     static monthDateRange(month: number, year: number, timezoneOffsetInMinutes?: number) {
         const tzInMinutes = timezoneOffsetInMinutes ? timezoneOffsetInMinutes : Moment().month(month).date(1).toDate().getTimezoneOffset()

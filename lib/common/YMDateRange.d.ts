@@ -1,3 +1,4 @@
+import YMDrive from './YMDrive';
 export default class YMDateRange {
     startDateYear: number;
     startDateMonth: number;
@@ -13,6 +14,7 @@ export default class YMDateRange {
     isMonthRange(): boolean;
     addMonth(number?: number): void;
     substructMonth(number?: number): void;
+    isInDateRange: (drive: YMDrive) => boolean;
     static monthDateRange(month: number, year: number, timezoneOffsetInMinutes?: number): YMDateRange;
     static fromObject: (obj: any) => YMDateRange;
 }
