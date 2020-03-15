@@ -354,8 +354,8 @@ var Swipeable = function (_PureComponent) {
   }
 
   _createClass(Swipeable, [{
-    key: 'componentWillMount',
-    value: function componentWillMount() {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
       var _props = this.props,
           onPanAnimatedValueRef = _props.onPanAnimatedValueRef,
           onRef = _props.onRef;
@@ -363,10 +363,7 @@ var Swipeable = function (_PureComponent) {
 
       onRef(this);
       onPanAnimatedValueRef(this.state.pan);
-    }
-  }, {
-    key: 'componentDidMount',
-    value: function componentDidMount() {
+
       if (this.props.bounceOnMount) {
         setTimeout(this._bounceOnMount, 1000);
       }
