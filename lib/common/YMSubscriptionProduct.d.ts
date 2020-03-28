@@ -11,11 +11,12 @@ export default class YMSubscriptionProduct {
     iosSubscription: YMSubscriptionProductIos;
     androidSubscription: YMSubscriptionProductAndroid;
     lateChargeMonths: number;
+    productId: string;
     static PeriodTypes: {
         YEAR: string;
         MONTH: string;
     };
-    constructor(introductoryPrice: number, localizedSymbol: string, freeMonths: number, peneltyMonths: number, periodType: string, price: number, peneltyMonthPrice: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, lateChargeMonths: number);
+    constructor(introductoryPrice: number, localizedSymbol: string, freeMonths: number, peneltyMonths: number, periodType: string, price: number, peneltyMonthPrice: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, lateChargeMonths: number, productId: string);
     isAnnual(): boolean;
     isMonthly(): boolean;
     static fromIos: (subscription: YMSubscriptionProductIos) => YMSubscriptionProduct;

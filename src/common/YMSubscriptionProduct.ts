@@ -13,6 +13,7 @@ export default class YMSubscriptionProduct {
     iosSubscription: YMSubscriptionProductIos
     androidSubscription: YMSubscriptionProductAndroid
     lateChargeMonths: number
+    productId: string
 
     static PeriodTypes = {
         YEAR: 'YEAR',
@@ -20,7 +21,7 @@ export default class YMSubscriptionProduct {
     }
 
     // tslint:disable-next-line:max-line-length
-    constructor (introductoryPrice: number, localizedSymbol: string, freeMonths: number, peneltyMonths: number, periodType: string, price: number, peneltyMonthPrice: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, lateChargeMonths: number) {
+    constructor (introductoryPrice: number, localizedSymbol: string, freeMonths: number, peneltyMonths: number, periodType: string, price: number, peneltyMonthPrice: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, lateChargeMonths: number, productId: string) {
         this.introductoryPrice = introductoryPrice
         this.localizedSymbol = localizedSymbol
         this.freeMonths = freeMonths
@@ -31,6 +32,7 @@ export default class YMSubscriptionProduct {
         this.iosSubscription = iosSubscription
         this.androidSubscription = androidSubscription
         this.lateChargeMonths = lateChargeMonths
+        this.productId = productId
     }
 
     isAnnual() {
@@ -53,7 +55,7 @@ export default class YMSubscriptionProduct {
         const peneltyMonthPrice = Math.max((introductoryPrice - price) / peneltyMonths, 0)
         const lateChargeMonths = Math.max(0, freeMonths - monthsFromId)
 
-        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, peneltyMonths, periodType, price, peneltyMonthPrice, subscription, undefined, lateChargeMonths)
+        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, peneltyMonths, periodType, price, peneltyMonthPrice, subscription, undefined, lateChargeMonths, subscription.productId)
     }
 
     // tslint:disable-next-line:member-ordering
@@ -69,6 +71,6 @@ export default class YMSubscriptionProduct {
         const peneltyMonthPrice = Math.max((introductoryPrice - price) / peneltyMonths, 0)
         const lateChargeMonths = Math.max(0, freeMonths - monthsFromId)
 
-        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, peneltyMonths, periodType, price, peneltyMonthPrice, undefined, subscription, lateChargeMonths)
+        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, peneltyMonths, periodType, price, peneltyMonthPrice, undefined, subscription, lateChargeMonths, subscription.productId)
     }
 }
