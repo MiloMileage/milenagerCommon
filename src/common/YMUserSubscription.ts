@@ -14,15 +14,15 @@ export default class YMUserSubscription {
     promoCode: string
     expiresAt: Date
     apple_original_transaction_id: string
-    google_original_transaction_id: string
+    google_original_purchase_token: string
 
-    constructor (subscriptionType: string, status: YMSubscriptionStatus, promoCode: string, expiresAt: Date, apple_original_transaction_id: string, google_original_transaction_id: string) {
+    constructor (subscriptionType: string, status: YMSubscriptionStatus, promoCode: string, expiresAt: Date, apple_original_transaction_id: string, google_original_purchase_token: string) {
         this.status = status
         this.subscriptionType = subscriptionType
         this.promoCode = promoCode
         this.expiresAt = expiresAt
         this.apple_original_transaction_id = apple_original_transaction_id
-        this.google_original_transaction_id = google_original_transaction_id
+        this.google_original_purchase_token = google_original_purchase_token
     }
 
     isUnderSubscription() {
@@ -54,7 +54,7 @@ export default class YMUserSubscription {
             obj.promoCode,
             obj.expiresAt,
             obj.apple_original_transaction_id,
-            obj.google_original_transaction_id
+            obj.google_original_purchase_token
         )
     }
 }
