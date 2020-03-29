@@ -7,12 +7,12 @@ export enum YMPromoCodeType {
 export default class YMPromoCode {
     name: string
     quantity: number
-    clicks: Array<string>
-    usages: Array<string>
+    clicks: Array<{userId: string, uniqueId: string}>
+    usages: Array<{userId: string, uniqueId: string}>
     expiresAt: Date
     type: YMPromoCodeType
 
-    constructor (name: string, quantity: number, clicks: Array<string>, usages: Array<string>, expiresAt: Date, type: YMPromoCodeType) {
+    constructor (name: string, quantity: number, clicks: Array<{userId: string, uniqueId: string}>, usages: Array<{userId: string, uniqueId: string}>, expiresAt: Date, type: YMPromoCodeType) {
         this.name = name
         this.quantity = quantity
         this.clicks = clicks
