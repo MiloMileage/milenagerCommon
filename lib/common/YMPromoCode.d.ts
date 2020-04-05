@@ -3,6 +3,10 @@ export declare enum YMPromoCodeType {
     DOUBLE = "DOUBLE",
     FREE_YEAR = "FREE_YEAR"
 }
+export declare enum YMPromoCodeUsageType {
+    ANNUAL = "ANNUAL",
+    MONTHLY = "MONTHLY"
+}
 export default class YMPromoCode {
     name: string;
     quantity: number;
@@ -13,6 +17,7 @@ export default class YMPromoCode {
     usages: Array<{
         userId: string;
         uniqueId: string;
+        type: YMPromoCodeUsageType;
     }>;
     expiresAt: Date;
     type: YMPromoCodeType;
@@ -22,6 +27,7 @@ export default class YMPromoCode {
     }>, usages: Array<{
         userId: string;
         uniqueId: string;
+        type: YMPromoCodeUsageType;
     }>, expiresAt: Date, type: YMPromoCodeType);
     static fromObject: (obj: any) => YMPromoCode;
 }
