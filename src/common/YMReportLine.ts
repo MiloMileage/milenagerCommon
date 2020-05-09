@@ -44,7 +44,7 @@ export default class YMReportLine {
     static fromDrive(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations : { [ind: string]: YMSavedLocation }) {
         const originPersonal = Common.getPersonalNameIfExist(savedLocations, drive.origin, drive.origin.address.name)
         const destPersonal = Common.getPersonalNameIfExist(savedLocations, drive.dest, drive.dest.address.name)
-        const purposes =  YMPurpose.mergePuprosesArrays(globalSettings.purposes, userSettings.purposes, true)
+        const purposes =  YMPurpose.mergePuprosesArrays(userSettings.purposes, globalSettings.purposes, false)
         
         // If drive is unclassified its purpose id is -1 and the purpose will be the default purpose
         const purpose = YMPurpose.fromObject(purposes.filter(x => x.purposeId === drive.drivePurposeId)[0])

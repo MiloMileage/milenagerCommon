@@ -331,7 +331,7 @@ export default class YMReport {
         
         return new YMReport(
             obj.reportName,
-            obj.dateCreated,
+            new Date(obj.dateCreated),
             obj.name,
             obj.project,
             obj.customerDetails,
