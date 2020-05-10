@@ -19,6 +19,10 @@ export default class YMLocation {
     }
 
     distanceFrom = function(loc: YMLocation) {
+        if (`${loc.lat}` === `${this.lat}` && `${loc.lon}` === `${this.lon}`) {
+            return 0
+        }
+        
         const radlat1 = Math.PI * this.lat/180
         const radlat2 = Math.PI * loc.lat/180
         const theta = this.lon-loc.lon
