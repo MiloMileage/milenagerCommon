@@ -2,49 +2,49 @@ import YMUserUsageHistory from '../src/functions/responses/YMUserUsageHistory'
 import * as Moment from 'moment'
 
 test('first drive 6 months use', () => {
-    const history = new YMUserUsageHistory(false, Moment().subtract(6, 'month').toDate(), new Date())
+    const history = new YMUserUsageHistory(false, Moment().subtract(6, 'month').toDate(), new Date(), 30)
 
     expect(history.monthsToPayFor()).toBe(6)
 });
 
 test('first drive 15 months use', () => {
-    const history = new YMUserUsageHistory(false, Moment().subtract(15, 'month').toDate(), new Date())
+    const history = new YMUserUsageHistory(false, Moment().subtract(15, 'month').toDate(), new Date(), 30)
 
     expect(history.monthsToPayFor()).toBe(12)
 });
 
 test('no subscription and no use', () => {
-    const history = new YMUserUsageHistory(false, new Date(), new Date())
+    const history = new YMUserUsageHistory(false, new Date(), new Date(), 30)
 
     expect(history.monthsToPayFor()).toBe(0)
 });
 
 test('Subscription ended less than a month', () => {
-    const history = new YMUserUsageHistory(true, new Date(), Moment().subtract(6, 'day').toDate())
+    const history = new YMUserUsageHistory(true, new Date(), Moment().subtract(6, 'day').toDate(), 30)
 
     expect(history.monthsToPayFor()).toBe(0)
 });
 
 test('first drive a month', () => {
-    const history = new YMUserUsageHistory(false, new Date(), Moment().subtract(6, 'day').toDate())
+    const history = new YMUserUsageHistory(false, new Date(), Moment().subtract(6, 'day').toDate(), 30)
 
     expect(history.monthsToPayFor()).toBe(0)
 });
 
 test('first drive few days ago', () => {
-    const history = new YMUserUsageHistory(false, Moment().subtract(1, 'month').subtract(6, 'day').toDate(), new Date())
+    const history = new YMUserUsageHistory(false, Moment().subtract(1, 'month').subtract(6, 'day').toDate(), new Date(), 30)
 
     expect(history.monthsToPayFor()).toBe(1)
 });
 
 test('first drive 2 months ago', () => {
-    const history = new YMUserUsageHistory(false, Moment().subtract(2, 'month').toDate(), new Date())
+    const history = new YMUserUsageHistory(false, Moment().subtract(2, 'month').toDate(), new Date(), 30)
 
     expect(history.monthsToPayFor()).toBe(2)
 });
 
 test('Subscription ended 2 months ago', () => {
-    const history = new YMUserUsageHistory(true, new Date(), Moment().subtract(2, 'month').toDate())
+    const history = new YMUserUsageHistory(true, new Date(), Moment().subtract(2, 'month').toDate(), 30)
 
     expect(history.monthsToPayFor()).toBe(0)
 });

@@ -35,6 +35,7 @@ export default class YMDrive {
     startTimeInUtcEnv: () => Date;
     endTimeInUtcEnv: () => Date;
     setPurposeId: (purposeId: string) => void;
+    getVehicle: (userSettings: YMUserSettings) => import("./YMVehicle").default;
     getVehicleName: (userSettings: YMUserSettings) => string;
     getPurpose: (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => YMPurpose;
     getValue: (userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) => number;

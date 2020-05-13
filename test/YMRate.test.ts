@@ -3,6 +3,8 @@ import YMPurpose from '../src/common/YMPurpose'
 import YMUserSettings from '../src/common/YMUserSettings'
 import YMGlobalUserSettings from '../src/common/YMGlobalUserSettings'
 import YMDrive from '../src/common/YMDrive';
+import YMVehicle, {YMVehicleType} from '../src/common/YMVehicle';
+import * as moment from 'moment';
 
 const rateObj = {
     'name': 'name',
@@ -80,4 +82,201 @@ test('getRateForPurposeId test', () => {
     userSettings = YMUserSettings.fromObject(undefined)
     globalSettings = YMGlobalUserSettings.fromObject(undefined)
     expect(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.undetermined, userSettings, globalSettings, null)).toBe(0)
+})
+
+test('getRateForPurposeId US test', () => { 
+    let userSettings = YMUserSettings.fromObject(undefined)
+    let purposeId = '0'
+    let purposeRateType = 'business'
+    let purpose = new YMPurpose(purposeId, `irs_${purposeRateType}`, `${purposeRateType} irs`, YMPurpose.categories.business, '', true, 0)
+    userSettings.purposes.push(purpose)
+
+    let drive = YMDrive.fromObject(undefined)
+    drive.startTimeTimestampUtc = moment().add(-2, 'year').add(10, 'days').toDate().getTime()
+
+
+    const deductable = 0.324
+    const deductableForCurrentYear = 0.564
+    let globalSettings = YMGlobalUserSettings.fromObject(undefined)
+    globalSettings.irsRates[drive.getStartTimeLocal().getFullYear()] = {[purposeRateType]: deductable}
+    globalSettings.irsRates[new Date().getFullYear()] = {[purposeRateType]: deductableForCurrentYear}
+
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive)).toBe(deductable)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, 10000)).toBe(deductable)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings)).toBe(deductableForCurrentYear)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, 10000)).toBe(deductableForCurrentYear)
+})
+
+test('getRateForPurposeId US test', () => { 
+    let userSettings = YMUserSettings.fromObject(undefined)
+    let purposeId = '0'
+    let purposeRateType = 'business'
+    let purpose = new YMPurpose(purposeId, `irs_${purposeRateType}`, `${purposeRateType} irs`, YMPurpose.categories.business, '', true, 0)
+    userSettings.purposes.push(purpose)
+
+    let drive = YMDrive.fromObject(undefined)
+    drive.startTimeTimestampUtc = moment().add(-2, 'year').add(10, 'days').toDate().getTime()
+
+
+    const deductable = 0.324
+    const deductableForCurrentYear = 0.564
+    let globalSettings = YMGlobalUserSettings.fromObject(undefined)
+    globalSettings.irsRates[drive.getStartTimeLocal().getFullYear()] = {[purposeRateType]: deductable}
+    globalSettings.irsRates[new Date().getFullYear()] = {[purposeRateType]: deductableForCurrentYear}
+
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive)).toBe(deductable)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, 10000)).toBe(deductable)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings)).toBe(deductableForCurrentYear)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, 10000)).toBe(deductableForCurrentYear)
+})
+
+test('getRateForPurposeId CA test', () => { 
+    let userSettings = YMUserSettings.fromObject(undefined)
+    let purposeId = '0'
+    let purposeRateType = 'business'
+    let purpose = new YMPurpose(purposeId, `ca__${purposeRateType}`, `${purposeRateType} ca`, YMPurpose.categories.business, '', true, 0)
+    userSettings.purposes.push(purpose)
+
+    let drive = YMDrive.fromObject(undefined)
+    drive.startTimeTimestampUtc = moment().add(-2, 'year').add(10, 'days').toDate().getTime()
+
+
+    const deductable = 0.324
+    const deductableOver = 0.1
+    const deductableOver2 = 0.01
+    const deductableForCurrentYear = 0.564
+    const deductableForCurrentYearOver = 0.2
+    const deductableForCurrentYearOver2 = 0.02
+    const overMileage = 1000
+    const overMileage2 = 2000
+    let globalSettings = YMGlobalUserSettings.fromObject(undefined)
+    globalSettings.caRates[drive.getStartTimeLocal().getFullYear()] = {[purposeRateType]: new YMRate('', deductable, '', true, [{fromInMiles: overMileage, deductable: {[YMVehicleType.car]: deductableOver}}, {fromInMiles: overMileage2, deductable: {[YMVehicleType.car]: deductableOver2}}])}
+    globalSettings.caRates[new Date().getFullYear()] = {[purposeRateType]: new YMRate('', deductableForCurrentYear, '', true, [{fromInMiles: overMileage, deductable: {[YMVehicleType.car]: deductableForCurrentYearOver}}, {fromInMiles: overMileage2, deductable: {[YMVehicleType.car]: deductableForCurrentYearOver2}}])}
+
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage - 1)).toBe(deductable)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage + 1)).toBe(deductableOver)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage2 + 1)).toBe(deductableOver2)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage - 1)).toBe(deductableForCurrentYear)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage + 1)).toBe(deductableForCurrentYearOver)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage2 + 1)).toBe(deductableForCurrentYearOver2)
+})
+
+
+test('getRateForPurposeId AU test', () => { 
+    let userSettings = YMUserSettings.fromObject(undefined)
+    let purposeId = '0'
+    let purposeRateType = 'business'
+    let purpose = new YMPurpose(purposeId, `au__${purposeRateType}`, `${purposeRateType} au`, YMPurpose.categories.business, '', true, 0)
+    userSettings.purposes.push(purpose)
+
+    let drive = YMDrive.fromObject(undefined)
+    drive.startTimeTimestampUtc = moment().add(-2, 'year').add(10, 'days').toDate().getTime()
+
+
+    const deductable = 0.324
+    const deductableOver = 0.1
+    const deductableOver2 = 0.01
+    const deductableForCurrentYear = 0.564
+    const deductableForCurrentYearOver = 0.2
+    const deductableForCurrentYearOver2 = 0.02
+    const overMileage = 1000
+    const overMileage2 = 2000
+    let globalSettings = YMGlobalUserSettings.fromObject(undefined)
+    globalSettings.auRates[drive.getStartTimeLocal().getFullYear()] = {[purposeRateType]: new YMRate('', deductable, '', true, [{fromInMiles: overMileage, deductable: {[YMVehicleType.car]: deductableOver}}, {fromInMiles: overMileage2, deductable: {[YMVehicleType.car]: deductableOver2}}])}
+    globalSettings.auRates[new Date().getFullYear()] = {[purposeRateType]: new YMRate('', deductableForCurrentYear, '', true, [{fromInMiles: overMileage, deductable: {[YMVehicleType.car]: deductableForCurrentYearOver}}, {fromInMiles: overMileage2, deductable: {[YMVehicleType.car]: deductableForCurrentYearOver2}}])}
+
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage - 1)).toBe(deductable)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage + 1)).toBe(deductableOver)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage2 + 1)).toBe(deductableOver2)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage - 1)).toBe(deductableForCurrentYear)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage + 1)).toBe(deductableForCurrentYearOver)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage2 + 1)).toBe(deductableForCurrentYearOver2)
+})
+
+test('getRateForPurposeId UK test', () => { 
+    let purposeId = '0'
+    let purposeRateType = 'business'
+    let purpose = new YMPurpose(purposeId, `uk__${purposeRateType}`, `${purposeRateType} uk`, YMPurpose.categories.business, '', true, 0)
+    
+    let vehicleId = '1'
+    let car = new YMVehicle(vehicleId, '', '', 0, '', '', [], true, YMVehicleType.car)
+
+    let vehicleId2 = '2'
+    let motorcycle = new YMVehicle(vehicleId2, '', '', 0, '', '', [], true, YMVehicleType.motorcycle)
+
+    let vehicleId3 = '3'
+    let bicycle = new YMVehicle(vehicleId3, '', '', 0, '', '', [], true, YMVehicleType.bicycle)
+
+    let userSettings = YMUserSettings.fromObject(undefined)
+    userSettings.purposes.push(purpose)
+    userSettings.vehicles.push(car)
+    userSettings.vehicles.push(motorcycle)
+    userSettings.vehicles.push(bicycle)
+
+    let drive = YMDrive.fromObject(undefined)
+    drive.startTimeTimestampUtc = moment().add(-2, 'year').add(10, 'days').toDate().getTime()
+    drive.vehicleId = vehicleId
+
+    let driveMotorcycle = YMDrive.fromObject(undefined)
+    driveMotorcycle.startTimeTimestampUtc = moment().add(-2, 'year').add(10, 'days').toDate().getTime()
+    driveMotorcycle.vehicleId = vehicleId2
+
+    let driveBicycle = YMDrive.fromObject(undefined)
+    driveBicycle.startTimeTimestampUtc = moment().add(-2, 'year').add(10, 'days').toDate().getTime()
+    driveBicycle.vehicleId = vehicleId3
+
+    const deductable = 0.324
+    const deductableOver = 0.1
+    const deductableOver2 = 0.01
+    const deductableForCurrentYear = 0.564
+    const deductableForCurrentYearOver = 0.2
+    const deductableForCurrentYearOver2 = 0.02
+    const overMileage = 1000
+    const overMileage2 = 2000
+    let globalSettings = YMGlobalUserSettings.fromObject(undefined)
+    globalSettings.ukRates[drive.getStartTimeLocal().getFullYear()] = {[purposeRateType]: new YMRate('', deductable, '', true, [
+        {fromInMiles: 0, deductable: {
+            [YMVehicleType.car]: deductable,
+            [YMVehicleType.motorcycle]: deductable + 1,
+            [YMVehicleType.bicycle]: deductable + 2,
+        }},
+        {fromInMiles: overMileage, deductable: {
+            [YMVehicleType.car]: deductableOver,
+            [YMVehicleType.motorcycle]: deductableOver + 1,
+            [YMVehicleType.bicycle]: deductableOver + 2,
+        }},
+        {fromInMiles: overMileage2, deductable: {
+            [YMVehicleType.car]: deductableOver2,
+            [YMVehicleType.motorcycle]: deductableOver2 + 1,
+            [YMVehicleType.bicycle]: deductableOver2 + 2,
+        }
+    }])}
+
+    globalSettings.ukRates[new Date().getFullYear()] = {[purposeRateType]: new YMRate('', deductableForCurrentYear, '', true, [
+        {fromInMiles: overMileage, deductable: {
+            [YMVehicleType.car]: deductableForCurrentYearOver,
+            [YMVehicleType.motorcycle]: deductableForCurrentYearOver + 1,
+            [YMVehicleType.bicycle]: deductableForCurrentYearOver + 2,
+        }},
+        {fromInMiles: overMileage2, deductable: {
+            [YMVehicleType.car]: deductableForCurrentYearOver2,
+            [YMVehicleType.motorcycle]: deductableForCurrentYearOver2 + 1,
+            [YMVehicleType.bicycle]: deductableForCurrentYearOver2 + 2,
+        }
+    }])}
+
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage - 1)).toBe(deductable)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage + 1)).toBe(deductableOver)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage2 + 1)).toBe(deductableOver2)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage - 1)).toBe(deductableForCurrentYear)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage + 1)).toBe(deductableForCurrentYearOver)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, undefined, overMileage2 + 1)).toBe(deductableForCurrentYearOver2)
+
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, driveMotorcycle, overMileage - 1)).toBe(deductable + 1)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, driveMotorcycle, overMileage + 1)).toBe(deductableOver + 1)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, driveMotorcycle, overMileage2 + 1)).toBe(deductableOver2 + 1)
+
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, driveBicycle, overMileage - 1)).toBe(deductable + 2)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, driveBicycle, overMileage + 1)).toBe(deductableOver + 2)
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, driveBicycle, overMileage2 + 1)).toBe(deductableOver2 + 2)
 })

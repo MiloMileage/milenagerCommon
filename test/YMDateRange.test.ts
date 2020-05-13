@@ -283,5 +283,5 @@ test('create default', () => {
     expect(dateRange.endDateYear).toBe(Moment().add(1, 'month').year())
     expect(dateRange.endDateMonth).toBe(Moment().add(1, 'month').month())
     expect(dateRange.endDateDay).toBe(1)
-    expect(dateRange.timezoneOffsetInMinutes).toBe(0)
+    expect(dateRange.timezoneOffsetInMinutes).toBe(new Date().getTimezoneOffset())
 });

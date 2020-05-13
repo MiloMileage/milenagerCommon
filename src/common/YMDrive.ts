@@ -97,9 +97,13 @@ export default class YMDrive {
         this.isClassified = this.drivePurposeId !== YMPurpose.defaultPuposesIds.undetermined
     }
 
-    public getVehicleName = (userSettings: YMUserSettings) => {
-        const vehicle = userSettings.vehicles.filter(v => v.vehicleId === this.vehicleId)[0]
+    public getVehicle = (userSettings: YMUserSettings) => {
+        return userSettings.vehicles.filter(v => v.vehicleId === this.vehicleId)[0]
+    }
 
+    public getVehicleName = (userSettings: YMUserSettings) => {
+        const vehicle = this.getVehicle(userSettings)
+        
         return vehicle === undefined ? '' : vehicle.nickName
     }
 

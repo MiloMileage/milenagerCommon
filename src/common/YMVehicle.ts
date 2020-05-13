@@ -1,5 +1,11 @@
 import YMOdometerRead from './YMOdometerRead'
 
+export enum YMVehicleType {
+    car = 'car',
+    motorcycle = 'motorcycle',
+    bicycle = 'bicycle'
+}
+
 export default class YMVehicle {
     vehicleId: string
     make: string
@@ -9,9 +15,10 @@ export default class YMVehicle {
     nickName: string
     odometerReads: Array<YMOdometerRead>
     visible: boolean
+    vehicleType: YMVehicleType
 
     constructor (vehicleId: string, make: string, model: string, primaryTime: number,
-            year: string, nickName: string, odometerReads: Array<YMOdometerRead>, visible: boolean) {
+            year: string, nickName: string, odometerReads: Array<YMOdometerRead>, visible: boolean, vehicleType: YMVehicleType) {
         this.vehicleId = vehicleId
         this.make = make
         this.model = model
@@ -20,6 +27,7 @@ export default class YMVehicle {
         this.nickName = nickName
         this.odometerReads = odometerReads.map(x => YMOdometerRead.fromObject(x))
         this.visible = visible
+        this.vehicleType = vehicleType ? vehicleType : YMVehicleType.car
     }
 
     public isPrimary(vehicles: Array<YMVehicle>) {
@@ -34,9 +42,9 @@ export default class YMVehicle {
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
-        if(obj == null) return new YMVehicle('', '', '', 0, '', '', [], true)
+        if(obj == null) return new YMVehicle('', '', '', 0, '', '', [], true, YMVehicleType.car)
 
         return new YMVehicle(obj.vehicleId, obj.make, obj.model, obj.primaryTime, obj.year, obj.nickName,
-                                obj.odometerReads, obj.visible)
+                                obj.odometerReads, obj.visible, obj.vehicleType)
     }
 }

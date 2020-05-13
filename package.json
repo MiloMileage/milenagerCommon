@@ -20,9 +20,10 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/lyair1/milenagercommon#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.13",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.16.0"
+    "@types/jest": "^25.2.2",
+    "ts-jest": "^25.5.1",
+    "tslint": "^5.16.0",
+    "jest": "^25.2.2"
   },
   "jest": {
     "testEnvironment": "node"
