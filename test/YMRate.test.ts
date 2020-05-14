@@ -72,8 +72,9 @@ test('getRateForPurposeId test', () => {
     drive.startTimeTimestampUtc = new Date().getTime() / 1000
     expect(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)).toBe(10)
 
-    drive.startTimeTimestampUtc = new Date().getTime()
-    expect(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)).toBe(0)
+    // Check that if the rate for the year doesn't exist it will take the last year exist (max 5 yeas back)
+    drive.startTimeTimestampUtc = moment().add(28, 'years').toDate().getTime() / 1000 
+    expect(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, userSettings, globalSettings, drive)).toBe(10)
 
     drive.startTimeTimestampUtc = new Date().getTime() / 1000
     purpose.rateId = 'irs_notexist'

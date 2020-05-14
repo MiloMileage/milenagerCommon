@@ -3,6 +3,7 @@ import YMUserSettings, {YMCountry} from './YMUserSettings'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
 import YMDrive from './YMDrive'
 import {YMVehicleType} from './YMVehicle'
+import * as moment from 'moment'
 
 export default class YMRate {
     name: string
@@ -26,7 +27,7 @@ export default class YMRate {
         }
 
         let curr = this.deductable
-        for(let decutible of this.deductables) {
+        for(const decutible of this.deductables) {
             if (mileage < decutible.fromInMiles){
                 return curr
             }
@@ -59,17 +60,35 @@ export default class YMRate {
     static moving = 'moving'
     static medical = 'medical'
 
+    static GetRates = (drive: YMDrive, rates: { [ind: string]: { [ind: string]: YMRate } }) => {
+        const currYear = new Date()
+        let driveYear = drive ? drive.getStartTimeLocal() : currYear
+        let caRates = rates[(drive == null ? currYear : driveYear).getFullYear()]
+        while (caRates === undefined && moment(currYear).isAfter(moment().add(-5, 'years'))) {
+            caRates = rates[currYear.getFullYear()]
+            driveYear = moment(driveYear).add(-1, 'year').toDate()
+        }
+
+        return caRates
+    }
+
     static translateRate = (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => {
         // find rate for US
         if (rateId.startsWith(YMRate.IRS)) {
-            const rates = gloablSettings.irsRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+            const currYear = new Date()
+            let driveYear = drive ? drive.getStartTimeLocal() : currYear
+            let rates = gloablSettings.irsRates[(drive == null ? currYear : driveYear).getFullYear()]
+            while (rates === undefined && moment(currYear).isAfter(moment().add(-5, 'years'))) {
+                rates = gloablSettings.irsRates[currYear.getFullYear()]
+                driveYear = moment(driveYear).add(-1, 'year').toDate()
+            }
 
             return Number(rates === undefined ? 0 : rates[rateId.substring(4)] == undefined ? 0 : rates[rateId.substring(4)])
         }
 
         // find rate for CA
         if (rateId.startsWith(YMRate.CA)) {
-            const caRates = gloablSettings.caRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+            const caRates = YMRate.GetRates(drive, gloablSettings.caRates)
             if (caRates === undefined) {
                 return 0
             }
@@ -81,7 +100,8 @@ export default class YMRate {
 
         // find rate for AU
         if (rateId.startsWith(YMRate.AU)) {
-            const auRates = gloablSettings.auRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+            const auRates = YMRate.GetRates(drive, gloablSettings.auRates)
+
             if (auRates === undefined) {
                 return 0
             }
@@ -93,7 +113,8 @@ export default class YMRate {
 
         // find rate for UK
         if (rateId.startsWith(YMRate.UK)) {
-            const ukRates = gloablSettings.ukRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+            const ukRates = YMRate.GetRates(drive, gloablSettings.ukRates)
+
             if (ukRates === undefined) {
                 return 0
             }

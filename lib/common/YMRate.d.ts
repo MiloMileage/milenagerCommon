@@ -29,6 +29,13 @@ export default class YMRate {
     static CHARITY: string;
     static moving: string;
     static medical: string;
+    static GetRates: (drive: YMDrive, rates: {
+        [ind: string]: {
+            [ind: string]: YMRate;
+        };
+    }) => {
+        [ind: string]: YMRate;
+    };
     static translateRate: (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => number;
     static getRateForPurposeId: (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => number;
 }
