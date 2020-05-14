@@ -50,6 +50,66 @@ export default class YMRate {
         return new YMRate(obj.name, obj.deductable, obj.rateId, obj.visible, obj.deductables)
     }
 
+    static IRS = 'irs_'
+    static CA = 'ca__'
+    static AU = 'au__'
+    static UK = 'uk__'
+    static BUSINESS = 'business'
+    static CHARITY = 'charity'
+    static moving = 'moving'
+    static medical = 'medical'
+
+    static translateRate = (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => {
+        // find rate for US
+        if (rateId.startsWith(YMRate.IRS)) {
+            const rates = gloablSettings.irsRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+
+            return Number(rates === undefined ? 0 : rates[rateId.substring(4)] == undefined ? 0 : rates[rateId.substring(4)])
+        }
+
+        // find rate for CA
+        if (rateId.startsWith(YMRate.CA)) {
+            const caRates = gloablSettings.caRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+            if (caRates === undefined) {
+                return 0
+            }
+
+            const caRate = caRates[rateId.substring(4)]
+
+            return Number(caRate === undefined ? 0 : caRate.getRateFromMileage(milesDroveYtd, YMVehicleType.car))
+        }
+
+        // find rate for AU
+        if (rateId.startsWith(YMRate.AU)) {
+            const auRates = gloablSettings.auRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+            if (auRates === undefined) {
+                return 0
+            }
+
+            const auRate = auRates[rateId.substring(4)]
+
+            return Number(auRate === undefined ? 0 : auRate.getRateFromMileage(milesDroveYtd, YMVehicleType.car))
+        }
+
+        // find rate for UK
+        if (rateId.startsWith(YMRate.UK)) {
+            const ukRates = gloablSettings.ukRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+            if (ukRates === undefined) {
+                return 0
+            }
+
+            const ukRate = ukRates[rateId.substring(4)]
+            const vehicle = drive ? drive.getVehicle(userSettings) : undefined
+
+            return Number(ukRate === undefined ? 0 : ukRate.getRateFromMileage(milesDroveYtd, vehicle ? vehicle.vehicleType : YMVehicleType.car))
+        }
+
+        // Handle custom case
+        const rate = userSettings.personalRates.filter(x => x.rateId === rateId)[0]
+        
+        return rate === undefined ? 0 : rate.deductable
+    }
+
       // tslint:disable-next-line:max-line-length
     static getRateForPurposeId = (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => {
         if (userSettings == null || gloablSettings == null) {
@@ -68,52 +128,25 @@ export default class YMRate {
             }
         }
 
-        // find rate for US
-        if (purpose.rateId.startsWith('irs_')) {
-            const rates = gloablSettings.irsRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
+        const currRatePrefix = userSettings.country === YMCountry.US ? YMRate.IRS :
+                                    userSettings.country === YMCountry.CA ? YMRate.CA :
+                                    userSettings.country === YMCountry.AU ? YMRate.AU :
+                                    userSettings.country === YMCountry.UK ? YMRate.UK : undefined
 
-            return Number(rates === undefined ? 0 : rates[purpose.rateId.substring(4)] == undefined ? 0 : rates[purpose.rateId.substring(4)])
-        }
-
-        // find rate for CA
-        if (purpose.rateId.startsWith('ca__')) {
-            const caRates = gloablSettings.caRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
-            if (caRates === undefined) {
+        if (currRatePrefix) {
+            if (purpose.purposeId === YMPurpose.defaultPuposesIds.business || purpose.category === YMPurpose.categories.business) {
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.BUSINESS}`, userSettings, gloablSettings, drive, milesDroveYtd)
+            } else if (purpose.purposeId === YMPurpose.defaultPuposesIds.charity) {
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.CHARITY}`, userSettings, gloablSettings, drive, milesDroveYtd)
+            } else if (purpose.purposeId === YMPurpose.defaultPuposesIds.moving) {
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.moving}`, userSettings, gloablSettings, drive, milesDroveYtd)
+            } else if (purpose.purposeId === YMPurpose.defaultPuposesIds.medical) {
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.medical}`, userSettings, gloablSettings, drive, milesDroveYtd)
+            } else {
                 return 0
             }
-
-            const caRate = caRates[purpose.rateId.substring(4)]
-
-            return Number(caRate === undefined ? 0 : caRate.getRateFromMileage(milesDroveYtd, YMVehicleType.car))
         }
 
-        // find rate for AU
-        if (purpose.rateId.startsWith('au__')) {
-            const auRates = gloablSettings.auRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
-            if (auRates === undefined) {
-                return 0
-            }
-
-            const auRate = auRates[purpose.rateId.substring(4)]
-
-            return Number(auRate === undefined ? 0 : auRate.getRateFromMileage(milesDroveYtd, YMVehicleType.car))
-        }
-
-        // find rate for UK
-        if (purpose.rateId.startsWith('uk__')) {
-            const ukRates = gloablSettings.ukRates[(drive == null ? new Date() : drive.startTime()).getFullYear()]
-            if (ukRates === undefined) {
-                return 0
-            }
-
-            const ukRate = ukRates[purpose.rateId.substring(4)]
-            const vehicle = drive ? drive.getVehicle(userSettings) : undefined
-
-            return Number(ukRate === undefined ? 0 : ukRate.getRateFromMileage(milesDroveYtd, vehicle ? vehicle.vehicleType : YMVehicleType.car))
-        }
-
-        const rate = userSettings.personalRates.filter(x => x.rateId === purpose.rateId)[0]
-        
-        return rate === undefined ? 0 : rate.deductable
+        return YMRate.translateRate(purpose.rateId, userSettings, gloablSettings, drive, milesDroveYtd)
     }
 }

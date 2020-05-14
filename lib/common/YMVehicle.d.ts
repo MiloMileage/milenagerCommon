@@ -1,8 +1,8 @@
 import YMOdometerRead from './YMOdometerRead';
 export declare enum YMVehicleType {
-    car = 0,
-    motorcycle = 1,
-    bicycle = 2
+    car = "car",
+    motorcycle = "motorcycle",
+    bicycle = "bicycle"
 }
 export default class YMVehicle {
     vehicleId: string;
