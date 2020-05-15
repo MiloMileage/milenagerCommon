@@ -31,6 +31,7 @@ export default class YMReport {
     movingRateInMiles: number
     charityRateInMiles: number
     medicalRateInMiles: number
+    moneySymbol: string
     
     constructor (reportName: string,
             dateCreated: Date,
@@ -52,7 +53,8 @@ export default class YMReport {
             businessRateInMiles: number,
             movingRateInMiles: number,
             charityRateInMiles: number,
-            medicalRateInMiles: number) {
+            medicalRateInMiles: number,
+            moneySymbol: string) {
         this.reportName = reportName
         this.dateCreated = dateCreated
         this.name = name
@@ -74,6 +76,7 @@ export default class YMReport {
         this.movingRateInMiles = movingRateInMiles
         this.charityRateInMiles = charityRateInMiles
         this.medicalRateInMiles = medicalRateInMiles
+        this.moneySymbol = moneySymbol ? moneySymbol : '$'
     }
 
     addDriveValue(drive: YMDrive, savedLocations : { [ind: string]: YMSavedLocation }) {
@@ -327,7 +330,7 @@ export default class YMReport {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReport('', new Date(), '', '', '', '', YMUserSettings.fromObject(undefined), YMGlobalUserSettings.fromObject(undefined), false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false, 0, 0, 0, 0)
+        if(obj == null) return new YMReport('', new Date(), '', '', '', '', YMUserSettings.fromObject(undefined), YMGlobalUserSettings.fromObject(undefined), false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false, 0, 0, 0, 0, '$')
         
         return new YMReport(
             obj.reportName,
@@ -350,6 +353,7 @@ export default class YMReport {
             obj.businessRateInMiles,
             obj.movingRateInMiles,
             obj.charityRateInMiles,
-            obj.medicalRateInMiles)
+            obj.medicalRateInMiles,
+            obj.moneySymbol)
     }
 }

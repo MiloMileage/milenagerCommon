@@ -27,7 +27,8 @@ export default class YMReport {
     movingRateInMiles: number;
     charityRateInMiles: number;
     medicalRateInMiles: number;
-    constructor(reportName: string, dateCreated: Date, name: string, project: string, customerDetails: string, details: string, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, isMetricSystem: boolean, dateRange: YMDateRange, lines: Array<YMReportLine>, vehicleBusinessLines: Array<YMReportVehicleLine>, vehiclePersonalLines: Array<YMReportVehicleLine>, reportId: string, csvLink: string, pdfLink: string, isOutsideOfSubscriptionPeriod: boolean, businessRateInMiles: number, movingRateInMiles: number, charityRateInMiles: number, medicalRateInMiles: number);
+    moneySymbol: string;
+    constructor(reportName: string, dateCreated: Date, name: string, project: string, customerDetails: string, details: string, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, isMetricSystem: boolean, dateRange: YMDateRange, lines: Array<YMReportLine>, vehicleBusinessLines: Array<YMReportVehicleLine>, vehiclePersonalLines: Array<YMReportVehicleLine>, reportId: string, csvLink: string, pdfLink: string, isOutsideOfSubscriptionPeriod: boolean, businessRateInMiles: number, movingRateInMiles: number, charityRateInMiles: number, medicalRateInMiles: number, moneySymbol: string);
     addDriveValue(drive: YMDrive, savedLocations: {
         [ind: string]: YMSavedLocation;
     }): void;
