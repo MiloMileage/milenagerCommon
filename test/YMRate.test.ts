@@ -103,6 +103,7 @@ test('getRateForPurposeId US test', () => {
     globalSettings.irsRates[drive.getStartTimeLocal().getFullYear()] = {[purposeRateType]: deductable}
     globalSettings.irsRates[new Date().getFullYear()] = {[purposeRateType]: deductableForCurrentYear}
 
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings)).toBe(deductableForCurrentYear)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive)).toBe(deductable)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, 10000)).toBe(deductable)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings)).toBe(deductableForCurrentYear)
@@ -182,6 +183,7 @@ test('getRateForPurposeId UK test', () => {
         }
     }])}
 
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings)).toBe(deductableForCurrentYear)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage - 1)).toBe(deductable)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage + 1)).toBe(deductableOver)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage2 + 1)).toBe(deductableOver2)
@@ -271,6 +273,7 @@ test('getRateForPurposeId AU test', () => {
         }
     }])}
 
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings)).toBe(deductableForCurrentYear)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage - 1)).toBe(deductable)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage + 1)).toBe(deductableOver)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage2 + 1)).toBe(deductableOver2)
@@ -360,6 +363,7 @@ test('getRateForPurposeId CA test', () => {
         }
     }])}
 
+    expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings)).toBe(deductableForCurrentYear)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage - 1)).toBe(deductable)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage + 1)).toBe(deductableOver)
     expect(YMRate.getRateForPurposeId(purposeId, userSettings, globalSettings, drive, overMileage2 + 1)).toBe(deductableOver2)

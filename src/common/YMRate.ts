@@ -22,7 +22,7 @@ export default class YMRate {
     }
 
     getRateFromMileage(mileage: number, vehicleType: YMVehicleType = YMVehicleType.car) {
-        if (this.deductables === undefined || this.deductables.length === 0) {
+        if (this.deductables === undefined || this.deductables.length === 0 || mileage === undefined) {
             return this.deductable
         }
 
