@@ -4,19 +4,16 @@ export default class YMSubscriptionProduct {
     introductoryPrice: number;
     localizedSymbol: string;
     freeMonths: number;
-    peneltyMonths: number;
     periodType: string;
     price: number;
-    peneltyMonthPrice: number;
     iosSubscription: YMSubscriptionProductIos;
     androidSubscription: YMSubscriptionProductAndroid;
-    lateChargeMonths: number;
     productId: string;
     static PeriodTypes: {
         YEAR: string;
         MONTH: string;
     };
-    constructor(introductoryPrice: number, localizedSymbol: string, freeMonths: number, peneltyMonths: number, periodType: string, price: number, peneltyMonthPrice: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, lateChargeMonths: number, productId: string);
+    constructor(introductoryPrice: number, localizedSymbol: string, freeMonths: number, periodType: string, price: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, productId: string);
     isAnnual(): boolean;
     isMonthly(): boolean;
     static fromIos: (subscription: YMSubscriptionProductIos) => YMSubscriptionProduct;
