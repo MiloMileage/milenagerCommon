@@ -28,8 +28,25 @@ export default class YMGlobalUserSettings {
         this.irsRates = irsRates
         this.tutorialContainers = tutorialContainers
         this.caRates = caRates
+        for (const year in this.caRates){
+            for (const businessType in this.caRates[year]) {
+                this.caRates[year][businessType] = YMRate.fromObject(this.caRates[year][businessType])
+            }
+        }
+
         this.auRates = auRates
+        for (const year in this.auRates){
+            for (const businessType in this.auRates[year]) {
+                this.auRates[year][businessType] = YMRate.fromObject(this.auRates[year][businessType])
+            }
+        }
+
         this.ukRates = ukRates
+        for (const year in this.ukRates){
+            for (const businessType in this.ukRates[year]) {
+                this.ukRates[year][businessType] = YMRate.fromObject(this.ukRates[year][businessType])
+            }
+        }
     }
 
     // tslint:disable-next-line:member-ordering

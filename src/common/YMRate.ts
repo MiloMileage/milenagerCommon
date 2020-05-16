@@ -63,13 +63,13 @@ export default class YMRate {
     static GetRates = (drive: YMDrive, rates: { [ind: string]: { [ind: string]: YMRate } }) => {
         const currYear = new Date()
         let driveYear = drive ? drive.getStartTimeLocal() : currYear
-        let caRates = rates[(drive == null ? currYear : driveYear).getFullYear()]
-        while (caRates === undefined && moment(currYear).isAfter(moment().add(-5, 'years'))) {
-            caRates = rates[currYear.getFullYear()]
+        let currRates = rates[(drive == null ? currYear : driveYear).getFullYear()]
+        while (currRates === undefined && moment(currYear).isAfter(moment().add(-5, 'years'))) {
+            currRates = rates[currYear.getFullYear()]
             driveYear = moment(driveYear).add(-1, 'year').toDate()
         }
 
-        return caRates
+        return currRates
     }
 
     static translateRate = (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => {

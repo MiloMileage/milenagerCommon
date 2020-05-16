@@ -31,7 +31,8 @@ test('Create Report with 1 drive', () => {
         0.5,
         0.1,
         0.2,
-        0.3
+        0.3,
+        '%'
     )
 
     expect(report.getBusinessMiles()).toBe(0)
