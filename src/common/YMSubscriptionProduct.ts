@@ -6,6 +6,7 @@ export default class YMSubscriptionProduct {
     introductoryPrice: number
     localizedSymbol: string
     freeMonths: number
+    introMonths: number
     periodType: string
     price: number
     iosSubscription: YMSubscriptionProductIos
@@ -18,7 +19,7 @@ export default class YMSubscriptionProduct {
     }
 
     // tslint:disable-next-line:max-line-length
-    constructor (introductoryPrice: number, localizedSymbol: string, freeMonths: number, periodType: string, price: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, productId: string) {
+    constructor (introductoryPrice: number, localizedSymbol: string, freeMonths: number, periodType: string, price: number, iosSubscription: YMSubscriptionProductIos, androidSubscription: YMSubscriptionProductAndroid, productId: string, introMonths: number) {
         this.introductoryPrice = introductoryPrice
         this.localizedSymbol = localizedSymbol
         this.freeMonths = freeMonths
@@ -27,6 +28,7 @@ export default class YMSubscriptionProduct {
         this.iosSubscription = iosSubscription
         this.androidSubscription = androidSubscription
         this.productId = productId
+        this.introMonths = introMonths
     }
 
     isAnnual() {
@@ -40,23 +42,25 @@ export default class YMSubscriptionProduct {
     // tslint:disable-next-line:member-ordering
     static fromIos = function(subscription: YMSubscriptionProductIos) {
         const introductoryPrice = parseFloat(subscription.introductoryPrice.substring(1))
+        const numberOfIntoMonths = Number(subscription.introductoryPriceNumberOfPeriodsIOS)
         const localizedSymbol = subscription.localizedPrice.substring(0,1)
         const periodType = subscription.subscriptionPeriodUnitIOS
-        const freeMonths = parseInt(subscription.introductoryPriceNumberOfPeriodsIOS)
+        const freeMonths = introductoryPrice > 0 ? 0 : parseInt(subscription.introductoryPriceNumberOfPeriodsIOS)
         const price = parseFloat(subscription.price)
 
-        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, periodType, price, subscription, undefined, subscription.productId)
+        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, periodType, price, subscription, undefined, subscription.productId, numberOfIntoMonths)
     }
 
     // tslint:disable-next-line:member-ordering
     static fromAndroid = function(subscription: YMSubscriptionProductAndroid) {
-        const introductoryPrice = Number(subscription.introductoryPrice)
+        const introductoryPrice = Number(subscription.introductoryPrice.substring(1))
         const localizedSymbol = subscription.localizedPrice.substring(0,1)
         const periodType = subscription.subscriptionPeriodAndroid === "P1Y" ? YMSubscriptionProduct.PeriodTypes.YEAR : YMSubscriptionProduct.PeriodTypes.MONTH
+        const numberOfIntoMonths = Number(subscription.introductoryPriceCyclesAndroid)
         const numberOfFreeDays = Moment.duration(subscription.freeTrialPeriodAndroid).asDays()
         const freeMonths = Math.ceil(numberOfFreeDays / 30)
         const price = Number(subscription.price)
 
-        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, periodType, price, undefined, subscription, subscription.productId)
+        return new YMSubscriptionProduct(introductoryPrice, localizedSymbol, freeMonths, periodType, price, undefined, subscription, subscription.productId, numberOfIntoMonths)
     }
 }

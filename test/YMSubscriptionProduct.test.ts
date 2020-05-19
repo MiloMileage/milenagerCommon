@@ -113,3 +113,33 @@ test('Create from monthly (1 free) iOS subscription response', () => {
     expect(subscriptionProduct.localizedSymbol).toEqual('$')
     expect(subscriptionProduct.price).toBeCloseTo(5.99, 2)
 });
+
+test('Create from annual (1 for $0.99) Android subscription response', () => {
+    const json = "{\"originalJson\":\"\",\"iconUrl\":\"\",\"introductoryPricePeriodAndroid\":\"P1M\",\"introductoryPriceCyclesAndroid\":\"1\",\"freeTrialPeriodAndroid\":\"\",\"subscriptionPeriodAndroid\":\"P1Y\",\"introductoryPrice\":\"$0.99\",\"description\":\"Subscription to use Milo - Mileage Tracker\",\"type\":\"subs\",\"currency\":\"USD\",\"originalPrice\":\"49.99\",\"title\":\"Milo Annual Subscription (Mileage tracker by Milo)\",\"localizedPrice\":\"$49.99\",\"price\":\"49.99\",\"productId\":\"android.thisismilo.milo_subscription_annualy_3_1\"}"
+
+    const subscriptionProductAndroid: YMSubscriptionProductAndroid = JSON.parse(json);
+    const subscriptionProduct = YMSubscriptionProduct.fromAndroid(subscriptionProductAndroid);
+
+    expect(subscriptionProduct.freeMonths).toBe(0)
+    expect(subscriptionProduct.isAnnual()).toBe(true)
+    expect(subscriptionProduct.isMonthly()).toBe(false)
+    expect(subscriptionProduct.localizedSymbol).toEqual('$')
+    expect(subscriptionProduct.price).toBeCloseTo(49.99, 2)
+    expect(subscriptionProduct.introductoryPrice).toBeCloseTo(0.99, 2)
+    expect(subscriptionProduct.introMonths).toBe(1)
+});
+
+test('Create from annual (1 for $0.99) iOS subscription response', () => {
+    const json = "{\"productId\":\"ios.thisismilo.milo_subscription_annualy_3_1\",\"subscriptionPeriodUnitIOS\":\"YEAR\",\"description\":\"Subscription for Unlimited Mileage Reports\",\"introductoryPrice\":\"$0.99\",\"title\":\"Milo Annual Subscription\",\"introductoryPriceSubscriptionPeriodIOS\":\"MONTH\",\"introductoryPriceNumberOfPeriodsIOS\":\"1\",\"discounts\":[],\"type\":\"Do not use this. It returned sub only before\",\"localizedPrice\":\"$49.99\",\"introductoryPricePaymentModeIOS\":\"PAYUPFRONT\",\"price\":\"49.99\",\"currency\":\"USD\",\"subscriptionPeriodNumberIOS\":\"1\"}"
+
+    const subscriptionProductIos: YMSubscriptionProductIos = JSON.parse(json);
+    const subscriptionProduct = YMSubscriptionProduct.fromIos(subscriptionProductIos);
+
+    expect(subscriptionProduct.freeMonths).toBe(0)
+    expect(subscriptionProduct.isAnnual()).toBe(true)
+    expect(subscriptionProduct.isMonthly()).toBe(false)
+    expect(subscriptionProduct.localizedSymbol).toEqual('$')
+    expect(subscriptionProduct.price).toBeCloseTo(49.99, 2)
+    expect(subscriptionProduct.introductoryPrice).toBeCloseTo(0.99, 2)
+    expect(subscriptionProduct.introMonths).toBe(1)
+});
