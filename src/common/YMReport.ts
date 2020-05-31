@@ -2,12 +2,14 @@ import YMDateRange from './YMDateRange'
 import YMReportLine from './YMReportLine'
 import YMReportVehicleLine from './YMReportVehicleLine'
 import YMDrive from './YMDrive'
-import YMUserSettings from './YMUserSettings'
+import YMUserSettings, { YMCountry } from './YMUserSettings'
 import YMSavedLocation from './YMSavedLocation'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
 import { milesToMetric, metricToMiles, roundNumber } from './../components/common'
 import * as Moment from 'moment'
 import YMRate from './YMRate'
+import YMPurpose from './YMPurpose'
+import { YMVehicleType } from './YMVehicle'
 
 export default class YMReport {
     reportName: string
@@ -27,11 +29,8 @@ export default class YMReport {
     csvLink: string
     pdfLink: string
     isOutsideOfSubscriptionPeriod: boolean
-    businessRateInMiles: number
-    movingRateInMiles: number
-    charityRateInMiles: number
-    medicalRateInMiles: number
     moneySymbol: string
+    rates: Array<{purpose: string, rate: string}>
     
     constructor (reportName: string,
             dateCreated: Date,
@@ -50,10 +49,6 @@ export default class YMReport {
             csvLink: string,
             pdfLink: string,
             isOutsideOfSubscriptionPeriod: boolean,
-            businessRateInMiles: number,
-            movingRateInMiles: number,
-            charityRateInMiles: number,
-            medicalRateInMiles: number,
             moneySymbol: string) {
         this.reportName = reportName
         this.dateCreated = dateCreated
@@ -72,11 +67,42 @@ export default class YMReport {
         this.csvLink = csvLink
         this.pdfLink = pdfLink
         this.isOutsideOfSubscriptionPeriod = isOutsideOfSubscriptionPeriod
-        this.businessRateInMiles = businessRateInMiles
-        this.movingRateInMiles = movingRateInMiles
-        this.charityRateInMiles = charityRateInMiles
-        this.medicalRateInMiles = medicalRateInMiles
         this.moneySymbol = moneySymbol ? moneySymbol : '$'
+
+        this.rates = []
+
+        if (this.userSettings.country === YMCountry.US) {
+            this.rates.push({purpose: `business (general)`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `medical`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.medical, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `charity`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.charity, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `moving`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.moving, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+        }
+        if (this.userSettings.country === YMCountry.CA) {
+            const fromToDistanceInMilesCA = metricToMiles(5000)
+            this.rates.push({purpose: `business (first ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `business (after ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem, fromToDistanceInMilesCA + 1)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+        }
+        if (this.userSettings.country === YMCountry.AU) {
+            const fromToDistanceInMilesAU = metricToMiles(5000)
+            this.rates.push({purpose: `business (first ${this.getDistanceFormated(fromToDistanceInMilesAU, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+        }
+        if (this.userSettings.country === YMCountry.UK) {
+            const fromToDistanceInMilesUK = metricToMiles(10000)
+            this.rates.push({purpose: `car - business (first ${this.getDistanceFormated(fromToDistanceInMilesUK, this.userSettings)})`, rate: `${milesToMetric(YMRate.GetRates(undefined, this.globalSettings.ukRates)[YMRate.BUSINESS].getRateFromMileage(fromToDistanceInMilesUK - 10, YMVehicleType.car), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `car - business (after ${this.getDistanceFormated(fromToDistanceInMilesUK, this.userSettings)})`, rate: `${milesToMetric(YMRate.GetRates(undefined, this.globalSettings.ukRates)[YMRate.BUSINESS].getRateFromMileage(fromToDistanceInMilesUK + 10, YMVehicleType.car), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `motorcycle - business`, rate: `${milesToMetric(YMRate.GetRates(undefined, this.globalSettings.ukRates)[YMRate.BUSINESS].getRateFromMileage(0, YMVehicleType.motorcycle), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `bicycle - business`, rate: `${milesToMetric(YMRate.GetRates(undefined, this.globalSettings.ukRates)[YMRate.BUSINESS].getRateFromMileage(0, YMVehicleType.bicycle), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+        }
+        if (this.userSettings.country === YMCountry.CUSTOME || this.userSettings.country === YMCountry.UNKNOWN) {
+            this.userSettings.purposes.map(p => {
+                this.rates.push({purpose: `${p.name}`, rate: `${milesToMetric(YMRate.getRateForPurposeId(p.purposeId, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            })
+        }
+
     }
 
     addDriveValue(drive: YMDrive, savedLocations : { [ind: string]: YMSavedLocation }) {
@@ -170,6 +196,33 @@ export default class YMReport {
         return this.vehicleBusinessLines.map(x => x.totalValue).reduce((total, num) => total + num, 0)
     }
 
+    DistanceUnit(isMetric: boolean) {
+        return isMetric ? 'km' : 'mi'
+    }
+
+    formatMoney(amount: number, symbol: string, decimalCount = 2, decimal = ".", thousands = ",") {
+        try {
+          let amountStr = `${amount}`
+          let _decimalCount = Math.abs(decimalCount);
+          _decimalCount = isNaN(_decimalCount) ? 2 : _decimalCount;
+      
+          const negativeSign = Number(amountStr) < 0 ? "-" : "";
+      
+          const i = parseInt(amountStr = Math.abs(Number(amountStr) || 0).toFixed(_decimalCount)).toString();
+          const j = (i.length > 3) ? i.length % 3 : 0;
+      
+          return symbol + negativeSign + (j ? i.substr(0, j) + thousands : '') + i.substr(j).replace(/(\d{3})(?=\d)/g, symbol + "1" + thousands) + (_decimalCount ? decimal + Math.abs(Number(amountStr) - Number(i)).toFixed(_decimalCount).slice(2) : "");
+        } catch (e) {
+          console.log(e)
+          return symbol + "0.00"
+        }
+      };
+
+    getDistanceFormated(miles: number, userSettings: YMUserSettings) {
+        const dist = milesToMetric(miles, userSettings.personalSettings.isMetricSystem)
+        return `${this.formatMoney(dist, '', 0, '.', ',')}${this.DistanceUnit(userSettings.personalSettings.isMetricSystem)}`
+    } 
+
     getCsvData() {
         let data: string = ''
         data += '****,****,****,****,****,****,****,****,****,****\n'
@@ -181,26 +234,30 @@ export default class YMReport {
         data += 'Name,'
         data += 'Project,'
         data += 'Customer,'
-        data += 'Business Rate,'
-        data += 'Charity Rate,'
-        data += 'Moving Rate,'
-        data += 'Medical Rate,'
         data += 'Details,'
 
         data += '\n'
 
         data += `${this.name},${this.project},${this.customerDetails},`
         
-        data += `${metricToMiles(this.businessRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
-        data += `${metricToMiles(this.charityRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
-        data += `${metricToMiles(this.movingRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
-        data += `${metricToMiles(this.medicalRateInMiles, this.isMetricSystem, 1000)} $\\${this.isMetricSystem ? 'km' : 'mi'},`
         data += `${this.details}`
 
         data += '\n'
         data += '\n'
 
-        data += 'Business Summary'
+        data += 'Rates'
+        data += '\n'
+
+        data += `Purpose,Rate (per ${this.DistanceUnit(this.userSettings.personalSettings.isMetricSystem)})`
+        this.rates.map(rate => {
+            data += '\n'
+            data += `${rate.purpose}, ${rate.rate}`
+        })
+
+        data += '\n'
+        data += '\n'
+
+        data += 'Business Summary'        
         
         data += '\n'
 
@@ -330,7 +387,7 @@ export default class YMReport {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReport('', new Date(), '', '', '', '', YMUserSettings.fromObject(undefined), YMGlobalUserSettings.fromObject(undefined), false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false, 0, 0, 0, 0, '$')
+        if(obj == null) return new YMReport('', new Date(), '', '', '', '', YMUserSettings.fromObject(undefined), YMGlobalUserSettings.fromObject(undefined), false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false, '$')
         
         return new YMReport(
             obj.reportName,
@@ -350,10 +407,6 @@ export default class YMReport {
             obj.csvLink,
             obj.pdfLink,
             obj.isOutsideOfSubscriptionPeriod,
-            obj.businessRateInMiles,
-            obj.movingRateInMiles,
-            obj.charityRateInMiles,
-            obj.medicalRateInMiles,
             obj.moneySymbol)
     }
 }

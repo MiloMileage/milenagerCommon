@@ -28,10 +28,6 @@ test('Create Report with 1 drive', () => {
         'csvLink',
         'pdfLink',
         false,
-        0.5,
-        0.1,
-        0.2,
-        0.3,
         '%'
     )
 

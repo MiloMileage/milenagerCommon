@@ -104,24 +104,32 @@ export default class PdfDescription {
             PdfTableSub.getHeaderTableCell('Name'),
             PdfTableSub.getHeaderTableCell('Project'),
             PdfTableSub.getHeaderTableCell('Customer'),
-            PdfTableSub.getHeaderTableCell('Business Rate'),
-            PdfTableSub.getHeaderTableCell('Charity Rate'),
-            PdfTableSub.getHeaderTableCell('Moving Rate'),
-            PdfTableSub.getHeaderTableCell('Medical Rate'),
             PdfTableSub.getHeaderTableCell('Details'),
         ])
         customerDetailsTableSub.body.push([
             PdfTableSub.getTableCell(report.name),
             PdfTableSub.getTableCell(report.project),
             PdfTableSub.getTableCell(report.customerDetails),
-            PdfTableSub.getTableCell(`${metricToMiles(report.businessRateInMiles, report.isMetricSystem, 1000)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
-            PdfTableSub.getTableCell(`${metricToMiles(report.charityRateInMiles, report.isMetricSystem, 1000)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
-            PdfTableSub.getTableCell(`${metricToMiles(report.movingRateInMiles, report.isMetricSystem, 1000)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
-            PdfTableSub.getTableCell(`${metricToMiles(report.medicalRateInMiles, report.isMetricSystem, 1000)} $\\${report.isMetricSystem ? 'km' : 'mi'}`),
             PdfTableSub.getTableCell(report.details),
         ])
         const customerDetailsTable = new PdfTable('tableExample', [0, 10, 0, 10], customerDetailsTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), undefined))
         pd.content.push(customerDetailsTable)
+
+        // Add rates table
+        const ratesTableSub = new PdfTableSub(['*', '*'], new Array<Array<PdfObject>>())
+        ratesTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('Purpose'),
+            PdfTableSub.getHeaderTableCell(`Rate (per ${report.DistanceUnit(report.userSettings.personalSettings.isMetricSystem)})`),
+        ])
+        report.rates.map(rate => {
+            ratesTableSub.body.push([
+                PdfTableSub.getTableCell(rate.purpose),
+                PdfTableSub.getTableCell(rate.rate),
+            ])
+        })
+        
+        const ratesTable = new PdfTable('tableExample', [0, 10], ratesTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), undefined))
+        pd.content.push(ratesTable)
 
         // Add business vehicles table
         pd.content.push(new PdfText('Report Summary (Business)', undefined, 'subheader', undefined, undefined, undefined, undefined))

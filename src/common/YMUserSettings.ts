@@ -12,6 +12,7 @@ export enum YMCountry {
     CA = 'CA',
     AU = 'AU',
     UK = 'UK',
+    UNKNOWN = 'UNKNOWN',
     CUSTOME = 'CUSTOME'
 }
 
@@ -46,7 +47,7 @@ export default class YMUserSettings {
         this.isCustomClassificationEnabled = isCustomClassificationEnabled
         this.customClassifications = customClassifications
         this.isLocationClassificationEnabled = isLocationClassificationEnabled
-        this.country = country ? country : YMCountry.US
+        this.country = country ? country : YMCountry.CUSTOME
     }
 
     // tslint:disable-next-line:member-ordering

@@ -11,6 +11,7 @@ export declare enum YMCountry {
     CA = "CA",
     AU = "AU",
     UK = "UK",
+    UNKNOWN = "UNKNOWN",
     CUSTOME = "CUSTOME"
 }
 export default class YMUserSettings {
