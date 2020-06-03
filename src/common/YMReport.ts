@@ -56,8 +56,8 @@ export default class YMReport {
         this.project = project
         this.customerDetails = customerDetails
         this.details = details
-        this.userSettings = userSettings
-        this.globalSettings = globalSettings
+        this.userSettings = YMUserSettings.fromObject(userSettings)
+        this.globalSettings = YMGlobalUserSettings.fromObject(globalSettings)
         this.isMetricSystem = isMetricSystem
         this.dateRange = YMDateRange.fromObject(dateRange)
         this.lines = lines.map(line => YMReportLine.fromObject(line))
