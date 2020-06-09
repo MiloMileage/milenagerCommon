@@ -5,7 +5,7 @@ import YMDrive from './YMDrive'
 import YMUserSettings, { YMCountry } from './YMUserSettings'
 import YMSavedLocation from './YMSavedLocation'
 import YMGlobalUserSettings from './YMGlobalUserSettings'
-import { milesToMetric, metricToMiles, roundNumber } from './../components/common'
+import { milesToMetric, metricToMiles, roundNumber, milesToMetricNumber } from './../components/common'
 import * as Moment from 'moment'
 import YMRate from './YMRate'
 import YMPurpose from './YMPurpose'
@@ -81,7 +81,7 @@ export default class YMReport {
         if (this.userSettings.country === YMCountry.CA) {
             const fromToDistanceInMilesCA = metricToMiles(5000)
             this.rates.push({purpose: `business (first ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `business (after ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem, fromToDistanceInMilesCA + 1)}`})
+            this.rates.push({purpose: `business (after ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings, undefined, fromToDistanceInMilesCA + 1), this.userSettings.personalSettings.isMetricSystem)}`})
             this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
         }
         if (this.userSettings.country === YMCountry.AU) {
@@ -219,7 +219,7 @@ export default class YMReport {
       };
 
     getDistanceFormated(miles: number, userSettings: YMUserSettings) {
-        const dist = milesToMetric(miles, userSettings.personalSettings.isMetricSystem)
+        const dist = milesToMetricNumber(miles, userSettings.personalSettings.isMetricSystem)
         return `${this.formatMoney(dist, '', 0, '.', ',')}${this.DistanceUnit(userSettings.personalSettings.isMetricSystem)}`
     } 
 

@@ -55,7 +55,7 @@ export default class YMReportLine {
                                 `${drive.origin.address.name} -> ${drive.dest.address.name}`,
                                 `${originPersonal} -> ${destPersonal}`,
                                 drive.getVehicleName(userSettings),
-                                Common.milesToMetric(drive.miles, userSettings.personalSettings.isMetricSystem),
+                                Common.milesToMetricNumber(drive.miles, userSettings.personalSettings.isMetricSystem),
                                 Common.roundNumber(drive.getValue(userSettings, globalSettings)),
                                 Common.roundNumber(drive.driveNotes.parkingMoney),
                                 Common.roundNumber(drive.driveNotes.tollMoney))
