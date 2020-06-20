@@ -26,7 +26,7 @@ export default class YMUserSubscription {
     }
 
     isUnderSubscription() {
-        return this.status === YMSubscriptionStatus.ACTIVE || Moment(this.expiresAt).isAfter(Moment())
+        return Moment(this.expiresAt).isAfter(Moment())
     }
 
     isCanceledAndUnderSubscription() {
