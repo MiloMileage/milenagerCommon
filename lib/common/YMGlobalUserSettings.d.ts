@@ -3,6 +3,8 @@ import YMNotificationSetting from './YMNotificationSetting';
 import YMWorkingHour from './YMWorkingHour';
 import YMTutorialContainer from './YMTutorialContainer';
 import YMRate from './YMRate';
+import YMExpenseCategory from './YMExpenseCategory';
+import YMIncomeSorce from './YMIncomeSource';
 export default class YMGlobalUserSettings {
     purposes: Array<YMPurpose>;
     notificationSettings: Array<YMNotificationSetting>;
@@ -30,6 +32,8 @@ export default class YMGlobalUserSettings {
     tutorialContainers: {
         [ind: string]: Array<YMTutorialContainer>;
     };
+    expenseCategories: Array<YMExpenseCategory>;
+    incomeSources: Array<YMIncomeSorce>;
     constructor(purposes: Array<YMPurpose>, notificationSettings: Array<YMNotificationSetting>, workingHours: Array<YMWorkingHour>, irsRates: {
         [ind: string]: {
             [ind: string]: number;
@@ -48,6 +52,6 @@ export default class YMGlobalUserSettings {
         [ind: string]: {
             [ind: string]: YMRate;
         };
-    });
+    }, expenseCategories?: Array<YMExpenseCategory>, incomeSources?: Array<YMIncomeSorce>);
     static fromObject(obj: any): YMGlobalUserSettings;
 }

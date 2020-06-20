@@ -6,6 +6,8 @@ import YMAutoLocationRule from './YMAutoLocationRule'
 import YMRate from './YMRate'
 import YMWorkingHour from './YMWorkingHour'
 import YMCustomClassification from './YMCustomClassification'
+import YMExpenseCategory from './YMExpenseCategory'
+import YMIncomeSorce from './YMIncomeSource'
 
 export enum YMCountry {
     US = 'US',
@@ -30,11 +32,13 @@ export default class YMUserSettings {
     isCustomClassificationEnabled: boolean
     customClassifications: Array<YMCustomClassification>
     country: YMCountry
+    expenseCategories: Array<YMExpenseCategory>
+    incomeSources: Array<YMIncomeSorce>
 
     constructor (vehicles: Array<YMVehicle> = [], personalRates: Array<YMRate> = [], purposes: Array<YMPurpose> = [],
         notificationSettings: Array<YMNotificationSetting> = [], personalSettings: YMPersonalSettings = new YMPersonalSettings(false, '1', undefined),
         autoRules: Array<YMAutoLocationRule> = [], workingHours: Array<YMWorkingHour> = [],
-        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = true, isCustomClassificationEnabled: boolean = false, customClassifications = [], isLocationClassificationEnabled: boolean = false, country: YMCountry = YMCountry.CUSTOME) {
+        isWorkingHoursEnabled: boolean = false, isAutoRulesEnabled: boolean = true, isCustomClassificationEnabled: boolean = false, customClassifications = [], isLocationClassificationEnabled: boolean = false, country: YMCountry = YMCountry.CUSTOME, expenseCategories:Array<YMExpenseCategory> = [], incomeSources: Array<YMIncomeSorce> = []) {
         this.vehicles = vehicles.map(x => YMVehicle.fromObject(x))
         this.personalRates = personalRates.map(x => YMRate.fromObject(x))
         this.purposes = purposes.map(x => YMPurpose.fromObject(x))
@@ -48,16 +52,19 @@ export default class YMUserSettings {
         this.customClassifications = customClassifications
         this.isLocationClassificationEnabled = isLocationClassificationEnabled
         this.country = country ? country : YMCountry.CUSTOME
+        this.expenseCategories = expenseCategories
+        this.incomeSources = incomeSources
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject(obj) {
         if(obj == null) return new YMUserSettings([], [], [], [], YMPersonalSettings.fromObject(undefined),
-        [], [], false, false, false, [], false, undefined)
+        [], [], false, false, false, [], false, undefined, [], [])
 
         return new YMUserSettings(obj.vehicles, obj.personalRates, obj.purposes, obj.notificationSettings,
                                     obj.personalSettings, obj.autoRules, obj.workingHours, obj.isWorkingHoursEnabled,
-                                        obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications, obj.isLocationClassificationEnabled, obj.country)
+                                        obj.isAutoRulesEnabled, obj.isCustomClassificationEnabled, obj.customClassifications, obj.isLocationClassificationEnabled, obj.country,
+                                            obj.expenseCategories, obj.incomeSources)
     }
 
     isDriveDetectionEnabled() {
