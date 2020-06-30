@@ -4,7 +4,7 @@ import YMUserSettings from "./YMUserSettings"
 
 export default class YMTransaction {
     transactionId: string
-    incomeSourceId?: string // if this is an expense (has expense category id), if has income source it indicates this is a business expense
+    incomeSourceId?: string // if this is an expense (has expense category id), if has income source it indicates this is a business expense - -1 is general business
     expenseCategoryId?: string
     time: Date
     amount: number // always positive number. If has expenseCategoryId this is an expense
