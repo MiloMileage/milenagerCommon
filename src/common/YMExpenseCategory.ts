@@ -1,3 +1,6 @@
+import YMUserSettings from "./YMUserSettings"
+import YMGlobalUserSettings from "./YMGlobalUserSettings"
+
 export default class YMExpenseCategory {
     expenseCategoryId: string
     name: string
@@ -14,6 +17,13 @@ export default class YMExpenseCategory {
         if(obj == null) return new YMExpenseCategory('', '', true)
 
         return new YMExpenseCategory(obj.expenseCategoryId, obj.name, obj.visible)
+    }
+
+    static getNameOrDefault = (expenseId: string, defaultName: string, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, filterVisible: boolean = false) => {
+        const mergedArray = YMExpenseCategory.mergeExpenseCategoriesArrays(userSettings.expenseCategories, globalSettings.expenseCategories, filterVisible)
+        const expense = mergedArray.filter(x => x.expenseCategoryId === expenseId)[0]
+
+        return expense ? expense.name : defaultName
     }
 
     static mergeExpenseCategoriesArrays = (first: Array<YMExpenseCategory>, second: Array<YMExpenseCategory>, filterVisible: boolean = true) => {

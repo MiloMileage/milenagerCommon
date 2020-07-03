@@ -1,3 +1,6 @@
+import YMUserSettings from "./YMUserSettings"
+import YMGlobalUserSettings from "./YMGlobalUserSettings"
+
 export default class YMIncomeSorce {
     incomeSourceId: string
     name: string
@@ -14,6 +17,13 @@ export default class YMIncomeSorce {
         if(obj == null) return new YMIncomeSorce('', '', true)
 
         return new YMIncomeSorce(obj.incomeSourceId, obj.name, obj.visible)
+    }
+
+    static getNameOrDefault = (incomeSourceId: string, defaultName: string, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, filterVisible: boolean = false) => {
+        const mergedArray = YMIncomeSorce.mergeIncomeSourcesArrays(userSettings.incomeSources, globalSettings.incomeSources, filterVisible)
+        const incomeSource = mergedArray.filter(x => x.incomeSourceId === incomeSourceId)[0]
+
+        return incomeSource ? incomeSource.name : defaultName
     }
 
     static mergeIncomeSourcesArrays = (first: Array<YMIncomeSorce>, second: Array<YMIncomeSorce>, filterVisible: boolean = true) => {
