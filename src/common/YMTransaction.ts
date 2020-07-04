@@ -6,7 +6,9 @@ export default class YMTransaction {
     transactionId: string
     incomeSourceId?: string // if this is an expense (has expense category id), if has income source it indicates this is a business expense - -1 is general business
     expenseCategoryId?: string
-    time: Date
+    year: number
+    month: number
+    date: number
     amount: number // always positive number. If has expenseCategoryId this is an expense
     notes: string
     receipts: Array<YMReceipt>
@@ -15,7 +17,9 @@ export default class YMTransaction {
     constructor (transactionId: string,
                     incomeSourceId: string,
                     expenseCategoryId: string,
-                    time: Date,
+                    year: number,
+                    month: number,
+                    date: number,
                     amount: number,
                     notes: string,
                     receipts: Array<YMReceipt>,
@@ -23,11 +27,17 @@ export default class YMTransaction {
         this.transactionId = transactionId
         this.incomeSourceId = incomeSourceId
         this.expenseCategoryId = expenseCategoryId
-        this.time = new Date(time)
+        this.year = year
+        this.month = month
+        this.date = date
         this.amount = amount
         this.notes = notes
         this.receipts = receipts.map(x => YMReceipt.fromObject(x))
         this.merchant = YMMerchant.fromObject(merchant)
+    }
+
+    getTime() {
+        return new Date(this.year, this.month, this.date)
     }
 
     isExpense() {
@@ -56,8 +66,8 @@ export default class YMTransaction {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMTransaction('', '', '', new Date(), 0, '', [], undefined)
+        if(obj == null) return new YMTransaction('', '', '', 2020, 1, 1, 0, '', [], undefined)
 
-        return new YMTransaction(obj.transactionId, obj.incomeSourceId, obj.expenseCategoryId, obj.time, obj.amount, obj.notes, obj.receipts, obj.merchant)
+        return new YMTransaction(obj.transactionId, obj.incomeSourceId, obj.expenseCategoryId, obj.year, obj.month, obj.date, obj.amount, obj.notes, obj.receipts, obj.merchant)
     }
 }
