@@ -55,6 +55,10 @@ export default class YMTransaction {
         return expenseCategory ? expenseCategory.name : '' 
     }
 
+    getTime() {
+        return YMTransaction.fromDateString(this.date)
+    }
+
     static fromDateString = (dateStr: string) =>
     {
         return moment(dateStr).toDate()

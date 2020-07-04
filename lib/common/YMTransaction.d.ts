@@ -16,6 +16,7 @@ export default class YMTransaction {
     getIncomeSourceName(userSettings: YMUserSettings): string;
     getReceiptImageUrl(): string;
     getIncomeExpenseCategory(userSettings: YMUserSettings): string;
+    getTime(): Date;
     static fromDateString: (dateStr: string) => Date;
     static toDateString: (date: Date) => string;
     static fromObject: (obj: any) => YMTransaction;
