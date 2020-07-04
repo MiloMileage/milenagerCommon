@@ -23,7 +23,7 @@ export default class YMTransaction {
         this.transactionId = transactionId
         this.incomeSourceId = incomeSourceId
         this.expenseCategoryId = expenseCategoryId
-        this.time = time
+        this.time = new Date(time)
         this.amount = amount
         this.notes = notes
         this.receipts = receipts.map(x => YMReceipt.fromObject(x))
