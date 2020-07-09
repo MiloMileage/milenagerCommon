@@ -1,10 +1,11 @@
 import PdfObject from './PdfObject'
 import PdfText from './PdfText'
+import PdfImage from './PdfImage'
 
 export default class PdfTableSub {
     headerRows: number
     widths: Array<any>
-    body: Array<Array<PdfObject>>
+    body: Array<Array<PdfObject | PdfImage>>
     
     constructor (widths: Array<any>, body: Array<Array<PdfObject>>) {
         this.widths = widths

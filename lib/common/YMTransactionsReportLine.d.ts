@@ -10,7 +10,8 @@ export default class YMTransactionsReportLine {
     expenseCategory: string;
     incomeSource: string;
     receiptImageUrl: string;
-    constructor(when: Date, amount: number, note: string, isExpense: boolean, merchantName: string, expenseCategory: string, incomeSource: string, receiptImageUrl: string);
+    isBusiness: boolean;
+    constructor(when: Date, amount: number, note: string, isExpense: boolean, merchantName: string, expenseCategory: string, incomeSource: string, receiptImageUrl: string, isBusiness: boolean);
     static fromTransaction(transaction: YMTransaction, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings): YMTransactionsReportLine;
     static fromObject: (obj: any) => YMTransactionsReportLine;
 }

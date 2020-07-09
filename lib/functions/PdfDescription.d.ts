@@ -16,7 +16,7 @@ export default class PdfDescription {
     static onHeader: (currentPage: number, pageCount: number) => PdfText;
     static fromObject: (obj: any) => PdfDescription;
     static getFooterFunc: (name: string, project: string, customerDetails: string) => (currentPage: number, pageCount: number) => PdfText;
-    static getHeaderFunc: (name: string, dateRanage: YMDateRange) => (currentPage: number, pageCount: number) => PdfText;
+    static getHeaderFunc: (name: string, dateRanage: YMDateRange, title: string) => (currentPage: number, pageCount: number) => PdfText;
     static fromReport: (report: YMReport) => PdfDescription;
     static fromTransactionReport: (report: YMTransactionsReport, getBase64ImageFromURL: (url: string) => Promise<any>) => Promise<PdfDescription>;
 }

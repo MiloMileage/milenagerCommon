@@ -2,17 +2,17 @@ export default class PdfLayout {
     fillColor: (i: number, node: any) => string
     hLineWidth: (i: number, node: any) => number
     
-    constructor (fillColor: (i: number, node: any) => string, hLineWidth: (i: number, node: any) => number) {
+    constructor (fillColor: (i: number, node: any) => string, hLineWidth: (i: number, node: any) => number, noSummary: boolean = false) {
         this.fillColor = fillColor
-        this.hLineWidth = hLineWidth === undefined ? PdfLayout.getTableHeaderHLineWidthFunc() : hLineWidth
+        this.hLineWidth = hLineWidth === undefined ? PdfLayout.getTableHeaderHLineWidthFunc(noSummary) : hLineWidth
     }
 
     static getTableHeaderFillColorFunc = () => {
         return (i: number, node: any)  => i === 0 ? '#CCCCCC' : null
     }
 
-    static getTableHeaderHLineWidthFunc = () => {
-        return (i: number, node: any)  => (node.table.body.length - 1 === i ? 3 : 1)
+    static getTableHeaderHLineWidthFunc = (noSummary: boolean = false) => {
+        return (i: number, node: any)  => (node.table.body.length - 1 === i ? noSummary ? 1 :3 : 1)
     }
 
     // tslint:disable-next-line:member-ordering

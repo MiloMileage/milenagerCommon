@@ -13,6 +13,7 @@ export default class YMTransactionsReportLine {
     expenseCategory: string
     incomeSource: string
     receiptImageUrl: string
+    isBusiness: boolean
     
     constructor (when: Date,
             amount: number,
@@ -21,7 +22,8 @@ export default class YMTransactionsReportLine {
             merchantName: string,
             expenseCategory: string,
             incomeSource: string,
-            receiptImageUrl: string) {
+            receiptImageUrl: string,
+            isBusiness: boolean) {
         this.when = when
         this.amount = amount
         this.note = note
@@ -30,6 +32,7 @@ export default class YMTransactionsReportLine {
         this.expenseCategory = expenseCategory
         this.incomeSource = incomeSource
         this.receiptImageUrl = receiptImageUrl
+        this.isBusiness = isBusiness
     }
 
     static fromTransaction(transaction: YMTransaction, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings) {
@@ -41,13 +44,13 @@ export default class YMTransactionsReportLine {
                 transaction.merchant.name,
                 YMExpenseCategory.getNameOrDefault(transaction.expenseCategoryId, 'n/a', userSettings, globalSettings, false),
                 YMIncomeSorce.getNameOrDefault(transaction.incomeSourceId, 'n/a', userSettings, globalSettings, false),
-                transaction.receipts.length > 0 ? transaction.receipts[0].imageUrl : '')
+                transaction.receipts.length > 0 ? transaction.receipts[0].imageUrl : '', transaction.incomeSourceId != null)
     }
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMTransactionsReportLine(new Date(), 0, '', true, '', '', '', '')
+        if(obj == null) return new YMTransactionsReportLine(new Date(), 0, '', true, '', '', '', '', false)
         
-        return new YMTransactionsReportLine(obj.when, obj.amount, obj.note, obj.isExpense, obj.merchantName, obj.expenseCategory, obj.incomeSource, obj.receiptImageUrl)
+        return new YMTransactionsReportLine(obj.when, obj.amount, obj.note, obj.isExpense, obj.merchantName, obj.expenseCategory, obj.incomeSource, obj.receiptImageUrl, obj.isBusiness)
     }
 }

@@ -61,6 +61,11 @@ export default class YMTransactionsReport {
     }
 
     addTransactionValue(transaction: YMTransaction) {
+        if (transaction.isExpense() && transaction.incomeSourceId == null) {
+            // Only if a business expense
+            return
+        }
+
         this.lines.push(YMTransactionsReportLine.fromTransaction(transaction, this.userSettings, this.globalSettings))
         
         if (transaction.isExpense()) {
@@ -115,38 +120,34 @@ export default class YMTransactionsReport {
         data += '\n'
 
         data += 'Name,'
-        data += 'Project,'
-        data += 'Customer,'
-        data += 'Details,'
+        data += 'Notes,'
 
         data += '\n'
 
-        data += `${this.name},${this.project},${this.customerDetails},`
-        
-        data += `${this.details}`
+        data += `${this.name},${this.details}`
 
         data += '\n'
         data += '\n'
 
-        data += 'Businesses'
+        data += 'Income Summary'
         data += '\n'
 
-        data += `Name,Income`
-        Object.keys(this.incomeBySource).map(businessNAme => {
+        data += `Business,Amount (${this.moneySymbol})`
+        Object.keys(this.incomeBySource).map(businessName => {
             data += '\n'
-            data += `${businessNAme}, ${this.incomeBySource[businessNAme]}`
+            data += `${businessName}, ${Number(this.incomeBySource[businessName]).toFixed(2)}`
         })
 
         data += '\n'
         data += '\n'
 
-        data += 'Expenses'
+        data += 'Business Expenses Summary'
         data += '\n'
 
-        data += `Category,Expense`
+        data += `Expense Category,Amount (${this.moneySymbol})`
         Object.keys(this.expenseByCategory).map(category => {
             data += '\n'
-            data += `${category}, ${this.expenseByCategory[category]}`
+            data += `${category}, ${Number(this.expenseByCategory[category]).toFixed(2)}`
         })
 
         data += '\n'
@@ -159,9 +160,9 @@ export default class YMTransactionsReport {
         data += '#,'
         data += 'When,'
         data += 'Business,'
-        data += `Note,`
-        data += `Amount,`
+        data += `Amount (${this.moneySymbol}),`
         data += `Receipt,`
+        data += `Note,`
 
         data += '\n'
 
@@ -169,17 +170,17 @@ export default class YMTransactionsReport {
             data += `${index + 1},`
             data += `${Moment.utc(dl.when.getTime()).format('MMMM Do YYYY')},`
             data += `${dl.incomeSource},`
-            data += `${dl.note},`
-            data += `${dl.amount},`
+            data += `${Number(dl.amount).toFixed(2)},`
             data += `${dl.receiptImageUrl},`
+            data += `${dl.note},`
             data += '\n'
         })
 
         data += `,`
         data += `,`
-        data += `,`
         data += `Total,`
         data += `${this.getIncomeAmount()},`
+        data += `,`
         data += `,`
 
         data += '\n'
@@ -193,9 +194,9 @@ export default class YMTransactionsReport {
         data += 'When,'
         data += 'Expense Category,'
         data += 'Merchant,'
-        data += `Note,`
-        data += `Amount,`
+        data += `Amount (${this.moneySymbol}),`
         data += `Receipt,`
+        data += `Note,`
 
         data += '\n'
 
@@ -204,9 +205,9 @@ export default class YMTransactionsReport {
             data += `${Moment.utc(dl.when.getTime()).format('MMMM Do YYYY')},`
             data += `${dl.expenseCategory},`
             data += `${dl.merchantName},`
-            data += `${dl.note},`
-            data += `${dl.amount},`
+            data += `${Number(dl.amount).toFixed(2)},`
             data += `${dl.receiptImageUrl},`
+            data += `${dl.note},`
             data += '\n'
         })
 
@@ -215,6 +216,7 @@ export default class YMTransactionsReport {
         data += `,`
         data += `Total,`
         data += `${this.getExpensesAmount()},`
+        data += `,`
         data += `,`
         
         data += '\n'
