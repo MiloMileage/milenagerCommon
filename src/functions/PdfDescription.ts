@@ -9,11 +9,14 @@ import YMReportLine from './../common/YMReportLine'
 import YMDateRange from './../common/YMDateRange'
 import * as Moment from 'moment'
 import { milesToMetric, metricToMiles, roundNumber } from './../components/common'
+import YMTransactionsReport from '../common/YMTransactionsReport'
+import YMTransactionsReportLine from '../common/YMTransactionsReportLine'
+import PdfImage from './PdfImage'
 
 export default class PdfDescription {
     pageOrientation: string
     pageMargins: Array<number>
-    content: Array<PdfObject>
+    content: Array<PdfObject | PdfImage>
     footer: (currentPage: number, pageCount: number) => PdfText
     header: (currentPage: number, pageCount: number) => PdfText
     styles: any
@@ -273,6 +276,152 @@ export default class PdfDescription {
         
         const drivesTable = new PdfTable('tableExample', [0, 10, 0, 10], drivesTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
         pd.content.push(drivesTable)
+
+        return pd
+    }
+
+    static fromTransactionReport = async function(report: YMTransactionsReport, getBase64ImageFromURL: (url: string) => Promise<any>) {
+        const pd = PdfDescription.fromObject(undefined)
+
+        pd.pageOrientation = 'landscape'
+        pd.pageMargins = [30, 30, 30, 30]
+        pd.footer = PdfDescription.getFooterFunc(report.name, report.project, report.customerDetails)
+        pd.header = PdfDescription.getHeaderFunc(report.name, report.dateRange)
+        pd.content = new Array<PdfObject>()
+
+        // Add customer details table
+        const customerDetailsTableSub = new PdfTableSub(['*', '*', '*', '*', '*', '*', '*', '*'], new Array<Array<PdfObject>>())
+        customerDetailsTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('Name'),
+            PdfTableSub.getHeaderTableCell('Project'),
+            PdfTableSub.getHeaderTableCell('Customer'),
+            PdfTableSub.getHeaderTableCell('Details'),
+        ])
+        customerDetailsTableSub.body.push([
+            PdfTableSub.getTableCell(report.name),
+            PdfTableSub.getTableCell(report.project),
+            PdfTableSub.getTableCell(report.customerDetails),
+            PdfTableSub.getTableCell(report.details),
+        ])
+        const customerDetailsTable = new PdfTable('tableExample', [0, 10, 0, 10], customerDetailsTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), undefined))
+        pd.content.push(customerDetailsTable)
+
+        pd.content.push(new PdfText('Income Summary', undefined, 'subheader', undefined, undefined, undefined, undefined))
+
+        // Add Income Summary
+        const incomeTableSub = new PdfTableSub(['*', '*'], new Array<Array<PdfObject>>())
+        incomeTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('Business'),
+            PdfTableSub.getHeaderTableCell(`Amount`),
+        ])
+        Object.keys(report.incomeBySource).map(business => {
+            incomeTableSub.body.push([
+                PdfTableSub.getTableCell(business),
+                PdfTableSub.getTableCell(`${report.incomeBySource[business]}`),
+            ])
+        })
+        
+        const incomeTable = new PdfTable('tableExample', [0, 10], incomeTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), undefined))
+        pd.content.push(incomeTable)
+
+        pd.content.push(new PdfText('Expense Summary', undefined, 'subheader', undefined, undefined, undefined, undefined))
+
+        // Add Expense Summary
+        const expenseTableSub = new PdfTableSub(['*', '*'], new Array<Array<PdfObject>>())
+        expenseTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('Expense Category'),
+            PdfTableSub.getHeaderTableCell(`Amount`),
+        ])
+        Object.keys(report.expenseByCategory).map(category => {
+            expenseTableSub.body.push([
+                PdfTableSub.getTableCell(category),
+                PdfTableSub.getTableCell(`${report.expenseByCategory[category]}`),
+            ])
+        })
+        
+        const expenseTable = new PdfTable('tableExample', [0, 10], expenseTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), undefined))
+        pd.content.push(expenseTable)
+
+        // Add income table
+        pd.content.push(new PdfText('Income Log', undefined, 'subheader', undefined, undefined, undefined, undefined, undefined, 'before'))
+        const incomeLogTableSub = new PdfTableSub([14, 110, 30, 110, 130, 60, 60, 40, 50, 40, '*'], new Array<Array<PdfObject>>())
+        incomeLogTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('#'),
+            PdfTableSub.getHeaderTableCell('When'),
+            PdfTableSub.getHeaderTableCell('Business'),
+            PdfTableSub.getHeaderTableCell('Note'),
+            PdfTableSub.getHeaderTableCell(`Amount`),
+            PdfTableSub.getHeaderTableCell(`Receipt #`),
+        ])
+        
+        const receiptsUrls = []
+
+        report.lines.forEach((dl, index) => {
+            let hasReceipt = false
+            if (dl.receiptImageUrl && dl.receiptImageUrl.length > 0) {
+                receiptsUrls.push(dl.receiptImageUrl)
+                hasReceipt = true
+            }
+
+            incomeLogTableSub.body.push([
+                PdfTableSub.getTableCell(`${index + 1}`),
+                PdfTableSub.getTableCell(Moment.utc(dl.when).format('MMMM Do YYYY')),
+                PdfTableSub.getTableCell(`${dl.incomeSource}`),
+                PdfTableSub.getTableCell(dl.note),
+                PdfTableSub.getTableCell(`${dl.amount}`),
+                PdfTableSub.getTableCell(`${hasReceipt ? `#${receiptsUrls.length}` : ''}`),
+            ])
+        })
+        
+        const incomeLogTable = new PdfTable('tableExample', [0, 10, 0, 10], incomeLogTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
+        pd.content.push(incomeLogTable)
+
+        // Add Expense table
+        pd.content.push(new PdfText('Expense Log', undefined, 'subheader', undefined, undefined, undefined, undefined, undefined, 'before'))
+        const expenseLogTableSub = new PdfTableSub([14, 110, 30, 110, 130, 60, 60, 40, 50, 40, '*'], new Array<Array<PdfObject>>())
+        expenseLogTableSub.body.push([
+            PdfTableSub.getHeaderTableCell('#'),
+            PdfTableSub.getHeaderTableCell('When'),
+            PdfTableSub.getHeaderTableCell('Expense Category'),
+            PdfTableSub.getHeaderTableCell('Merchant'),
+            PdfTableSub.getHeaderTableCell('Note'),
+            PdfTableSub.getHeaderTableCell(`Amount`),
+            PdfTableSub.getHeaderTableCell(`Receipt #`),
+        ])
+        
+        const expenseReceiptsUrls = []
+
+        report.lines.forEach((dl, index) => {
+            let hasReceipt = false
+            if (dl.receiptImageUrl && dl.receiptImageUrl.length > 0) {
+                expenseReceiptsUrls.push(dl.receiptImageUrl)
+                hasReceipt = true
+            }
+
+            expenseLogTableSub.body.push([
+                PdfTableSub.getTableCell(`${index + 1}`),
+                PdfTableSub.getTableCell(Moment.utc(dl.when).format('MMMM Do YYYY')),
+                PdfTableSub.getTableCell(`${dl.expenseCategory}`),
+                PdfTableSub.getTableCell(`${dl.merchantName}`),
+                PdfTableSub.getTableCell(dl.note),
+                PdfTableSub.getTableCell(`${dl.amount}`),
+                PdfTableSub.getTableCell(`${hasReceipt ? `#${expenseReceiptsUrls.length}` : ''}`),
+            ])
+        })
+        
+        const expenseLogTable = new PdfTable('tableExample', [0, 10, 0, 10], expenseLogTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))
+        pd.content.push(expenseLogTable)
+
+
+        pd.content.push(new PdfText('Receipts', undefined, 'subheader', undefined, undefined, undefined, undefined, undefined, 'before'))
+
+        for (const url of receiptsUrls) {
+            pd.content.push(new PdfImage(await getBase64ImageFromURL(url), 200, 200))
+        }
+
+        for (const url of expenseReceiptsUrls) {
+            pd.content.push(new PdfImage(await getBase64ImageFromURL(url), 200, 200))
+        }
 
         return pd
     }
