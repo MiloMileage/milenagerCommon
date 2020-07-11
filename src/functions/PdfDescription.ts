@@ -102,7 +102,7 @@ export default class PdfDescription {
         pd.content = new Array<PdfObject>()
 
         // Add customer details table
-        const customerDetailsTableSub = new PdfTableSub(['200', '*'], new Array<Array<PdfObject>>())
+        const customerDetailsTableSub = new PdfTableSub([200, '*'], new Array<Array<PdfObject>>())
         customerDetailsTableSub.body.push([
             PdfTableSub.getHeaderTableCell('Name'),
             PdfTableSub.getHeaderTableCell('Notes'),
