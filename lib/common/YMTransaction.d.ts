@@ -10,7 +10,8 @@ export default class YMTransaction {
     notes: string;
     receipts: Array<YMReceipt>;
     merchant: YMMerchant;
-    constructor(transactionId: string, incomeSourceId: string, expenseCategoryId: string, date: string, amount: number, notes: string, receipts: Array<YMReceipt>, merchant: YMMerchant);
+    isDeleted: boolean;
+    constructor(transactionId: string, incomeSourceId: string, expenseCategoryId: string, date: string, amount: number, notes: string, receipts: Array<YMReceipt>, merchant: YMMerchant, isDeleted: boolean);
     isExpense(): boolean;
     isIncome(): boolean;
     getIncomeSourceName(userSettings: YMUserSettings): string;

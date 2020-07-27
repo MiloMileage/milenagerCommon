@@ -12,6 +12,7 @@ export default class YMTransaction {
     notes: string
     receipts: Array<YMReceipt>
     merchant: YMMerchant
+    isDeleted: boolean
 
     constructor (transactionId: string,
                     incomeSourceId: string,
@@ -20,7 +21,8 @@ export default class YMTransaction {
                     amount: number,
                     notes: string,
                     receipts: Array<YMReceipt>,
-                    merchant: YMMerchant) {
+                    merchant: YMMerchant,
+                    isDeleted: boolean) {
         this.transactionId = transactionId
         this.incomeSourceId = incomeSourceId
         this.expenseCategoryId = expenseCategoryId
@@ -29,6 +31,7 @@ export default class YMTransaction {
         this.notes = notes
         this.receipts = receipts.map(x => YMReceipt.fromObject(x))
         this.merchant = YMMerchant.fromObject(merchant)
+        this.isDeleted = isDeleted
     }
 
     isExpense() {
@@ -70,8 +73,8 @@ export default class YMTransaction {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMTransaction('', '', '', '20200101', 0, '', [], undefined)
+        if(obj == null) return new YMTransaction('', '', '', '20200101', 0, '', [], undefined, false)
 
-        return new YMTransaction(obj.transactionId, obj.incomeSourceId, obj.expenseCategoryId, obj.date, obj.amount, obj.notes, obj.receipts, obj.merchant)
+        return new YMTransaction(obj.transactionId, obj.incomeSourceId, obj.expenseCategoryId, obj.date, obj.amount, obj.notes, obj.receipts, obj.merchant, obj.isDeleted)
     }
 }
