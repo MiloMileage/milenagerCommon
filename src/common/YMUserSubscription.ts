@@ -15,14 +15,16 @@ export default class YMUserSubscription {
     expiresAt: Date
     apple_original_transaction_id: string
     google_original_purchase_token: string
+    stripe_invoice_id: string
 
-    constructor (subscriptionType: string, status: YMSubscriptionStatus, promoCode: string, expiresAt: Date, apple_original_transaction_id: string, google_original_purchase_token: string) {
+    constructor (subscriptionType: string, status: YMSubscriptionStatus, promoCode: string, expiresAt: Date, apple_original_transaction_id: string, google_original_purchase_token: string, stripe_invoice_id: string) {
         this.status = status
         this.subscriptionType = subscriptionType
         this.promoCode = promoCode
         this.expiresAt = expiresAt
         this.apple_original_transaction_id = apple_original_transaction_id
         this.google_original_purchase_token = google_original_purchase_token
+        this.stripe_invoice_id = stripe_invoice_id
     }
 
     isUnderSubscription() {
@@ -42,7 +44,7 @@ export default class YMUserSubscription {
     }
 
     static createDummyUserSubscription() {
-        return new YMUserSubscription(YMSubscription.subscriptionsTypes.none, YMSubscriptionStatus.NONE, undefined, undefined, undefined, undefined)
+        return new YMUserSubscription(YMSubscription.subscriptionsTypes.none, YMSubscriptionStatus.NONE, undefined, undefined, undefined, undefined, undefined)
     }
 
     static fromObject = function(obj: any) {
@@ -54,7 +56,8 @@ export default class YMUserSubscription {
             obj.promoCode,
             obj.expiresAt,
             obj.apple_original_transaction_id,
-            obj.google_original_purchase_token
+            obj.google_original_purchase_token,
+            obj.stripe_invoice_id
         )
     }
 }
