@@ -9,6 +9,7 @@ export default class YMUserInfo {
     lastSignInDate: Date;
     os: YMOsType;
     email: string;
-    constructor(displayName: string, creationDate: Date, lastSignInDate: Date, os: YMOsType, email: string);
+    secondaryEmails: Array<string>;
+    constructor(displayName: string, creationDate: Date, lastSignInDate: Date, os: YMOsType, email: string, secondaryEmails: Array<string>);
     static fromObject: (obj: any) => YMUserInfo;
 }
