@@ -221,7 +221,7 @@ export default class PdfDescription {
         // Add drives table
         pd.content.push(new PdfText('Mileage Log', undefined, 'subheader', undefined, undefined, undefined, undefined, undefined, 'before'))
         const drivesSummaryLine = YMReportLine.fromObject(undefined)
-        const drivesTableSub = new PdfTableSub([14, 110, 30, 110, 130, 60, 60, 40, 50, 40, '*'], new Array<Array<PdfObject>>())
+        const drivesTableSub = new PdfTableSub([14, 110, 35, 70, 130, 60, 60, 40, 50, 40, 40, '*'], new Array<Array<PdfObject>>())
         drivesTableSub.body.push([
             PdfTableSub.getHeaderTableCell('#'),
             PdfTableSub.getHeaderTableCell('When'),
@@ -234,6 +234,7 @@ export default class PdfDescription {
             PdfTableSub.getHeaderTableCell('Parking ($)'),
             PdfTableSub.getHeaderTableCell('Tolls ($)'),
             PdfTableSub.getHeaderTableCell('Total ($)'),
+            PdfTableSub.getHeaderTableCell('Notes'),
         ])
         
         report.lines.forEach((dl, index) => {
@@ -253,6 +254,7 @@ export default class PdfDescription {
                 PdfTableSub.getTableCell(`${roundNumber(dl.parking)}`),
                 PdfTableSub.getTableCell(`${roundNumber(dl.tolls)}`),
                 PdfTableSub.getTableCell(`${roundNumber(dl.tolls + dl.parking + dl.value)}`),
+                PdfTableSub.getTableCell(`${dl.note}`),
             ])
         })
 
@@ -268,6 +270,7 @@ export default class PdfDescription {
                 PdfTableSub.getTotalCell(`${roundNumber(drivesSummaryLine.parking)}`),
                 PdfTableSub.getTotalCell(`${roundNumber(drivesSummaryLine.tolls)}`),
                 PdfTableSub.getTotalCell(`${roundNumber(drivesSummaryLine.tolls + drivesSummaryLine.parking + drivesSummaryLine.value)}`),
+                PdfTableSub.getTotalCell(``),
             ])
         
         const drivesTable = new PdfTable('tableExample', [0, 10, 0, 10], drivesTableSub, new PdfLayout(PdfLayout.getTableHeaderFillColorFunc(), PdfLayout.getTableHeaderHLineWidthFunc()))

@@ -18,6 +18,7 @@ export default class YMReportLine {
     value: number
     parking: number
     tolls: number
+    note: string
     
     constructor (when: Date,
             purpose: string,
@@ -28,7 +29,8 @@ export default class YMReportLine {
             distanceInMiles: number,
             value: number,
             parking: number,
-            tolls: number) {
+            tolls: number,
+            note: string) {
         this.when = when
         this.purpose = purpose
         this.rate = rate
@@ -39,6 +41,7 @@ export default class YMReportLine {
         this.value = value
         this.parking = parking
         this.tolls = tolls
+        this.note = note
     }
 
     static fromDrive(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations : { [ind: string]: YMSavedLocation }) {
@@ -58,7 +61,8 @@ export default class YMReportLine {
                                 Common.milesToMetricNumber(drive.miles, userSettings.personalSettings.isMetricSystem),
                                 Common.roundNumber(drive.getValue(userSettings, globalSettings)),
                                 Common.roundNumber(drive.driveNotes.parkingMoney),
-                                Common.roundNumber(drive.driveNotes.tollMoney))
+                                Common.roundNumber(drive.driveNotes.tollMoney),
+                                drive.driveNotes.note)
     }
 
     static getPurposeString(purpose: YMPurpose, drive: YMDrive) {
@@ -75,8 +79,8 @@ export default class YMReportLine {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReportLine(new Date(), '', 0, '', '', '', 0, 0, 0, 0)
+        if(obj == null) return new YMReportLine(new Date(), '', 0, '', '', '', 0, 0, 0, 0, '')
         
-        return new YMReportLine(obj.when, obj.purpose, obj.rate, obj.fromTo, obj.fromToPersonalized, obj.vehicle, obj.distanceInMiles, obj.value, obj.parking, obj.tolls)
+        return new YMReportLine(obj.when, obj.purpose, obj.rate, obj.fromTo, obj.fromToPersonalized, obj.vehicle, obj.distanceInMiles, obj.value, obj.parking, obj.tolls, obj.note)
     }
 }

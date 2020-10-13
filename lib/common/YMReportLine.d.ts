@@ -14,7 +14,8 @@ export default class YMReportLine {
     value: number;
     parking: number;
     tolls: number;
-    constructor(when: Date, purpose: string, rate: number, fromTo: string, fromToPersonalized: string, vehicle: string, distanceInMiles: number, value: number, parking: number, tolls: number);
+    note: string;
+    constructor(when: Date, purpose: string, rate: number, fromTo: string, fromToPersonalized: string, vehicle: string, distanceInMiles: number, value: number, parking: number, tolls: number, note: string);
     static fromDrive(drive: YMDrive, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, savedLocations: {
         [ind: string]: YMSavedLocation;
     }): YMReportLine;

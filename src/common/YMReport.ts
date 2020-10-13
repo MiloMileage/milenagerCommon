@@ -347,6 +347,7 @@ export default class YMReport {
         data += `Parking ($),`
         data += `Tolls ($),`
         data += `Total ($),`
+        data += `Notes,`
 
         data += '\n'
 
@@ -363,6 +364,7 @@ export default class YMReport {
             data += `${roundNumber(dl.parking)},`
             data += `${roundNumber(dl.tolls)},`
             data += `${roundNumber(dl.tolls + dl.parking + dl.value)},`
+            data += dl.note
             data += '\n'
         })
 
