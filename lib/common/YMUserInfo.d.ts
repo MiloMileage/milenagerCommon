@@ -11,6 +11,7 @@ export default class YMUserInfo {
     email: string;
     secondaryEmails: Array<string>;
     applePrivateEmail: string;
-    constructor(displayName: string, creationDate: Date, lastSignInDate: Date, os: YMOsType, email: string, secondaryEmails: Array<string>, applePrivateEmail: string);
+    emailBeforeValidation: string;
+    constructor(displayName: string, creationDate: Date, lastSignInDate: Date, os: YMOsType, email: string, secondaryEmails: Array<string>, applePrivateEmail: string, emailBeforeValidation: string);
     static fromObject: (obj: any) => YMUserInfo;
 }
