@@ -10,6 +10,7 @@ export default class YMUserInfo {
     os: YMOsType;
     email: string;
     secondaryEmails: Array<string>;
-    constructor(displayName: string, creationDate: Date, lastSignInDate: Date, os: YMOsType, email: string, secondaryEmails: Array<string>);
+    applePrivateEmail: string;
+    constructor(displayName: string, creationDate: Date, lastSignInDate: Date, os: YMOsType, email: string, secondaryEmails: Array<string>, applePrivateEmail: string);
     static fromObject: (obj: any) => YMUserInfo;
 }
