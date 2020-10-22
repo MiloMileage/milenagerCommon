@@ -31,6 +31,9 @@ export default class YMReport {
     isOutsideOfSubscriptionPeriod: boolean
     moneySymbol: string
     rates: Array<{purpose: string, rate: string}>
+    approvalRequestId: string
+    isApproved: boolean
+    denyReason: string
     
     constructor (reportName: string,
             dateCreated: Date,
