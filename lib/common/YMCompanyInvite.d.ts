@@ -2,7 +2,8 @@ import { YMCompanyRole } from './YMCompanySettings';
 export declare enum YMCompanyInviteStatus {
     PENDING = "PENDING",
     JOINED = "JOINED",
-    LEFT = "LEFT"
+    LEFT = "LEFT",
+    DENIED = "DENIED"
 }
 export default class YMCompanyInvite {
     status: YMCompanyInviteStatus;
