@@ -5,6 +5,7 @@ export enum YMCompanyInviteStatus {
     JOINED = 'JOINED',
     LEFT = 'LEFT',
     DENIED = 'DENIED',
+    REMOVED = 'REMOVED',
 }
 
 export default class YMCompanyInvite {

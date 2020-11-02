@@ -3,7 +3,8 @@ export declare enum YMCompanyInviteStatus {
     PENDING = "PENDING",
     JOINED = "JOINED",
     LEFT = "LEFT",
-    DENIED = "DENIED"
+    DENIED = "DENIED",
+    REMOVED = "REMOVED"
 }
 export default class YMCompanyInvite {
     status: YMCompanyInviteStatus;
