@@ -8,6 +8,7 @@ export default class YMCompanySettings {
     corpId: string;
     inviteId: string;
     dateAdded: Date;
-    constructor(role: YMCompanyRole, corpId: string, inviteId: string, dateAdded: Date);
+    internalId: string;
+    constructor(role: YMCompanyRole, corpId: string, inviteId: string, dateAdded: Date, internalId: string);
     static fromObject(obj: any): YMCompanySettings;
 }
