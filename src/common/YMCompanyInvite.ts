@@ -16,8 +16,9 @@ export default class YMCompanyInvite {
     email: string
     role: YMCompanyRole
     userId: string
+    internalId: string
 
-    constructor (status: YMCompanyInviteStatus, sentTime: Date, corpId: string, email: string, role: YMCompanyRole, lastUpdatedTime: Date, userId: string) {
+    constructor (status: YMCompanyInviteStatus, sentTime: Date, corpId: string, email: string, role: YMCompanyRole, lastUpdatedTime: Date, userId: string, internalId: string) {
         this.status = status
         this.sentTime = sentTime
         this.corpId = corpId
@@ -25,6 +26,7 @@ export default class YMCompanyInvite {
         this.role = role
         this.lastUpdatedTime = lastUpdatedTime
         this.userId = userId
+        this.internalId = internalId
     }
 
     approve() {
@@ -38,7 +40,7 @@ export default class YMCompanyInvite {
     }
 
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMCompanyInvite(YMCompanyInviteStatus.PENDING, new Date(), '', '', YMCompanyRole.USER, new Date(), '')
+        if(obj == null) return new YMCompanyInvite(YMCompanyInviteStatus.PENDING, new Date(), '', '', YMCompanyRole.USER, new Date(), '', '')
         
         return new YMCompanyInvite(
             obj.status,
@@ -48,6 +50,7 @@ export default class YMCompanyInvite {
             obj.role,
             obj.lastUpdatedTime,
             obj.userId,
+            obj.internalId
         )
     }
 }
