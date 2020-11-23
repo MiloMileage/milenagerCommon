@@ -52,7 +52,10 @@ export default class YMReport {
             csvLink: string,
             pdfLink: string,
             isOutsideOfSubscriptionPeriod: boolean,
-            moneySymbol: string) {
+            moneySymbol: string,
+            approvalRequestId: string,
+            isApproved: boolean,
+            denyReason: string) {
         this.reportName = reportName
         this.dateCreated = dateCreated
         this.name = name
@@ -392,7 +395,7 @@ export default class YMReport {
 
     // tslint:disable-next-line:member-ordering
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMReport('', new Date(), '', '', '', '', YMUserSettings.fromObject(undefined), YMGlobalUserSettings.fromObject(undefined), false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false, '$')
+        if(obj == null) return new YMReport('', new Date(), '', '', '', '', YMUserSettings.fromObject(undefined), YMGlobalUserSettings.fromObject(undefined), false, YMDateRange.fromObject(undefined), [], [], [], '', '', '', false, '$', null, null, null)
         
         return new YMReport(
             obj.reportName,
@@ -412,6 +415,9 @@ export default class YMReport {
             obj.csvLink,
             obj.pdfLink,
             obj.isOutsideOfSubscriptionPeriod,
-            obj.moneySymbol)
+            obj.moneySymbol,
+            obj.approvalRequestId,
+            obj.isApproved,
+            obj.denyReason)
     }
 }

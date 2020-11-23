@@ -31,7 +31,7 @@ export default class YMReport {
     approvalRequestId: string;
     isApproved: boolean;
     denyReason: string;
-    constructor(reportName: string, dateCreated: Date, name: string, project: string, customerDetails: string, details: string, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, isMetricSystem: boolean, dateRange: YMDateRange, lines: Array<YMReportLine>, vehicleBusinessLines: Array<YMReportVehicleLine>, vehiclePersonalLines: Array<YMReportVehicleLine>, reportId: string, csvLink: string, pdfLink: string, isOutsideOfSubscriptionPeriod: boolean, moneySymbol: string);
+    constructor(reportName: string, dateCreated: Date, name: string, project: string, customerDetails: string, details: string, userSettings: YMUserSettings, globalSettings: YMGlobalUserSettings, isMetricSystem: boolean, dateRange: YMDateRange, lines: Array<YMReportLine>, vehicleBusinessLines: Array<YMReportVehicleLine>, vehiclePersonalLines: Array<YMReportVehicleLine>, reportId: string, csvLink: string, pdfLink: string, isOutsideOfSubscriptionPeriod: boolean, moneySymbol: string, approvalRequestId: string, isApproved: boolean, denyReason: string);
     addDriveValue(drive: YMDrive, savedLocations: {
         [ind: string]: YMSavedLocation;
     }): void;
