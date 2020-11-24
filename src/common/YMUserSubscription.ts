@@ -1,5 +1,6 @@
 import * as Moment from 'moment'
 import YMSubscription from './YMSubscription'
+import YMCompanySubscription from './YMCompanySubscription'
 
 export enum YMSubscriptionStatus {
     NONE = "NONE",
@@ -27,11 +28,19 @@ export default class YMUserSubscription {
         this.stripe_subscription_id = stripe_subscription_id
     }
 
-    isUnderSubscription() {
+    isUnderSubscription(companySubscription: YMCompanySubscription) {
+        if (companySubscription.isUnderSubscription() && !companySubscription.isCanceledAndUnderSubscription()) {
+            return true
+        }
+
         return Moment(this.expiresAt).isAfter(Moment())
     }
 
-    isCanceledAndUnderSubscription() {
+    isCanceledAndUnderSubscription(companySubscription: YMCompanySubscription) {
+        if (companySubscription.isUnderSubscription() && !companySubscription.isCanceledAndUnderSubscription()) {
+            return false
+        }
+
         return this.status === YMSubscriptionStatus.CANCELED && Moment(this.expiresAt).isAfter(Moment())
     }
 
