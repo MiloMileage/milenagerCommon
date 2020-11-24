@@ -74,6 +74,9 @@ export default class YMReport {
         this.pdfLink = pdfLink
         this.isOutsideOfSubscriptionPeriod = isOutsideOfSubscriptionPeriod
         this.moneySymbol = moneySymbol ? moneySymbol : '$'
+        this.approvalRequestId = approvalRequestId
+        this.isApproved = isApproved
+        this.denyReason = denyReason
 
         this.rates = []
 
