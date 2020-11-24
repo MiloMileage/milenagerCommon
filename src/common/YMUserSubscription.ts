@@ -29,7 +29,7 @@ export default class YMUserSubscription {
     }
 
     isUnderSubscription(companySubscription: YMCompanySubscription) {
-        if (companySubscription.isUnderSubscription() && !companySubscription.isCanceledAndUnderSubscription()) {
+        if (companySubscription != null && companySubscription.isUnderSubscription() && !companySubscription.isCanceledAndUnderSubscription()) {
             return true
         }
 
@@ -37,7 +37,7 @@ export default class YMUserSubscription {
     }
 
     isCanceledAndUnderSubscription(companySubscription: YMCompanySubscription) {
-        if (companySubscription.isUnderSubscription() && !companySubscription.isCanceledAndUnderSubscription()) {
+        if (companySubscription != null && companySubscription.isUnderSubscription() && !companySubscription.isCanceledAndUnderSubscription()) {
             return false
         }
 
