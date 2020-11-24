@@ -1,3 +1,4 @@
+import YMReport from "./YMReport";
 export declare enum YMCompanyApprovalRequestStatus {
     PENDING = "PENDING",
     APPROVED = "APPROVED",
@@ -9,6 +10,10 @@ export default class YMCompanyApprovalRequest {
     corpId: string;
     status: YMCompanyApprovalRequestStatus;
     denyReason: string;
-    constructor(approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string);
+    requesterEmail: string;
+    reportId: string;
+    userId: string;
+    drivesReport: YMReport;
+    constructor(approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string, requesterEmail: string, reportId: string, userId: string, drivesReport: YMReport);
     static fromObject: (obj: any) => YMCompanyApprovalRequest;
 }
