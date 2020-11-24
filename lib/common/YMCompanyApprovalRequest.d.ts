@@ -13,6 +13,8 @@ export default class YMCompanyApprovalRequest {
     requesterEmail: string;
     userId: string;
     drivesReport: YMReport;
-    constructor(approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string, requesterEmail: string, userId: string, drivesReport: YMReport);
+    createdDate: Date;
+    updatedDate: Date;
+    constructor(approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string, requesterEmail: string, userId: string, drivesReport: YMReport, createdDate: Date, updatedDate: Date);
     static fromObject: (obj: any) => YMCompanyApprovalRequest;
 }

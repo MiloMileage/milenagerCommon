@@ -15,8 +15,10 @@ export default class YMCompanyApprovalRequest {
     requesterEmail: string
     userId: string
     drivesReport: YMReport
+    createdDate: Date
+    updatedDate: Date
 
-    constructor (approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string, requesterEmail: string, userId: string, drivesReport: YMReport) {
+    constructor (approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string, requesterEmail: string, userId: string, drivesReport: YMReport, createdDate: Date, updatedDate: Date) {
         this.approvalRequestId = approvalRequestId
         this.approverEmail = approverEmail
         this.corpId = corpId
@@ -25,10 +27,12 @@ export default class YMCompanyApprovalRequest {
         this.requesterEmail = requesterEmail
         this.userId = userId
         this.drivesReport = YMReport.fromObject(drivesReport)
+        this.createdDate = createdDate
+        this.updatedDate = updatedDate
     }
 
     static fromObject = function(obj: any) {
-        if(obj == null) return new YMCompanyApprovalRequest('', null, null, YMCompanyApprovalRequestStatus.PENDING, null, null, null, null)
+        if(obj == null) return new YMCompanyApprovalRequest('', null, null, YMCompanyApprovalRequestStatus.PENDING, null, null, null, null, new Date(), new Date())
         
         return new YMCompanyApprovalRequest(
             obj.approvalRequestId,
@@ -38,7 +42,9 @@ export default class YMCompanyApprovalRequest {
             obj.denyReason,
             obj.requesterEmail,
             obj.userId,
-            obj.drivesReport
+            obj.drivesReport,
+            obj.createdDate,
+            obj.updatedDate
         )
     }
 }
