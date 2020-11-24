@@ -11,9 +11,8 @@ export default class YMCompanyApprovalRequest {
     status: YMCompanyApprovalRequestStatus;
     denyReason: string;
     requesterEmail: string;
-    reportId: string;
     userId: string;
     drivesReport: YMReport;
-    constructor(approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string, requesterEmail: string, reportId: string, userId: string, drivesReport: YMReport);
+    constructor(approvalRequestId: string, approverEmail: string, corpId: string, status: YMCompanyApprovalRequestStatus, denyReason: string, requesterEmail: string, userId: string, drivesReport: YMReport);
     static fromObject: (obj: any) => YMCompanyApprovalRequest;
 }
