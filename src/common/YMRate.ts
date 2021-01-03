@@ -60,8 +60,8 @@ export default class YMRate {
     static moving = 'moving'
     static medical = 'medical'
 
-    static GetRates = (drive: YMDrive, rates: { [ind: string]: { [ind: string]: YMRate } }) => {
-        const currYear = new Date()
+    static GetRates = (drive: YMDrive, rates: { [ind: string]: { [ind: string]: YMRate } }, year?: Date) => {
+        const currYear = year ? year : new Date()
         let driveYear = drive ? drive.getStartTimeLocal() : currYear
         let currRates = rates[(drive == null ? currYear : driveYear).getFullYear()]
         while (currRates === undefined && moment(currYear).isAfter(moment().add(-5, 'years'))) {
@@ -72,10 +72,10 @@ export default class YMRate {
         return currRates
     }
 
-    static translateRate = (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => {
+    static translateRate = (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number, year?: Date) => {
         // find rate for US
         if (rateId.startsWith(YMRate.IRS)) {
-            const currYear = new Date()
+            const currYear = year ? year : new Date()
             let driveYear = drive ? drive.getStartTimeLocal() : currYear
             let rates = gloablSettings.irsRates[(drive == null ? currYear : driveYear).getFullYear()]
             while (rates === undefined && moment(currYear).isAfter(moment().add(-5, 'years'))) {
@@ -88,7 +88,7 @@ export default class YMRate {
 
         // find rate for CA
         if (rateId.startsWith(YMRate.CA)) {
-            const caRates = YMRate.GetRates(drive, gloablSettings.caRates)
+            const caRates = YMRate.GetRates(drive, gloablSettings.caRates, year)
             if (caRates === undefined) {
                 return 0
             }
@@ -100,7 +100,7 @@ export default class YMRate {
 
         // find rate for AU
         if (rateId.startsWith(YMRate.AU)) {
-            const auRates = YMRate.GetRates(drive, gloablSettings.auRates)
+            const auRates = YMRate.GetRates(drive, gloablSettings.auRates, year)
 
             if (auRates === undefined) {
                 return 0
@@ -113,7 +113,7 @@ export default class YMRate {
 
         // find rate for UK
         if (rateId.startsWith(YMRate.UK)) {
-            const ukRates = YMRate.GetRates(drive, gloablSettings.ukRates)
+            const ukRates = YMRate.GetRates(drive, gloablSettings.ukRates, year)
 
             if (ukRates === undefined) {
                 return 0
@@ -132,7 +132,7 @@ export default class YMRate {
     }
 
       // tslint:disable-next-line:max-line-length
-    static getRateForPurposeId = (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => {
+    static getRateForPurposeId = (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number, currYear?: Date) => {
         if (userSettings == null || gloablSettings == null) {
             return 0
         }
@@ -156,18 +156,18 @@ export default class YMRate {
 
         if (currRatePrefix) {
             if (purpose.purposeId === YMPurpose.defaultPuposesIds.business || purpose.category === YMPurpose.categories.business) {
-                return YMRate.translateRate(`${currRatePrefix}${YMRate.BUSINESS}`, userSettings, gloablSettings, drive, milesDroveYtd)
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.BUSINESS}`, userSettings, gloablSettings, drive, milesDroveYtd, currYear)
             } else if (purpose.purposeId === YMPurpose.defaultPuposesIds.charity) {
-                return YMRate.translateRate(`${currRatePrefix}${YMRate.CHARITY}`, userSettings, gloablSettings, drive, milesDroveYtd)
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.CHARITY}`, userSettings, gloablSettings, drive, milesDroveYtd, currYear)
             } else if (purpose.purposeId === YMPurpose.defaultPuposesIds.moving) {
-                return YMRate.translateRate(`${currRatePrefix}${YMRate.moving}`, userSettings, gloablSettings, drive, milesDroveYtd)
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.moving}`, userSettings, gloablSettings, drive, milesDroveYtd, currYear)
             } else if (purpose.purposeId === YMPurpose.defaultPuposesIds.medical) {
-                return YMRate.translateRate(`${currRatePrefix}${YMRate.medical}`, userSettings, gloablSettings, drive, milesDroveYtd)
+                return YMRate.translateRate(`${currRatePrefix}${YMRate.medical}`, userSettings, gloablSettings, drive, milesDroveYtd, currYear)
             } else {
                 return 0
             }
         }
 
-        return YMRate.translateRate(purpose.rateId, userSettings, gloablSettings, drive, milesDroveYtd)
+        return YMRate.translateRate(purpose.rateId, userSettings, gloablSettings, drive, milesDroveYtd, currYear)
     }
 }

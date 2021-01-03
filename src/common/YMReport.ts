@@ -81,22 +81,22 @@ export default class YMReport {
         this.rates = []
 
         if (this.userSettings.country === YMCountry.US) {
-            this.rates.push({purpose: `business (general)`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `medical`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.medical, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `charity`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.charity, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `moving`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.moving, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `business (general)`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `medical`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.medical, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `charity`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.charity, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `moving`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.moving, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
         }
         if (this.userSettings.country === YMCountry.CA) {
             const fromToDistanceInMilesCA = metricToMiles(5000)
-            this.rates.push({purpose: `business (first ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `business (after ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings, undefined, fromToDistanceInMilesCA + 1), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `business (first ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `business (after ${this.getDistanceFormated(fromToDistanceInMilesCA, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings, undefined, fromToDistanceInMilesCA + 1, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
         }
         if (this.userSettings.country === YMCountry.AU) {
             const fromToDistanceInMilesAU = metricToMiles(5000)
-            this.rates.push({purpose: `business (first ${this.getDistanceFormated(fromToDistanceInMilesAU, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `business (first ${this.getDistanceFormated(fromToDistanceInMilesAU, this.userSettings)})`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.business, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
         }
         if (this.userSettings.country === YMCountry.UK) {
             const fromToDistanceInMilesUK = metricToMiles(10000)
@@ -104,11 +104,11 @@ export default class YMReport {
             this.rates.push({purpose: `car - business (after ${this.getDistanceFormated(fromToDistanceInMilesUK, this.userSettings)})`, rate: `${milesToMetric(YMRate.GetRates(undefined, this.globalSettings.ukRates)[YMRate.BUSINESS].getRateFromMileage(fromToDistanceInMilesUK + 10, YMVehicleType.car), this.userSettings.personalSettings.isMetricSystem)}`})
             this.rates.push({purpose: `motorcycle - business`, rate: `${milesToMetric(YMRate.GetRates(undefined, this.globalSettings.ukRates)[YMRate.BUSINESS].getRateFromMileage(0, YMVehicleType.motorcycle), this.userSettings.personalSettings.isMetricSystem)}`})
             this.rates.push({purpose: `bicycle - business`, rate: `${milesToMetric(YMRate.GetRates(undefined, this.globalSettings.ukRates)[YMRate.BUSINESS].getRateFromMileage(0, YMVehicleType.bicycle), this.userSettings.personalSettings.isMetricSystem)}`})
-            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+            this.rates.push({purpose: `personal`, rate: `${milesToMetric(YMRate.getRateForPurposeId(YMPurpose.defaultPuposesIds.personal, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
         }
         if (this.userSettings.country === YMCountry.CUSTOME || this.userSettings.country === YMCountry.UNKNOWN) {
             this.userSettings.purposes.map(p => {
-                this.rates.push({purpose: `${p.name}`, rate: `${milesToMetric(YMRate.getRateForPurposeId(p.purposeId, this.userSettings, this.globalSettings), this.userSettings.personalSettings.isMetricSystem)}`})
+                this.rates.push({purpose: `${p.name}`, rate: `${milesToMetric(YMRate.getRateForPurposeId(p.purposeId, this.userSettings, this.globalSettings, undefined, undefined, this.dateRange.getStartDateLocal(true)), this.userSettings.personalSettings.isMetricSystem)}`})
             })
         }
 

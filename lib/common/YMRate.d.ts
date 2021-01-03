@@ -33,9 +33,9 @@ export default class YMRate {
         [ind: string]: {
             [ind: string]: YMRate;
         };
-    }) => {
+    }, year?: Date) => {
         [ind: string]: YMRate;
     };
-    static translateRate: (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => number;
-    static getRateForPurposeId: (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number) => number;
+    static translateRate: (rateId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number, year?: Date) => number;
+    static getRateForPurposeId: (purposeId: string, userSettings: YMUserSettings, gloablSettings: YMGlobalUserSettings, drive?: YMDrive, milesDroveYtd?: number, currYear?: Date) => number;
 }
